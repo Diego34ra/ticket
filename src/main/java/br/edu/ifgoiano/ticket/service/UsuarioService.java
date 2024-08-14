@@ -13,4 +13,8 @@ public interface UsuarioService {
     List<UsuarioOutputDTO> buscarTodos();
 
     UsuarioOutputDTO buscaPorId(String uuid);
+
+    UsuarioOutputDTO atualizar(String uuid, UsuarioInputDTO usuarioInputDTO);
+
+    void deletePorId(String uuid);
 }

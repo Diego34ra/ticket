@@ -8,6 +8,8 @@ import br.edu.ifgoiano.ticket.model.Usuario;
 import br.edu.ifgoiano.ticket.model.UsuarioRole;
 import br.edu.ifgoiano.ticket.repository.UsuarioRepository;
 import br.edu.ifgoiano.ticket.service.UsuarioService;
+import br.edu.ifgoiano.ticket.utils.ObjectUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private ObjectUtils objectUtils;
 
     @Autowired
     private MyModelMapper mapper;
@@ -40,5 +45,17 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public UsuarioOutputDTO buscaPorId(String uuid) {
         return mapper.mapTo(usuarioRepository.findById(UUID.fromString(uuid)),UsuarioOutputDTO.class);
+    }
+
+    @Override
+    public UsuarioOutputDTO atualizar(String uuid, UsuarioInputDTO usuarioUpdate) {
+        Usuario usuario = mapper.mapTo(usuarioUpdate, Usuario.class);
+        BeanUtils.copyProperties(usuarioUpdate, usuario, objectUtils.getNullPropertyNames(usuarioUpdate));
+        return mapper.mapTo(usuarioRepository.save(usuario), UsuarioOutputDTO.class);
+    }
+
+    @Override
+    public void deletePorId(String uuid) {
+        usuarioRepository.deleteById(UUID.fromString(uuid));
     }
 }
