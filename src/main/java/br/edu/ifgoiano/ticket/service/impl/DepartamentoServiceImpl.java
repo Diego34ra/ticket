@@ -39,13 +39,13 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     @Override
     public Departamento buscaPorId(Long id) {
         return departamentoRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum departamento com esse Id."));
+                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum departamento com esse id."));
     }
 
     @Override
     public Departamento atualizar(Long id, DepartamentoDTO departamentoUpdate) {
         Departamento departamento = departamentoRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum departamento com esse Id."));
+                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum departamento com esse id."));
         BeanUtils.copyProperties(departamentoUpdate,departamento,objectUtils.getNullPropertyNames(departamentoUpdate));
         return departamentoRepository.save(departamento);
     }

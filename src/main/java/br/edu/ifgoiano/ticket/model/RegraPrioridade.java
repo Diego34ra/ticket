@@ -10,16 +10,18 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "tb_comentario")
-public class Comentario {
+@Entity(name = "tb_regraPrioridade")
+public class RegraPrioridade {
     @Id
-    @Column(name = "comentario_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String conteudo;
-    @OneToOne
-    private Usuario autor;
-    @ManyToOne
-    private Ticket ticket;
 
+    @ManyToOne
+    private Categoria categoria;
+
+    @ManyToOne
+    private Departamento departamento;
+
+    @Enumerated(EnumType.STRING)
+    private Prioridade prioridade;
 }

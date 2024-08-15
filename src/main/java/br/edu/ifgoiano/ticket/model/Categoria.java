@@ -10,16 +10,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "tb_comentario")
-public class Comentario {
+@Entity(name = "tb_categoria")
+public class Categoria {
+
     @Id
-    @Column(name = "comentario_id")
+    @Column(name = "categoria_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String conteudo;
-    @OneToOne
-    private Usuario autor;
-    @ManyToOne
-    private Ticket ticket;
+    private String nome;
+    private String descricao;
 
 }

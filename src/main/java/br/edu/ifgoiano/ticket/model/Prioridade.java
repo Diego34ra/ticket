@@ -8,6 +8,6 @@ import lombok.Getter;
 public enum Prioridade {
     BAIXO,
     NORMAL,
-    ALTO,
-    MUITO_ALTO
+    ALTA,
+    MUITO_ALTA
 }
