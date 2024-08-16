@@ -27,6 +27,7 @@ public class Ticket {
     private String descricao;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataModificacao;
+    private LocalDateTime dataMaximaResolucao;
     @Enumerated(EnumType.STRING)
     private StatusTicket status;
     @Enumerated(EnumType.STRING)
@@ -39,6 +40,6 @@ public class Ticket {
     private Usuario cliente;
     @ManyToOne
     private Usuario responsavel;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Comentario> comentarios;
 }

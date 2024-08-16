@@ -18,8 +18,8 @@ public class Usuario {
 
     @Id
     @Column(name = "usuario_id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nome;
 
     private String email;
@@ -31,7 +31,7 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private UsuarioRole tipoUsuario;
 
-    @OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Telefone> contatos;
 
 

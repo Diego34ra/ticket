@@ -42,13 +42,13 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Override
     public Categoria buscaPorId(Long id) {
         return categoriaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrada nenhuma departamenta com esse id."));
+                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrada nenhuma categoria com esse id."));
     }
 
     @Override
     public Categoria atualizar(Long id, CategoriaDTO categoriaUpdate) {
         Categoria categoria = categoriaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrada nenhuma departamenta com esse id."));
+                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrada nenhuma categoria com esse id."));
         BeanUtils.copyProperties(categoriaUpdate,categoria,objectUtils.getNullPropertyNames(categoriaUpdate));
         return categoriaRepository.save(categoria);
     }

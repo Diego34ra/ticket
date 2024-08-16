@@ -19,7 +19,7 @@ public class DepartamentoController {
     private DepartamentoService departamentoService;
 
     @PostMapping
-    public ResponseEntity<Departamento> criar(DepartamentoDTO departamentoDTO){
+    public ResponseEntity<Departamento> criar(@RequestBody DepartamentoDTO departamentoDTO){
         var departamentoCriado = departamentoService.criar(departamentoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(departamentoCriado);
     }
@@ -32,18 +32,18 @@ public class DepartamentoController {
 
     @GetMapping("{id}")
     public ResponseEntity<Departamento> buscarPorId(@PathVariable Long id){
-        var departamento = departamentoService.buscaPorId(id);
+        var departamento = departamentoService.buscarPorId(id);
         return ResponseEntity.status(HttpStatus.OK).body(departamento);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Departamento> atualizar(@PathVariable Long id, DepartamentoDTO departamentoDTO){
+    public ResponseEntity<Departamento> atualizar(@PathVariable Long id, @RequestBody DepartamentoDTO departamentoDTO){
         var departamentoAtualizado = departamentoService.atualizar(id,departamentoDTO);
         return ResponseEntity.status(HttpStatus.OK).body(departamentoAtualizado);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Categoria> deletarPorId(@PathVariable Long id){
+    public ResponseEntity<?> deletarPorId(@PathVariable Long id){
         departamentoService.deletePorId(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

@@ -18,7 +18,7 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @PostMapping
-    public ResponseEntity<Categoria> criar(CategoriaDTO categoriaDTO){
+    public ResponseEntity<Categoria> criar(@RequestBody CategoriaDTO categoriaDTO){
         var categoriaCriada = categoriaService.criar(categoriaDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(categoriaCriada);
     }
@@ -36,13 +36,13 @@ public class CategoriaController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Categoria> atualizar(@PathVariable Long id, CategoriaDTO categoriaDTO){
+    public ResponseEntity<Categoria> atualizar(@PathVariable Long id, @RequestBody CategoriaDTO categoriaDTO){
         var categoriaAtualizada = categoriaService.atualizar(id,categoriaDTO);
         return ResponseEntity.status(HttpStatus.OK).body(categoriaAtualizada);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Categoria> deletarPorId(@PathVariable Long id){
+    public ResponseEntity<?> deletarPorId(@PathVariable Long id){
         categoriaService.deletePorId(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UsuarioOutputDTO {
 
-    private String id;
+    private Long id;
 
     private String nome;
 

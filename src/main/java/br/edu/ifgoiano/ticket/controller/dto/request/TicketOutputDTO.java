@@ -24,6 +24,7 @@ public class TicketOutputDTO {
     private String descricao;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataModificacao;
+    private LocalDateTime dataMaximaResolucao;
     private Categoria categoria;
     private Departamento departamento;
     private UsuarioOutputDTO cliente;

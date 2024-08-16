@@ -3,6 +3,7 @@ package br.edu.ifgoiano.ticket.service.impl;
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
 import br.edu.ifgoiano.ticket.controller.dto.request.UsuarioInputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.UsuarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.Telefone;
 import br.edu.ifgoiano.ticket.model.Usuario;
 import br.edu.ifgoiano.ticket.model.UsuarioRole;
@@ -43,19 +44,21 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public UsuarioOutputDTO buscaPorId(String uuid) {
-        return mapper.mapTo(usuarioRepository.findById(UUID.fromString(uuid)),UsuarioOutputDTO.class);
+    public UsuarioOutputDTO buscaPorId(Long uuid) {
+        Usuario usuario = usuarioRepository.findById(uuid)
+                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum usuário com esse id."));
+        return mapper.mapTo(usuario,UsuarioOutputDTO.class);
     }
 
     @Override
-    public UsuarioOutputDTO atualizar(String uuid, UsuarioInputDTO usuarioUpdate) {
+    public UsuarioOutputDTO atualizar(Long uuid, UsuarioInputDTO usuarioUpdate) {
         Usuario usuario = mapper.mapTo(usuarioUpdate, Usuario.class);
         BeanUtils.copyProperties(usuarioUpdate, usuario, objectUtils.getNullPropertyNames(usuarioUpdate));
         return mapper.mapTo(usuarioRepository.save(usuario), UsuarioOutputDTO.class);
     }
 
     @Override
-    public void deletePorId(String uuid) {
-        usuarioRepository.deleteById(UUID.fromString(uuid));
+    public void deletePorId(Long uuid) {
+        usuarioRepository.deleteById(uuid);
     }
 }

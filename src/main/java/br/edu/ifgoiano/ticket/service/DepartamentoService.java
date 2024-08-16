@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface DepartamentoService {
 
-    Departamento criar(DepartamentoDTO departamento);
+    Departamento criar(DepartamentoDTO departamentoDTO);
 
     List<Departamento> buscarTodos();
 
-    Departamento buscaPorId(Long id);
+    Departamento buscarPorId(Long id);
 
-    Departamento atualizar(Long id,DepartamentoDTO departamento);
+    Departamento atualizar(Long id,DepartamentoDTO departamentoDTO);
 
     void deletePorId(Long id);
 }

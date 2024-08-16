@@ -26,9 +26,9 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     private ObjectUtils objectUtils;
 
     @Override
-    public Departamento criar(DepartamentoDTO departamento) {
-        var departamentoCreate = mapper.mapTo(departamento, Departamento.class);
-        return departamentoRepository.save(departamentoCreate);
+    public Departamento criar(DepartamentoDTO departamentoDTO) {
+        Departamento departamento = mapper.mapTo(departamentoDTO, Departamento.class);
+        return departamentoRepository.save(departamento);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     }
 
     @Override
-    public Departamento buscaPorId(Long id) {
+    public Departamento buscarPorId(Long id) {
         return departamentoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum departamento com esse id."));
     }

@@ -26,24 +26,24 @@ public class UsuarioController {
 
     @GetMapping
     private ResponseEntity<List<UsuarioOutputDTO>> buscarTodos(){
-        var usuarios = usuarioService.buscarTodos();
-        return ResponseEntity.status(HttpStatus.OK).body(usuarios);
+        var usuarioList = usuarioService.buscarTodos();
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioList);
     }
 
     @GetMapping("{id}")
-    private ResponseEntity<UsuarioOutputDTO> buscarPorId(@PathVariable String id){
+    private ResponseEntity<UsuarioOutputDTO> buscarPorId(@PathVariable Long id){
         var usuario = usuarioService.buscaPorId(id);
         return ResponseEntity.status(HttpStatus.OK).body(usuario);
     }
 
     @PutMapping("{id}")
-    private ResponseEntity<UsuarioOutputDTO> atualizar(@PathVariable String id, @RequestBody UsuarioInputDTO usuarioInputDTO){
+    private ResponseEntity<UsuarioOutputDTO> atualizar(@PathVariable Long id, @RequestBody UsuarioInputDTO usuarioInputDTO){
         var usuario = usuarioService.atualizar(id,usuarioInputDTO);
         return ResponseEntity.status(HttpStatus.OK).body(usuario);
     }
 
     @DeleteMapping("{id}")
-    private ResponseEntity<?> deletePorId(@PathVariable String id){
+    private ResponseEntity<?> deletePorId(@PathVariable Long id){
         usuarioService.deletePorId(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

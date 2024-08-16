@@ -8,13 +8,13 @@ import java.util.UUID;
 
 public interface UsuarioService {
 
-    UsuarioOutputDTO criar(UsuarioInputDTO usuario);
+    UsuarioOutputDTO criar(UsuarioInputDTO usuarioInputDTO);
 
     List<UsuarioOutputDTO> buscarTodos();
 
-    UsuarioOutputDTO buscaPorId(String uuid);
+    UsuarioOutputDTO buscaPorId(Long uuid);
 
-    UsuarioOutputDTO atualizar(String uuid, UsuarioInputDTO usuarioInputDTO);
+    UsuarioOutputDTO atualizar(Long uuid, UsuarioInputDTO usuarioInputDTO);
 
-    void deletePorId(String uuid);
+    void deletePorId(Long uuid);
 }
