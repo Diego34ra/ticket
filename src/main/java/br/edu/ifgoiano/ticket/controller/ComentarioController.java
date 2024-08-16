@@ -19,9 +19,9 @@ public class ComentarioController {
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<Comentario> criar(@RequestParam Long ticketId,
                                             @RequestParam Long usuarioId,
-                                            @ModelAttribute ComentarioInputDTO comentarioInputDTO,
+                                            @ModelAttribute ComentarioInputDTO conteudo,
                                             @RequestParam("anexo") MultipartFile anexo) {
-        var comentarioCriado = comentarioService.criar(ticketId,usuarioId,comentarioInputDTO);
+        var comentarioCriado = comentarioService.criar(ticketId,usuarioId,conteudo);
         return ResponseEntity.status(HttpStatus.CREATED).body(comentarioCriado);
     }
 }
