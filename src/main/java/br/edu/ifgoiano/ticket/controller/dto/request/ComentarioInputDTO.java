@@ -5,6 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class ComentarioInputDTO {
     private String conteudo;
 
-    private MultipartFile[] anexos;
+    private MultipartFile anexo;
 
 }
