@@ -53,6 +53,7 @@ public class TicketServiceImpl implements TicketService {
         ticket.setStatus(StatusTicket.ABERTO);
         ticket.setCategoria(categoria);
         ticket.setDepartamento(departamento);
+        ticket.setPrioridade(regraPrioridade.getPrioridade());
         ticket.setDataMaximaResolucao(ticket.getDataCriacao().plusHours(regraPrioridade.getHorasResolucao()));
         return mapper.mapTo(ticketRespository.save(ticket), TicketOutputDTO.class);
     }

@@ -20,6 +20,7 @@ public class Comentario {
     @OneToOne
     private Usuario autor;
     @ManyToOne
+    @JoinColumn(name = "ticket_id")
     private Ticket ticket;
 
 }

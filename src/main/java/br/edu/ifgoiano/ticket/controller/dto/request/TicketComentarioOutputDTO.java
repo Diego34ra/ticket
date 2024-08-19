@@ -2,8 +2,6 @@ package br.edu.ifgoiano.ticket.controller.dto.request;
 
 import br.edu.ifgoiano.ticket.model.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TicketOutputDTO {
+public class TicketComentarioOutputDTO {
     private String id;
     private String titulo;
     private String descricao;
@@ -30,6 +28,4 @@ public class TicketOutputDTO {
     private Departamento departamento;
     private UsuarioOutputDTO cliente;
     private UsuarioOutputDTO responsavel;
-    private List<ComentarioTicketOutputDTO> comentarios;
-
 }

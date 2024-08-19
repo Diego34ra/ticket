@@ -31,3 +31,5 @@ spring:
       settings:
         trace: false
         web-allow-others: false
+file:
+  upload-dir: /uploads
