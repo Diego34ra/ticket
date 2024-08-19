@@ -1,10 +1,6 @@
 package br.edu.ifgoiano.ticket.controller.dto.request;
 
 import br.edu.ifgoiano.ticket.model.FileResponse;
-import br.edu.ifgoiano.ticket.model.Ticket;
-import br.edu.ifgoiano.ticket.model.Usuario;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,5 +17,5 @@ public class ComentarioOutputDTO {
     private String conteudo;
     private List<FileResponse> anexos;
     private UsuarioOutputDTO autor;
-    private TicketComentarioOutputDTO ticket;
+    private TicketSimpleOutputDTO ticket;
 }

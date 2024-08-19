@@ -3,6 +3,7 @@ package br.edu.ifgoiano.ticket.controller;
 import br.edu.ifgoiano.ticket.controller.dto.request.DepartamentoDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.TicketInputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.TicketOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.TicketSimpleOutputDTO;
 import br.edu.ifgoiano.ticket.model.Categoria;
 import br.edu.ifgoiano.ticket.model.Departamento;
 import br.edu.ifgoiano.ticket.service.RegraPrioridadeService;
@@ -28,7 +29,7 @@ public class TicketController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TicketOutputDTO>> buscarTodos(){
+    public ResponseEntity<List<TicketSimpleOutputDTO>> buscarTodos(){
         var ticketList = ticketService.buscarTodos();
         return ResponseEntity.status(HttpStatus.CREATED).body(ticketList);
     }

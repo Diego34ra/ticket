@@ -83,10 +83,16 @@ public class ComentarioServiceImpl implements ComentarioService {
 
     @Override
     public List<ComentarioOutputDTO> buscarPorTicketId(Long ticketId) {
-//        Ticket ticket = mapper.mapTo(ticketService.buscarPorId(ticketId), Ticket.class);
         List<ComentarioOutputDTO> comentarioOutputDTOList = mapper.toList(comentarioRepository.findByTicketId(ticketId), ComentarioOutputDTO.class);
         comentarioOutputDTOList.forEach(comentarioOutputDTO -> comentarioOutputDTO.setAnexos(buscarAnexos(comentarioOutputDTO.getId())));
         return comentarioOutputDTOList;
+    }
+
+    @Override
+    public void deletarPorId(Long comentarioId) {
+        comentarioRepository.deleteById(comentarioId);
+        List<FileResponse> anexoList = buscarAnexos(comentarioId);
+        anexoList.forEach(anexo -> deletarAnexo(comentarioId,anexo.getFileName()));
     }
 
     public FileResponse salvarAnexo(Long comentarioId, MultipartFile file) {
@@ -136,6 +142,26 @@ public class ComentarioServiceImpl implements ComentarioService {
             throw new RuntimeException("Erro ao recuperar anexos do comentário:" + comentarioId, e);
         }
         return photos;
+    }
+
+    public void deletarAnexo(Long comentarioId, String filename) {
+        try {
+            Path uploadPath = Paths.get(getAbsolutePath() + uploadDir, comentarioId.toString());
+
+            Path filePath = uploadPath.resolve(filename);
+
+            if (Files.exists(filePath)) {
+                Files.delete(filePath);
+            } else {
+                throw new RuntimeException("Arquivo não encontrado: " + filename);
+            }
+
+            if (Files.isDirectory(uploadPath) && Files.list(uploadPath).findAny().isEmpty()) {
+                Files.delete(uploadPath);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao deletar arquivo: " + filename, e);
+        }
     }
 
     public static String formatSize(long sizeInBytes) {

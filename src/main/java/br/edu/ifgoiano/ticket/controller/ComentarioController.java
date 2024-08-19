@@ -32,4 +32,10 @@ public class ComentarioController {
         var comentarioList = comentarioService.buscarPorTicketId(ticketId);
         return ResponseEntity.status(HttpStatus.OK).body(comentarioList);
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deletarPorId(@PathVariable Long id){
+        comentarioService.deletarPorId(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

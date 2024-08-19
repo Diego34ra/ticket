@@ -40,6 +40,6 @@ public class Ticket {
     private Usuario cliente;
     @ManyToOne
     private Usuario responsavel;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "ticket", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comentario> comentarios;
 }

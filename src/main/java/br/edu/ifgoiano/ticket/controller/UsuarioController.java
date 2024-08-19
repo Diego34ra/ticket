@@ -43,7 +43,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("{id}")
-    private ResponseEntity<?> deletePorId(@PathVariable Long id){
+    private ResponseEntity<?> deletarPorId(@PathVariable Long id){
         usuarioService.deletePorId(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

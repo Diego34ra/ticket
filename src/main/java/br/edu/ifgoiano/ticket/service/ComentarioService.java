@@ -10,4 +10,6 @@ public interface ComentarioService {
     ComentarioOutputDTO criar(Long ticketId, Long usuarioId, ComentarioInputDTO comentarioInputDTO);
 
     List<ComentarioOutputDTO> buscarPorTicketId(Long ticketId);
+
+    void deletarPorId(Long comentarioId);
 }

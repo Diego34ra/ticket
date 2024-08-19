@@ -3,6 +3,7 @@ package br.edu.ifgoiano.ticket.service.impl;
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
 import br.edu.ifgoiano.ticket.controller.dto.request.TicketInputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.TicketOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.TicketSimpleOutputDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.*;
 import br.edu.ifgoiano.ticket.repository.TicketRespository;
@@ -34,6 +35,9 @@ public class TicketServiceImpl implements TicketService {
     private RegraPrioridadeService regraPrioridadeService;
 
     @Autowired
+    private Comentario comentario
+
+    @Autowired
     private MyModelMapper mapper;
 
     @Autowired
@@ -59,8 +63,8 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<TicketOutputDTO> buscarTodos() {
-        return mapper.toList(ticketRespository.findAll(),TicketOutputDTO.class);
+    public List<TicketSimpleOutputDTO> buscarTodos() {
+        return mapper.toList(ticketRespository.findAll(),TicketSimpleOutputDTO.class);
     }
 
     @Override
