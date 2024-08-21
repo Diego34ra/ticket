@@ -1,8 +1,8 @@
 package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
-import br.edu.ifgoiano.ticket.controller.dto.request.UsuarioInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.UsuarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.Telefone;
 import br.edu.ifgoiano.ticket.model.Usuario;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {

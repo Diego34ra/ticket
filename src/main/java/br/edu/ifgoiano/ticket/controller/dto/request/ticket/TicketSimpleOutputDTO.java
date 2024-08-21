@@ -1,5 +1,6 @@
-package br.edu.ifgoiano.ticket.controller.dto.request;
+package br.edu.ifgoiano.ticket.controller.dto.request.ticket;
 
+import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
 import br.edu.ifgoiano.ticket.model.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

@@ -1,12 +1,8 @@
 package br.edu.ifgoiano.ticket.controller;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.DepartamentoDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.TicketInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.TicketOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.TicketSimpleOutputDTO;
-import br.edu.ifgoiano.ticket.model.Categoria;
-import br.edu.ifgoiano.ticket.model.Departamento;
-import br.edu.ifgoiano.ticket.service.RegraPrioridadeService;
+import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketSimpleOutputDTO;
 import br.edu.ifgoiano.ticket.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

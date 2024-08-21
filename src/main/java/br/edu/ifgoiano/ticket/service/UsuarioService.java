@@ -1,10 +1,9 @@
 package br.edu.ifgoiano.ticket.service;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.UsuarioInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.UsuarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface UsuarioService {
 

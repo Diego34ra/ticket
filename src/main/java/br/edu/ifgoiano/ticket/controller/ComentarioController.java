@@ -1,14 +1,12 @@
 package br.edu.ifgoiano.ticket.controller;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.ComentarioInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.ComentarioOutputDTO;
-import br.edu.ifgoiano.ticket.model.Comentario;
+import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioOutputDTO;
 import br.edu.ifgoiano.ticket.service.ComentarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 

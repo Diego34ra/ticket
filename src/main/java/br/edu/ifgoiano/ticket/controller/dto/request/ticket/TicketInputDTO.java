@@ -1,4 +1,4 @@
-package br.edu.ifgoiano.ticket.controller.dto.request;
+package br.edu.ifgoiano.ticket.controller.dto.request.ticket;
 
 import br.edu.ifgoiano.ticket.model.*;
 import lombok.AllArgsConstructor;

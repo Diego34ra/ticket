@@ -1,9 +1,8 @@
 package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
-import br.edu.ifgoiano.ticket.controller.dto.request.ComentarioInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.ComentarioOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.TicketOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioOutputDTO;
 import br.edu.ifgoiano.ticket.model.Comentario;
 import br.edu.ifgoiano.ticket.model.FileResponse;
 import br.edu.ifgoiano.ticket.model.Ticket;

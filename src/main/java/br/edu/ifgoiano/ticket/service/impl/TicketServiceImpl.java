@@ -1,9 +1,9 @@
 package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
-import br.edu.ifgoiano.ticket.controller.dto.request.TicketInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.TicketOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.TicketSimpleOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketSimpleOutputDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.*;
 import br.edu.ifgoiano.ticket.repository.TicketRespository;
@@ -33,9 +33,6 @@ public class TicketServiceImpl implements TicketService {
 
     @Autowired
     private RegraPrioridadeService regraPrioridadeService;
-
-    @Autowired
-    private Comentario comentario
 
     @Autowired
     private MyModelMapper mapper;
@@ -78,6 +75,7 @@ public class TicketServiceImpl implements TicketService {
     public TicketOutputDTO atualizar(Long id, TicketInputDTO ticketInputDTO) {
         Ticket ticket = ticketRespository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum ticket com esse id."));
+//        String alteradoPor = SecurityContextHolder.getContext().getAuthentication().getName();
         BeanUtils.copyProperties(ticketInputDTO,ticket,objectUtils.getNullPropertyNames(ticketInputDTO));
         return mapper.mapTo(ticketRespository.save(ticket),TicketOutputDTO.class);
     }

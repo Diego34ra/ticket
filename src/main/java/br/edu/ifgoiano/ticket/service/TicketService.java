@@ -1,8 +1,8 @@
 package br.edu.ifgoiano.ticket.service;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.TicketInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.TicketOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.TicketSimpleOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketSimpleOutputDTO;
 
 import java.util.List;
 
