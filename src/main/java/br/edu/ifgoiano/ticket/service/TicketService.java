@@ -1,6 +1,7 @@
 package br.edu.ifgoiano.ticket.service;
 
 import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketInputUpdateDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketSimpleOutputDTO;
 
@@ -13,7 +14,7 @@ public interface TicketService {
 
     TicketOutputDTO buscarPorId(Long id);
 
-    TicketOutputDTO atualizar(Long id, TicketInputDTO ticketInputDTO);
+    TicketOutputDTO atualizar(Long id, TicketInputUpdateDTO ticketInputUpdateDTO);
 
     void deletePorId(Long id);
 

@@ -1,5 +1,6 @@
 package br.edu.ifgoiano.ticket.controller.dto.request.ticket;
 
+import br.edu.ifgoiano.ticket.controller.dto.request.TicketHistoricoOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioTicketOutputDTO;
 import br.edu.ifgoiano.ticket.model.*;
@@ -31,5 +32,6 @@ public class TicketOutputDTO {
     private UsuarioOutputDTO cliente;
     private UsuarioOutputDTO responsavel;
     private List<ComentarioTicketOutputDTO> comentarios;
+    private List<TicketHistoricoOutputDTO> historicos;
 
 }

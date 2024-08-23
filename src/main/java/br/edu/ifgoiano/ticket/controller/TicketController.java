@@ -1,6 +1,7 @@
 package br.edu.ifgoiano.ticket.controller;
 
 import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketInputUpdateDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketSimpleOutputDTO;
 import br.edu.ifgoiano.ticket.service.TicketService;
@@ -37,8 +38,8 @@ public class TicketController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<TicketOutputDTO> atualizar(@PathVariable Long id, @RequestBody TicketInputDTO ticketInputDTO){
-        var ticketAtualizado = ticketService.atualizar(id,ticketInputDTO);
+    public ResponseEntity<TicketOutputDTO> atualizar(@PathVariable Long id, @RequestBody TicketInputUpdateDTO ticketInputUpdateDTO){
+        var ticketAtualizado = ticketService.atualizar(id,ticketInputUpdateDTO);
         return ResponseEntity.status(HttpStatus.OK).body(ticketAtualizado);
     }
 

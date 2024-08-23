@@ -42,4 +42,6 @@ public class Ticket {
     private Usuario responsavel;
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "ticket", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comentario> comentarios;
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "ticket", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<TicketHistorico> historicos;
 }

@@ -21,4 +21,6 @@ public class Departamento {
     private String descricao;
     private String email;
     private String horarioFuncionamento;
+    @OneToOne
+    private Usuario responsavel;
 }
