@@ -1,19 +1,20 @@
 package br.edu.ifgoiano.ticket.service;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.DepartamentoDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.DepartamentoInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.DepartamentoOutputDTO;
 import br.edu.ifgoiano.ticket.model.Departamento;
 
 import java.util.List;
 
 public interface DepartamentoService {
 
-    Departamento criar(DepartamentoDTO departamentoDTO);
+    DepartamentoOutputDTO criar(DepartamentoInputDTO departamentoDTO);
 
-    List<Departamento> buscarTodos();
+    List<DepartamentoOutputDTO> buscarTodos();
 
-    Departamento buscarPorId(Long id);
+    DepartamentoOutputDTO buscarPorId(Long id);
 
-    Departamento atualizar(Long id,DepartamentoDTO departamentoDTO);
+    DepartamentoOutputDTO atualizar(Long id, DepartamentoInputDTO departamentoDTO);
 
     void deletePorId(Long id);
 }

@@ -1,5 +1,8 @@
 package br.edu.ifgoiano.ticket.controller.dto.request.ticket;
 
+import br.edu.ifgoiano.ticket.controller.dto.request.DepartamentoOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.DepartamentoSimpleOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.RegistroTrabalhoSimpleOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.TicketHistoricoOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioTicketOutputDTO;
@@ -28,10 +31,11 @@ public class TicketOutputDTO {
     private LocalDateTime dataModificacao;
     private LocalDateTime dataMaximaResolucao;
     private Categoria categoria;
-    private Departamento departamento;
+    private DepartamentoSimpleOutputDTO departamento;
     private UsuarioOutputDTO cliente;
     private UsuarioOutputDTO responsavel;
     private List<ComentarioTicketOutputDTO> comentarios;
     private List<TicketHistoricoOutputDTO> historicos;
+    private List<RegistroTrabalhoSimpleOutputDTO> registroTrabalhos;
 
 }

@@ -1,6 +1,7 @@
 package br.edu.ifgoiano.ticket.controller;
 
 import br.edu.ifgoiano.ticket.controller.dto.request.RegraPrioridadeInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.RegraPrioridadeOutputDTO;
 import br.edu.ifgoiano.ticket.model.RegraPrioridade;
 import br.edu.ifgoiano.ticket.service.RegraPrioridadeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class RegraPrioridadeController {
     private RegraPrioridadeService regraPrioridadeService;
 
     @PostMapping
-    public ResponseEntity<RegraPrioridade> criar(@RequestBody RegraPrioridadeInputDTO regraPrioridadeInputDTO){
+    public ResponseEntity<RegraPrioridadeOutputDTO> criar(@RequestBody RegraPrioridadeInputDTO regraPrioridadeInputDTO){
         var regraPrioridadeCriada = regraPrioridadeService.criar(regraPrioridadeInputDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(regraPrioridadeCriada);
     }

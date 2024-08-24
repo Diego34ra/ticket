@@ -10,8 +10,6 @@ import br.edu.ifgoiano.ticket.model.*;
 import br.edu.ifgoiano.ticket.repository.TicketRespository;
 import br.edu.ifgoiano.ticket.service.*;
 import br.edu.ifgoiano.ticket.utils.ObjectUtils;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -55,7 +53,7 @@ public class TicketServiceImpl implements TicketService {
     public TicketOutputDTO criar(TicketInputDTO ticketInputDTO) {
         Ticket ticket = mapper.mapTo(ticketInputDTO, Ticket.class);
         Categoria categoria = categoriaService.buscaPorId(ticket.getCategoria().getId());
-        Departamento departamento = departamentoService.buscarPorId(ticket.getDepartamento().getId());
+        Departamento departamento = mapper.mapTo(departamentoService.buscarPorId(ticket.getDepartamento().getId()),Departamento.class);
         RegraPrioridade regraPrioridade = regraPrioridadeService.buscarPorCategoriaAndDepartamento(categoria,departamento);
         Usuario cliente = mapper.mapTo(usuarioService.buscaPorId(ticket.getCliente().getId()),Usuario.class);
         Usuario responsavel = mapper.mapTo(usuarioService.buscaPorId(ticket.getResponsavel().getId()),Usuario.class);
@@ -87,36 +85,34 @@ public class TicketServiceImpl implements TicketService {
         Ticket ticket = ticketRespository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum ticket com esse id."));
 
-        Map<String, Map<String, Object>> alteredFields = new HashMap<>();
+        Map<String, Map<String, Object>> camposAlterados = new HashMap<>();
 
 //        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        System.out.println("responsável pela requisicao = "+ user.getId() + " - "+user.getFirstName());
 
-        checkAndRecordEntityChange("categoria", ticket.getCategoria(), ticketInputUpdateDTO.getCategoria(), alteredFields);
-        checkAndRecordEntityChange("departamento", ticket.getDepartamento(), ticketInputUpdateDTO.getDepartamento(), alteredFields);
-        checkAndRecordEntityChange("responsavel", ticket.getResponsavel(), ticketInputUpdateDTO.getResponsavel(), alteredFields);
-        List<String> ignoredProperties = Arrays.asList("comentarios", "id", "categoria", "departamento", "responsavel", "cliente", "class","historicos");
+        checkAndRecordEntityChange("categoria", ticket.getCategoria(), ticketInputUpdateDTO.getCategoria(), camposAlterados);
+        checkAndRecordEntityChange("departamento", ticket.getDepartamento(), ticketInputUpdateDTO.getDepartamento(), camposAlterados);
+        checkAndRecordEntityChange("responsavel", ticket.getResponsavel(), ticketInputUpdateDTO.getResponsavel(), camposAlterados);
+        List<String> ignoredProperties = Arrays.asList("comentarios", "id", "categoria", "departamento", "responsavel", "cliente", "class", "historicos");
         BeanWrapper wrapper = new BeanWrapperImpl(ticket);
         for (PropertyDescriptor descriptor : wrapper.getPropertyDescriptors()) {
             String propertyName = descriptor.getName();
             if (!ignoredProperties.contains(propertyName)) {
-                Object originalValue = wrapper.getPropertyValue(propertyName);
-                Object newValue = new BeanWrapperImpl(ticketInputUpdateDTO).getPropertyValue(propertyName);
+                Object antigoValor = wrapper.getPropertyValue(propertyName);
+                Object novoValor = new BeanWrapperImpl(ticketInputUpdateDTO).getPropertyValue(propertyName);
 
-                if (newValue != null && !newValue.equals(originalValue)) {
+                if (novoValor != null && !novoValor.equals(antigoValor)) {
                     Map<String, Object> values = new HashMap<>();
-                    values.put("antigoValor", originalValue);
-                    values.put("novoValor", newValue);
-                    alteredFields.put(propertyName, values);
+                    values.put("antigoValor", antigoValor);
+                    values.put("novoValor", novoValor);
+                    camposAlterados.put(propertyName, values);
                 }
             }
         }
         List<TicketHistorico> ticketHistoricoList = new ArrayList<>();
-        alteredFields.forEach((campo, valores) -> {
-
+        camposAlterados.forEach((campo, valores) -> {
                     Object antigoValor = valores.get("antigoValor");
                     Object novoValor = valores.get("novoValor");
-//                    System.out.println("Campo alterado: " + campo + ", Valor antigo: " + antigoValor + ", Novo valor: " + novoValor);
                     TicketHistorico ticketHistorico = new TicketHistorico();
                     ticketHistorico.setCampo(campo);
                     ticketHistorico.setUltimoValor(antigoValor.toString());
@@ -131,8 +127,6 @@ public class TicketServiceImpl implements TicketService {
         ticketHistoricoList.forEach(ticketHistorico -> ticketHistoricoService.criar(ticketHistorico));
 
         BeanUtils.copyProperties(ticketInputUpdateDTO, ticket, objectUtils.getNullPropertyNames(ticketInputUpdateDTO));
-
-
 
         return mapper.mapTo(ticketRespository.save(ticket), TicketOutputDTO.class);
     }

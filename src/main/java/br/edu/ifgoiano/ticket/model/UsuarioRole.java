@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum UsuarioRole {
     CLIENTE,
     FUNCIONARIO,
+    GERENTE,
     ADMINISTRADOR;
 
     public static UsuarioRole getPadrao(){

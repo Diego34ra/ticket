@@ -2,11 +2,8 @@ package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
 import br.edu.ifgoiano.ticket.controller.dto.request.CategoriaDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.DepartamentoDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.Categoria;
-import br.edu.ifgoiano.ticket.model.Departamento;
-import br.edu.ifgoiano.ticket.model.Ticket;
 import br.edu.ifgoiano.ticket.repository.CategoriaRepository;
 import br.edu.ifgoiano.ticket.service.CategoriaService;
 import br.edu.ifgoiano.ticket.utils.ObjectUtils;

@@ -1,7 +1,7 @@
 package br.edu.ifgoiano.ticket.controller;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.DepartamentoDTO;
-import br.edu.ifgoiano.ticket.model.Categoria;
+import br.edu.ifgoiano.ticket.controller.dto.request.DepartamentoInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.DepartamentoOutputDTO;
 import br.edu.ifgoiano.ticket.model.Departamento;
 import br.edu.ifgoiano.ticket.service.DepartamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,25 +19,25 @@ public class DepartamentoController {
     private DepartamentoService departamentoService;
 
     @PostMapping
-    public ResponseEntity<Departamento> criar(@RequestBody DepartamentoDTO departamentoDTO){
+    public ResponseEntity<DepartamentoOutputDTO> criar(@RequestBody DepartamentoInputDTO departamentoDTO){
         var departamentoCriado = departamentoService.criar(departamentoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(departamentoCriado);
     }
 
     @GetMapping
-    public ResponseEntity<List<Departamento>> buscarTodos(){
+    public ResponseEntity<List<DepartamentoOutputDTO>> buscarTodos(){
         var departamentoList = departamentoService.buscarTodos();
         return ResponseEntity.status(HttpStatus.OK).body(departamentoList);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Departamento> buscarPorId(@PathVariable Long id){
+    public ResponseEntity<DepartamentoOutputDTO> buscarPorId(@PathVariable Long id){
         var departamento = departamentoService.buscarPorId(id);
         return ResponseEntity.status(HttpStatus.OK).body(departamento);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Departamento> atualizar(@PathVariable Long id, @RequestBody DepartamentoDTO departamentoDTO){
+    public ResponseEntity<DepartamentoOutputDTO> atualizar(@PathVariable Long id, @RequestBody DepartamentoInputDTO departamentoDTO){
         var departamentoAtualizado = departamentoService.atualizar(id,departamentoDTO);
         return ResponseEntity.status(HttpStatus.OK).body(departamentoAtualizado);
     }
