@@ -1,8 +1,8 @@
 package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
-import br.edu.ifgoiano.ticket.controller.dto.request.RegistroTrabalhoInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.RegistroTrabalhoOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoOutputDTO;
 import br.edu.ifgoiano.ticket.model.RegistroTrabalho;
 import br.edu.ifgoiano.ticket.model.Ticket;
 import br.edu.ifgoiano.ticket.model.Usuario;
@@ -12,8 +12,6 @@ import br.edu.ifgoiano.ticket.service.TicketService;
 import br.edu.ifgoiano.ticket.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class RegistroTrabalhoServiceImpl implements RegistroTrabalhoService {

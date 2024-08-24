@@ -16,4 +16,6 @@ public interface UsuarioService {
     UsuarioOutputDTO atualizar(Long uuid, UsuarioInputDTO usuarioInputDTO);
 
     void deletePorId(Long uuid);
+
+    boolean verificarSeUsuarioEhGerente(Long id);
 }

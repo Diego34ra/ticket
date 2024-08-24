@@ -60,4 +60,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     public void deletePorId(Long uuid) {
         usuarioRepository.deleteById(uuid);
     }
+
+    @Override
+    public boolean verificarSeUsuarioEhGerente(Long id) {
+        return usuarioRepository.isUsuarioGerente(id);
+    }
 }

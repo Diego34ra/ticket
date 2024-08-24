@@ -1,8 +1,7 @@
 package br.edu.ifgoiano.ticket.controller;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.DepartamentoInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.DepartamentoOutputDTO;
-import br.edu.ifgoiano.ticket.model.Departamento;
+import br.edu.ifgoiano.ticket.controller.dto.request.departamento.DepartamentoInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.departamento.DepartamentoOutputDTO;
 import br.edu.ifgoiano.ticket.service.DepartamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

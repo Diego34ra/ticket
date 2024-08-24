@@ -1,8 +1,8 @@
 package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
-import br.edu.ifgoiano.ticket.controller.dto.request.RegraPrioridadeInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.RegraPrioridadeOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.regraPrioridade.RegraPrioridadeInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.regraPrioridade.RegraPrioridadeOutputDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.Categoria;
 import br.edu.ifgoiano.ticket.model.Departamento;
@@ -13,7 +13,6 @@ import br.edu.ifgoiano.ticket.service.DepartamentoService;
 import br.edu.ifgoiano.ticket.service.RegraPrioridadeService;
 import br.edu.ifgoiano.ticket.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

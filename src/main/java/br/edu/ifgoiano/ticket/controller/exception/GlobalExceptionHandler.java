@@ -23,6 +23,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(errorResponse);
     }
 
+    @ExceptionHandler(ResourceBadRequestException.class)
+    public ResponseEntity<ErrorDetails> badRequestException(ResourceBadRequestException ex, WebRequest webRequest){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ErrorDetails errorDetails = new ErrorDetails(new Date(),status.value(), ex.getMessage(), getRequestPath());
+        return ResponseEntity.status(status).body(errorDetails);
+    }
+
     private String getRequestPath() {
         return request.getRequestURI();
     }

@@ -1,8 +1,7 @@
 package br.edu.ifgoiano.ticket.controller;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.RegraPrioridadeInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.RegraPrioridadeOutputDTO;
-import br.edu.ifgoiano.ticket.model.RegraPrioridade;
+import br.edu.ifgoiano.ticket.controller.dto.request.regraPrioridade.RegraPrioridadeInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.regraPrioridade.RegraPrioridadeOutputDTO;
 import br.edu.ifgoiano.ticket.service.RegraPrioridadeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
