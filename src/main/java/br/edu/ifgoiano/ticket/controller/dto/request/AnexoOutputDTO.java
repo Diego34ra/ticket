@@ -1,13 +1,16 @@
-package br.edu.ifgoiano.ticket.model;
+package br.edu.ifgoiano.ticket.controller.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-public class FileResponse {
+@AllArgsConstructor
+public class AnexoOutputDTO {
+    private Long id;
     private String nomeArquivo;
     private String tipoArquivo;
     private String tamanho;

@@ -1,12 +1,13 @@
 package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
+import br.edu.ifgoiano.ticket.controller.dto.request.AnexoOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioInputUpdateDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioOutputDTO;
-import br.edu.ifgoiano.ticket.model.Comentario;
-import br.edu.ifgoiano.ticket.model.FileResponse;
-import br.edu.ifgoiano.ticket.model.Ticket;
-import br.edu.ifgoiano.ticket.model.Usuario;
+import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
+import br.edu.ifgoiano.ticket.model.*;
+import br.edu.ifgoiano.ticket.repository.AnexoRepository;
 import br.edu.ifgoiano.ticket.repository.ComentarioRepository;
 import br.edu.ifgoiano.ticket.repository.TicketRespository;
 import br.edu.ifgoiano.ticket.service.ComentarioService;
@@ -40,6 +41,9 @@ public class ComentarioServiceImpl implements ComentarioService {
     private TicketRespository ticketRespository;
 
     @Autowired
+    private AnexoRepository anexoRepository;
+
+    @Autowired
     private TicketService ticketService;
 
     @Autowired
@@ -70,31 +74,47 @@ public class ComentarioServiceImpl implements ComentarioService {
         Comentario comentario = comentarioRepository.save(comentarioCriar);
         ticketRespository.save(ticket);
 
-        List<FileResponse> anexos = new ArrayList<>();
+        List<Anexo> anexos = new ArrayList<>();
 
         Arrays.stream(comentarioInputDTO.getAnexos()).forEach(anexo -> anexos.add(salvarAnexo(comentario.getId(),anexo)));
 
+        anexos.forEach(anexo -> anexo.setComentario(comentario));
+
         ComentarioOutputDTO comentarioOutputDTO = mapper.mapTo(comentario,ComentarioOutputDTO.class);
-        comentarioOutputDTO.setAnexos(anexos);
+        comentarioOutputDTO.setAnexos(mapper.toList(anexoRepository.saveAll(anexos), AnexoOutputDTO.class));
 
         return comentarioOutputDTO;
     }
 
     @Override
+    public ComentarioOutputDTO buscarPorId(Long id) {
+        return mapper.mapTo(comentarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum comentário com esse id.")),ComentarioOutputDTO.class);
+    }
+
+    @Override
     public List<ComentarioOutputDTO> buscarPorTicketId(Long ticketId) {
-        List<ComentarioOutputDTO> comentarioOutputDTOList = mapper.toList(comentarioRepository.findByTicketId(ticketId), ComentarioOutputDTO.class);
-        comentarioOutputDTOList.forEach(comentarioOutputDTO -> comentarioOutputDTO.setAnexos(buscarAnexos(comentarioOutputDTO.getId())));
-        return comentarioOutputDTOList;
+        return mapper.toList(comentarioRepository.findByTicketId(ticketId), ComentarioOutputDTO.class);
+    }
+
+    @Override
+    public ComentarioOutputDTO atualizar(Long comentarioId, ComentarioInputUpdateDTO comentarioInputUpdateDTO) {
+        return null;
     }
 
     @Override
     public void deletarPorId(Long comentarioId) {
+        ComentarioOutputDTO comentarioOutputDTO = buscarPorId(comentarioId);
+        comentarioOutputDTO.getAnexos().forEach(anexo -> deletarAnexo(comentarioId,anexo.getNomeArquivo()));
         comentarioRepository.deleteById(comentarioId);
-        List<FileResponse> anexoList = buscarAnexos(comentarioId);
-        anexoList.forEach(anexo -> deletarAnexo(comentarioId,anexo.getFileName()));
     }
 
-    public FileResponse salvarAnexo(Long comentarioId, MultipartFile file) {
+    @Override
+    public void deletarAnexoPorNome(Long comentarioId, String fileName) {
+        deletarAnexo(comentarioId,fileName);
+    }
+
+    public Anexo salvarAnexo(Long comentarioId, MultipartFile file) {
         try {
             Path uploadPath = Paths.get(getAbsolutePath() + uploadDir, comentarioId.toString());
             Files.createDirectories(uploadPath);
@@ -107,40 +127,10 @@ public class ComentarioServiceImpl implements ComentarioService {
             String size = formatSize(sizeInBytes);
             String downloadUri = "/api/v1/comments/" + comentarioId + "/download-anexo/"+originalFilename;
 
-            return new FileResponse(originalFilename,contentType,size,downloadUri);
+            return new Anexo(originalFilename,contentType,size,downloadUri);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public List<FileResponse> buscarAnexos(Long comentarioId) {
-        List<FileResponse> photos = new ArrayList<>();
-        try {
-            Path roomPath = Paths.get(getAbsolutePath()+uploadDir).resolve(comentarioId.toString());
-            try (Stream<Path> filePaths = Files.list(roomPath)) {
-                filePaths.forEach(file -> {
-                    try {
-                        Resource resource = new UrlResource(file.toUri());
-                        if (resource.exists() || resource.isReadable()) {
-                            String contentType = Files.probeContentType(file);
-                            if (contentType == null) {
-                                contentType = "application/octet-stream";
-                            }
-                            long sizeInBytes = Files.size(file);
-                            String size = formatSize(sizeInBytes);
-                            String originalFilename = resource.getFilename();
-                            String downloadUri = "/api/v1/comentarios/" + comentarioId + "/download-anexo/"+originalFilename;
-                            photos.add(new FileResponse(originalFilename,contentType,size,downloadUri));
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Erro processando anexo " + file.toString());
-                    }
-                });
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao recuperar anexos do comentário:" + comentarioId, e);
-        }
-        return photos;
     }
 
     public void deletarAnexo(Long comentarioId, String filename) {

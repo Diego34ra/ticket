@@ -1,7 +1,9 @@
 package br.edu.ifgoiano.ticket.controller;
 
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioInputUpdateDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioOutputDTO;
+import br.edu.ifgoiano.ticket.model.Comentario;
 import br.edu.ifgoiano.ticket.service.ComentarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +35,18 @@ public class ComentarioController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> deletarPorId(@PathVariable Long id){
+        comentarioService.deletarPorId(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+//    @DeleteMapping("{id}")
+//    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody ComentarioInputUpdateDTO comentarioInputUpdateDTO){
+//        comentarioService.atu(id);
+//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+//    }
+
+    @DeleteMapping("{id}/anexo")
+    public ResponseEntity<?> deletarAnexoPorNome(@PathVariable Long id,@RequestParam String filename){
         comentarioService.deletarPorId(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

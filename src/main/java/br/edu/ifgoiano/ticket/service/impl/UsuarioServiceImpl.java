@@ -32,7 +32,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioOutputDTO criar(UsuarioInputDTO usuarioCreate) {
         Usuario usuario = mapper.mapTo(usuarioCreate, Usuario.class);
         usuario.setContatos(mapper.toList(usuarioCreate.getContatos(), Telefone.class));
-        usuario.setTipoUsuario(UsuarioRole.getPadrao());
+        usuario.setTipoUsuario(UsuarioRole.GERENTE);
         usuario.getContatos().forEach(telefone -> telefone.setUsuario(usuario));
         return mapper.mapTo(usuarioRepository.save(usuario), UsuarioOutputDTO.class);
     }
