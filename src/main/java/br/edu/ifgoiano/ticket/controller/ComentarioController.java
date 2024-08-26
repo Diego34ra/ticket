@@ -39,15 +39,9 @@ public class ComentarioController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-//    @DeleteMapping("{id}")
-//    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody ComentarioInputUpdateDTO comentarioInputUpdateDTO){
-//        comentarioService.atu(id);
-//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//    }
-
     @DeleteMapping("{id}/anexo")
     public ResponseEntity<?> deletarAnexoPorNome(@PathVariable Long id,@RequestParam String filename){
-        comentarioService.deletarPorId(id);
+        comentarioService.deletarAnexoPorNome(id,filename);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

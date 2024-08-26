@@ -58,11 +58,11 @@ public class RegraPrioridadeServiceImpl implements RegraPrioridadeService {
     }
 
     @Override
-    public RegraPrioridade atualizar(Long id, RegraPrioridadeInputDTO regraPrioridadeInputDTO) {
+    public RegraPrioridadeOutputDTO atualizar(Long id, RegraPrioridadeInputDTO regraPrioridadeInputDTO) {
         RegraPrioridade regraPrioridade = regraPrioridadeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrada regra de prioridade com esse id."));
-        regraPrioridade.setPrioridade(regraPrioridade.getPrioridade());
-        return regraPrioridadeRepository.save(regraPrioridade);
+        regraPrioridade.setPrioridade(regraPrioridadeInputDTO.getPrioridade());
+        return mapper.mapTo(regraPrioridadeRepository.save(regraPrioridade),RegraPrioridadeOutputDTO.class);
     }
 
     @Override

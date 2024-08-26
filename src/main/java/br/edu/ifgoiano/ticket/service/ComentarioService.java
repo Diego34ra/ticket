@@ -6,12 +6,13 @@ import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioOutput
 import br.edu.ifgoiano.ticket.model.Comentario;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ComentarioService {
 
     ComentarioOutputDTO criar(Long ticketId, Long usuarioId, ComentarioInputDTO comentarioInputDTO);
 
-    ComentarioOutputDTO buscarPorId(Long id);
+    Optional<Comentario> buscarPorId(Long id);
 
     List<ComentarioOutputDTO> buscarPorTicketId(Long ticketId);
 

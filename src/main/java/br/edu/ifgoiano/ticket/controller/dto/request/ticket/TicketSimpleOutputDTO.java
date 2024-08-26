@@ -25,8 +25,8 @@ public class TicketSimpleOutputDTO {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataModificacao;
     private LocalDateTime dataMaximaResolucao;
-    private Categoria categoria;
-    private DepartamentoSimpleOutputDTO departamento;
-    private UsuarioOutputDTO cliente;
-    private UsuarioOutputDTO responsavel;
+//    private Categoria categoria;
+//    private DepartamentoSimpleOutputDTO departamento;
+//    private UsuarioOutputDTO cliente;
+//    private UsuarioOutputDTO responsavel;
 }

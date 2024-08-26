@@ -19,7 +19,7 @@ public class Comentario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String conteudo;
-    @OneToOne
+    @ManyToOne
     private Usuario autor;
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "comentario", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Anexo> anexos;

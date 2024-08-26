@@ -16,7 +16,7 @@ public interface RegraPrioridadeService {
 
     RegraPrioridade buscarPorCategoriaAndDepartamento(Categoria categoria, Departamento departamento);
 
-    RegraPrioridade atualizar(Long id, RegraPrioridadeInputDTO regraPrioridadeInputDTO);
+    RegraPrioridadeOutputDTO atualizar(Long id, RegraPrioridadeInputDTO regraPrioridadeInputDTO);
 
     void deletarPorId(Long id);
 }
