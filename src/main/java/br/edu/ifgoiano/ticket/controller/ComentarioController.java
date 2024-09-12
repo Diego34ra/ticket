@@ -33,6 +33,12 @@ public class ComentarioController {
         return ResponseEntity.status(HttpStatus.OK).body(comentarioList);
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<ComentarioOutputDTO> atualizar(@RequestBody Long id,ComentarioInputUpdateDTO comentarioInputUpdateDTO){
+        var comentarioAtualizado = comentarioService.atualizar(id,comentarioInputUpdateDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(comentarioAtualizado);
+    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<?> deletarPorId(@PathVariable Long id){
         comentarioService.deletarPorId(id);
