@@ -32,7 +32,7 @@ public class ComentarioController {
     @PostMapping(consumes = "multipart/form-data")
     @Operation(summary = "Criar um comentário")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Foto salva com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ComentarioOutputDTO.class))}),
+            @ApiResponse(responseCode = "201", description = "Comentário criado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ComentarioOutputDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<ComentarioOutputDTO> criar(@RequestParam Long ticketId,
@@ -74,7 +74,7 @@ public class ComentarioController {
     @DeleteMapping("{id}")
     @Operation(summary = "Deletar um comentário")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Comentário deletado com sucesso."),
+            @ApiResponse(responseCode = "204", description = "Comentário deletado com sucesso."),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<?> deletarPorId(@PathVariable Long id){
@@ -85,7 +85,7 @@ public class ComentarioController {
     @DeleteMapping("{id}/anexo")
     @Operation(summary = "Deletar um anexo de um comentário")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Anexo deletado com sucesso."),
+            @ApiResponse(responseCode = "204", description = "Anexo deletado com sucesso."),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<?> deletarAnexoPorNome(@PathVariable Long id,@RequestParam String filename){
