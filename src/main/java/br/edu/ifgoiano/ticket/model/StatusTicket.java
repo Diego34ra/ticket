@@ -8,5 +8,6 @@ import lombok.Getter;
 public enum StatusTicket {
     ABERTO,
     EM_ANDAMENTO,
+    EM_ESPERA,
     FINALIZADO
 }

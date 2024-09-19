@@ -93,7 +93,7 @@ public class TicketServiceImpl implements TicketService {
         checkAndRecordEntityChange("categoria", ticket.getCategoria(), ticketInputUpdateDTO.getCategoria(), camposAlterados);
         checkAndRecordEntityChange("departamento", ticket.getDepartamento(), ticketInputUpdateDTO.getDepartamento(), camposAlterados);
         checkAndRecordEntityChange("responsavel", ticket.getResponsavel(), ticketInputUpdateDTO.getResponsavel(), camposAlterados);
-        List<String> ignoredProperties = Arrays.asList("comentarios", "id", "categoria", "departamento", "responsavel", "cliente", "class", "historicos");
+        List<String> ignoredProperties = Arrays.asList("comentarios", "id", "categoria", "departamento", "responsavel", "cliente", "class", "historicos", "registroTrabalhos");
         BeanWrapper wrapper = new BeanWrapperImpl(ticket);
         for (PropertyDescriptor descriptor : wrapper.getPropertyDescriptors()) {
             String propertyName = descriptor.getName();
