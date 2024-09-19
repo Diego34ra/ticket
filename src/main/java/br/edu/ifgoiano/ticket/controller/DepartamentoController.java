@@ -62,8 +62,8 @@ public class DepartamentoController {
             @ApiResponse(responseCode = "200", description = "Departamento buscado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = DepartamentoOutputDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<DepartamentoOutputDTO> buscarPorId(@PathVariable Long id){
-        var departamento = departamentoService.buscarPorId(id);
+    public ResponseEntity<DepartamentoOutputDTO> buscarPorId(@PathVariable Long departamentoId){
+        var departamento = departamentoService.buscarPorId(departamentoId);
         return ResponseEntity.status(HttpStatus.OK).body(departamento);
     }
 
@@ -73,8 +73,8 @@ public class DepartamentoController {
             @ApiResponse(responseCode = "200", description = "Departamento atualizado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = DepartamentoOutputDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<DepartamentoOutputDTO> atualizar(@PathVariable Long id, @RequestBody DepartamentoInputDTO departamentoDTO){
-        var departamentoAtualizado = departamentoService.atualizar(id,departamentoDTO);
+    public ResponseEntity<DepartamentoOutputDTO> atualizar(@PathVariable Long departamentoId, @RequestBody DepartamentoInputDTO departamentoDTO){
+        var departamentoAtualizado = departamentoService.atualizar(departamentoId,departamentoDTO);
         return ResponseEntity.status(HttpStatus.OK).body(departamentoAtualizado);
     }
 
@@ -84,8 +84,8 @@ public class DepartamentoController {
             @ApiResponse(responseCode = "200", description = "Departamento deletado com sucesso."),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<?> deletarPorId(@PathVariable Long id){
-        departamentoService.deletePorId(id);
+    public ResponseEntity<?> deletarPorId(@PathVariable Long departamentoId){
+        departamentoService.deletePorId(departamentoId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
