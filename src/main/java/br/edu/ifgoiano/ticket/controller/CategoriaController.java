@@ -1,8 +1,15 @@
 package br.edu.ifgoiano.ticket.controller;
 
 import br.edu.ifgoiano.ticket.controller.dto.request.CategoriaDTO;
+import br.edu.ifgoiano.ticket.controller.exception.ErrorDetails;
 import br.edu.ifgoiano.ticket.model.Categoria;
 import br.edu.ifgoiano.ticket.service.CategoriaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +19,18 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/categorias")
+@Tag(name = "Categoria")
 public class CategoriaController {
 
     @Autowired
     private CategoriaService categoriaService;
 
     @PostMapping
+    @Operation(summary = "Criar uma reserva")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Categoria criada com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Categoria.class))}),
+            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+    })
     public ResponseEntity<Categoria> criar(@RequestBody CategoriaDTO categoriaDTO){
         var categoriaCriada = categoriaService.criar(categoriaDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(categoriaCriada);
