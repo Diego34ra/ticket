@@ -5,6 +5,7 @@ import br.edu.ifgoiano.ticket.controller.exception.ErrorDetails;
 import br.edu.ifgoiano.ticket.model.Categoria;
 import br.edu.ifgoiano.ticket.service.CategoriaService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,7 +27,7 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @PostMapping
-    @Operation(summary = "Criar uma reserva")
+    @Operation(summary = "Criar uma categoria")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Categoria criada com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Categoria.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
@@ -37,24 +38,51 @@ public class CategoriaController {
     }
 
     @GetMapping
+    @Operation(summary = "Buscar todas as categorias")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Categorias buscadas com sucesso.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Categoria.class))
+                    )
+            ),
+            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+    })
     public ResponseEntity<List<Categoria>> buscarTodos(){
         var categoriaList = categoriaService.buscarTodos();
         return ResponseEntity.status(HttpStatus.OK).body(categoriaList);
     }
 
     @GetMapping("{id}")
+    @Operation(summary = "Buscar uma categoria")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Categoria buscada com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Categoria.class))}),
+            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+    })
     public ResponseEntity<Categoria> buscarPorId(@PathVariable Long id){
         var categoria = categoriaService.buscaPorId(id);
         return ResponseEntity.status(HttpStatus.OK).body(categoria);
     }
 
     @PutMapping("{id}")
+    @Operation(summary = "Atualizar uma categoria")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Categoria atualizada com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Categoria.class))}),
+            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+    })
     public ResponseEntity<Categoria> atualizar(@PathVariable Long id, @RequestBody CategoriaDTO categoriaDTO){
         var categoriaAtualizada = categoriaService.atualizar(id,categoriaDTO);
         return ResponseEntity.status(HttpStatus.OK).body(categoriaAtualizada);
     }
 
     @DeleteMapping("{id}")
+    @Operation(summary = "Deletar uma categoria")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Categoria deletada com sucesso."),
+            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+    })
     public ResponseEntity<?> deletarPorId(@PathVariable Long id){
         categoriaService.deletePorId(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
