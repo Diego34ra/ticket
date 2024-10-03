@@ -16,6 +16,7 @@ spring:
     url: jdbc:h2:mem:ticket2024
     username: 123
     password:
+
 #  kafka:
 #    bootstrap-servers: localhost:9092
 #    producer:
@@ -36,5 +37,13 @@ spring:
       settings:
         trace: false
         web-allow-others: false
+  rabbitmq:
+    addresses: amqps://llqbkxhf:e6svQMsjHTrkCjcmwdT-W0_GLueair8t@shrimp.rmq.cloudamqp.com/llqbkxhf
 file:
   upload-dir: /uploads
+broker:
+  queue:
+    email:
+      name: default.email
+
+
