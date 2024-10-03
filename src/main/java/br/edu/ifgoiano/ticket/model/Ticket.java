@@ -1,5 +1,7 @@
 package br.edu.ifgoiano.ticket.model;
 
+import br.edu.ifgoiano.ticket.model.enums.Prioridade;
+import br.edu.ifgoiano.ticket.model.enums.StatusTicket;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -9,8 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmailDTO {
+public class EmailTicketDTO {
+    private Long ticketId;
     private String emailTo;
-    private String subject;
-    private String text;
+    private String assunto;
+    private String texto;
 }

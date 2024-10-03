@@ -7,6 +7,7 @@ import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketSimpleOutputDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.*;
+import br.edu.ifgoiano.ticket.model.enums.StatusTicket;
 import br.edu.ifgoiano.ticket.repository.TicketRespository;
 import br.edu.ifgoiano.ticket.service.*;
 import br.edu.ifgoiano.ticket.utils.ObjectUtils;
@@ -44,6 +45,9 @@ public class TicketServiceImpl implements TicketService {
     private RegraPrioridadeService regraPrioridadeService;
 
     @Autowired
+    private EmailService emailService;
+
+    @Autowired
     private MyModelMapper mapper;
 
     @Autowired
@@ -65,7 +69,11 @@ public class TicketServiceImpl implements TicketService {
         ticket.setDepartamento(departamento);
         ticket.setPrioridade(regraPrioridade.getPrioridade());
         ticket.setDataMaximaResolucao(ticket.getDataCriacao().plusHours(regraPrioridade.getHorasResolucao()));
-        return mapper.mapTo(ticketRespository.save(ticket), TicketOutputDTO.class);
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        System.out.println("responsável pela requisicao = "+ user.getId() + " - "+user.getFirstName());
+        ticket = ticketRespository.save(ticket);
+        emailService.enviarEmailTicket(ticket);
+        return mapper.mapTo(ticket, TicketOutputDTO.class);
     }
 
     @Override

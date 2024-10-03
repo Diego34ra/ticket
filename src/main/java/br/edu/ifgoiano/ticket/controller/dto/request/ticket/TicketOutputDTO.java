@@ -6,6 +6,8 @@ import br.edu.ifgoiano.ticket.controller.dto.request.TicketHistoricoOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioTicketOutputDTO;
 import br.edu.ifgoiano.ticket.model.*;
+import br.edu.ifgoiano.ticket.model.enums.Prioridade;
+import br.edu.ifgoiano.ticket.model.enums.StatusTicket;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

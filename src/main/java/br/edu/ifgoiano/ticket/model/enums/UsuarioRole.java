@@ -1,4 +1,4 @@
-package br.edu.ifgoiano.ticket.model;
+package br.edu.ifgoiano.ticket.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

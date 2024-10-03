@@ -1,9 +1,8 @@
 package br.edu.ifgoiano.ticket.controller.dto.request.ticket;
 
 import br.edu.ifgoiano.ticket.model.*;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
+import br.edu.ifgoiano.ticket.model.enums.Prioridade;
+import br.edu.ifgoiano.ticket.model.enums.StatusTicket;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

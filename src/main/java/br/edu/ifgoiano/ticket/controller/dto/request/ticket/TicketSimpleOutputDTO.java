@@ -1,8 +1,7 @@
 package br.edu.ifgoiano.ticket.controller.dto.request.ticket;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.departamento.DepartamentoSimpleOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
-import br.edu.ifgoiano.ticket.model.*;
+import br.edu.ifgoiano.ticket.model.enums.Prioridade;
+import br.edu.ifgoiano.ticket.model.enums.StatusTicket;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

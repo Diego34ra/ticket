@@ -6,7 +6,7 @@ import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.Telefone;
 import br.edu.ifgoiano.ticket.model.Usuario;
-import br.edu.ifgoiano.ticket.model.UsuarioRole;
+import br.edu.ifgoiano.ticket.model.enums.UsuarioRole;
 import br.edu.ifgoiano.ticket.repository.UsuarioRepository;
 import br.edu.ifgoiano.ticket.service.UsuarioService;
 import br.edu.ifgoiano.ticket.utils.ObjectUtils;
