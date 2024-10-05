@@ -72,7 +72,7 @@ public class TicketServiceImpl implements TicketService {
 //        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        System.out.println("responsável pela requisicao = "+ user.getId() + " - "+user.getFirstName());
         ticket = ticketRespository.save(ticket);
-        emailService.enviarEmailTicket(ticket);
+        emailService.enviarTicketEmail(ticket);
         return mapper.mapTo(ticket, TicketOutputDTO.class);
     }
 
@@ -136,7 +136,12 @@ public class TicketServiceImpl implements TicketService {
 
         BeanUtils.copyProperties(ticketInputUpdateDTO, ticket, objectUtils.getNullPropertyNames(ticketInputUpdateDTO));
 
-        return mapper.mapTo(ticketRespository.save(ticket), TicketOutputDTO.class);
+        var ticketSalvado = ticketRespository.save(ticket);
+
+        if(ticketSalvado.getStatus() == StatusTicket.FINALIZADO)
+            emailService.enviarTicketFinalizadoEmail(ticketSalvado);
+
+        return mapper.mapTo(ticketSalvado, TicketOutputDTO.class);
     }
 
     private <T> void checkAndRecordEntityChange(String fieldName, T currentEntity, T newEntity, Map<String, Map<String, Object>> alteredFields) {

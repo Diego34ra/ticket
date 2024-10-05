@@ -1,42 +1,38 @@
-#spring:
-#  datasource:
-#    url: jdbc:mysql://localhost:3306/ticket?useSSL=false&serverTimezone=UTC
-#    username: root
-#    password:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#  jpa:
-#    hibernate:
-#      ddl-auto: create
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        dialect: org.hibernate.dialect.MySQL8Dialect
 spring:
   datasource:
-    url: jdbc:h2:mem:ticket2024
-    username: 123
+    url: jdbc:mysql://localhost:3306/ticket?useSSL=false&serverTimezone=UTC
+    username: root
     password:
-
-#  kafka:
-#    bootstrap-servers: localhost:9092
-#    producer:
-#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    show-sql: true
-    open-in-view: false
     hibernate:
-      ddl-auto: create # validate | update | create | create-drop
+      ddl-auto: create
+    show-sql: true
     properties:
       hibernate:
-        format_sql: true
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-      settings:
-        trace: false
-        web-allow-others: false
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+#spring:
+#  datasource:
+#    url: jdbc:h2:mem:ticket2024
+#    username: 123
+#    password:
+#
+#  jpa:
+#    show-sql: true
+#    open-in-view: false
+#    hibernate:
+#      ddl-auto: create # validate | update | create | create-drop
+#    properties:
+#      hibernate:
+#        format_sql: true
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
+#      settings:
+#        trace: false
+#        web-allow-others: false
   rabbitmq:
     addresses: amqps://llqbkxhf:e6svQMsjHTrkCjcmwdT-W0_GLueair8t@shrimp.rmq.cloudamqp.com/llqbkxhf
 file:
@@ -45,5 +41,5 @@ broker:
   queue:
     email:
       name: default.email
-
+      usuario: usuario.email
 

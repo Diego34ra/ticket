@@ -8,6 +8,7 @@ import br.edu.ifgoiano.ticket.model.Telefone;
 import br.edu.ifgoiano.ticket.model.Usuario;
 import br.edu.ifgoiano.ticket.model.enums.UsuarioRole;
 import br.edu.ifgoiano.ticket.repository.UsuarioRepository;
+import br.edu.ifgoiano.ticket.service.EmailService;
 import br.edu.ifgoiano.ticket.service.UsuarioService;
 import br.edu.ifgoiano.ticket.utils.ObjectUtils;
 import org.springframework.beans.BeanUtils;
@@ -23,6 +24,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private EmailService emailService;
+
+    @Autowired
     private ObjectUtils objectUtils;
 
     @Autowired
@@ -34,7 +38,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setContatos(mapper.toList(usuarioCreate.getContatos(), Telefone.class));
         usuario.setTipoUsuario(UsuarioRole.GERENTE);
         usuario.getContatos().forEach(telefone -> telefone.setUsuario(usuario));
-        return mapper.mapTo(usuarioRepository.save(usuario), UsuarioOutputDTO.class);
+
+        var usuarioSalvo = usuarioRepository.save(usuario);
+
+        emailService.enviarUsuarioCadastradoEmail(usuarioSalvo);
+        return mapper.mapTo(usuarioSalvo, UsuarioOutputDTO.class);
     }
 
     @Override
