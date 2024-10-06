@@ -1,13 +1,12 @@
 package br.edu.ifgoiano.ticket.controller;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.regraPrioridade.RegraPrioridadeOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketInputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketInputUpdateDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketSimpleOutputDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ErrorDetails;
-import br.edu.ifgoiano.ticket.model.Categoria;
+import br.edu.ifgoiano.ticket.model.enums.Prioridade;
+import br.edu.ifgoiano.ticket.model.enums.StatusTicket;
 import br.edu.ifgoiano.ticket.service.TicketService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -55,9 +54,13 @@ public class TicketController {
             ),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<List<TicketSimpleOutputDTO>> buscarTodos(){
-        var ticketList = ticketService.buscarTodos();
-        return ResponseEntity.status(HttpStatus.CREATED).body(ticketList);
+    public ResponseEntity<List<TicketSimpleOutputDTO>> buscarTodos(
+            @RequestParam(required = false) String titulo,
+            @RequestParam(required = false) StatusTicket status,
+            @RequestParam(required = false) Prioridade prioridade,
+            @RequestParam(required = false) String responsavel){
+        var ticketList = ticketService.buscarTodosFilter(titulo, status, prioridade, responsavel);
+        return ResponseEntity.status(HttpStatus.OK).body(ticketList);
     }
 
     @GetMapping("{id}")

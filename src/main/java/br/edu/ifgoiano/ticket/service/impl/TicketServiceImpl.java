@@ -7,14 +7,18 @@ import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketSimpleOutputDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.*;
+import br.edu.ifgoiano.ticket.model.enums.Prioridade;
 import br.edu.ifgoiano.ticket.model.enums.StatusTicket;
+import br.edu.ifgoiano.ticket.model.Ticket;
 import br.edu.ifgoiano.ticket.repository.TicketRespository;
+import br.edu.ifgoiano.ticket.repository.specification.TicketSpecification;
 import br.edu.ifgoiano.ticket.service.*;
 import br.edu.ifgoiano.ticket.utils.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.beans.PropertyDescriptor;
@@ -79,6 +83,12 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<TicketSimpleOutputDTO> buscarTodos() {
         return mapper.toList(ticketRespository.findAll(),TicketSimpleOutputDTO.class);
+    }
+
+    @Override
+    public List<TicketSimpleOutputDTO> buscarTodosFilter(String titulo, StatusTicket status, Prioridade prioridade, String nomeResponsavel) {
+        Specification<Ticket> spec = TicketSpecification.filterTickets(titulo, status, prioridade, nomeResponsavel);
+        return mapper.toList(ticketRespository.findAll(spec),TicketSimpleOutputDTO.class);
     }
 
     @Override

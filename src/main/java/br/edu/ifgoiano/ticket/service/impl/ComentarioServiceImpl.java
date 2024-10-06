@@ -7,6 +7,7 @@ import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioInputU
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioOutputDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.*;
+import br.edu.ifgoiano.ticket.model.Ticket;
 import br.edu.ifgoiano.ticket.repository.AnexoRepository;
 import br.edu.ifgoiano.ticket.repository.ComentarioRepository;
 import br.edu.ifgoiano.ticket.repository.TicketRespository;
@@ -16,19 +17,9 @@ import br.edu.ifgoiano.ticket.service.UsuarioService;
 import br.edu.ifgoiano.ticket.utils.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.*;
-import java.util.stream.Stream;
 
 @Service
 public class ComentarioServiceImpl implements ComentarioService {
