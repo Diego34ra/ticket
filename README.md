@@ -49,6 +49,10 @@ Configure o RabbitMQ com as seguintes propriedades:
 spring:
   rabbitmq:
     addresses: {endereço do rabbitmq}
+broker:
+  queue:
+    email:
+      name: default.email
 ```
 
 ## Executando a Aplicação
