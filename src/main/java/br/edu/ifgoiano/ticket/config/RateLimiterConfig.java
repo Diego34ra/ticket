@@ -37,10 +37,8 @@ public class RateLimiterConfig  implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         if (bucket.tryConsume(1)) {
-            System.out.println("Token consumido. Requisição permitida.");
             chain.doFilter(request, response);
         } else {
-            System.out.println("Limite excedido. Retornando 429.");
             int retryAfterSeconds = 60;
             httpResponse.setStatus(429);
             httpResponse.setContentType("application/json");
