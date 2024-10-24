@@ -14,6 +14,7 @@ import br.edu.ifgoiano.ticket.repository.TicketRespository;
 import br.edu.ifgoiano.ticket.repository.specification.TicketSpecification;
 import br.edu.ifgoiano.ticket.service.*;
 import br.edu.ifgoiano.ticket.utils.ObjectUtils;
+import com.opencsv.CSVWriter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -22,6 +23,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.beans.PropertyDescriptor;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
@@ -86,8 +91,8 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<TicketSimpleOutputDTO> buscarTodosFilter(String titulo, StatusTicket status, Prioridade prioridade, String nomeResponsavel) {
-        Specification<Ticket> spec = TicketSpecification.filterTickets(titulo, status, prioridade, nomeResponsavel);
+    public List<TicketSimpleOutputDTO> buscarTodosFilter(String titulo, StatusTicket status, Prioridade prioridade, String nomeResponsavel,String dataInicio,String dataFim) {
+        Specification<Ticket> spec = TicketSpecification.filterTickets(titulo, status, prioridade, nomeResponsavel,dataInicio,dataFim);
         return mapper.toList(ticketRespository.findAll(spec),TicketSimpleOutputDTO.class);
     }
 
@@ -179,5 +184,35 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public void deletePorId(Long id) {
         ticketRespository.deleteById(id);
+    }
+
+    @Override
+    public ByteArrayInputStream generateCsvReportByDate(String dataInicio, String dataFim) {
+        List<TicketSimpleOutputDTO> ticketsList = buscarTodosFilter(null,null,null,null,dataInicio,dataFim);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (CSVWriter writer = new CSVWriter(new OutputStreamWriter(outputStream))) {
+            // Cabeçalho do CSV
+            String[] header = { "ID", "Título", "Descrição", "Status", "Prioridade","Data de Criação" };
+            writer.writeNext(header);
+
+            // Escrevendo os dados dos tickets no CSV
+            for (TicketSimpleOutputDTO ticket : ticketsList) {
+                String[] data = {
+                        String.valueOf(ticket.getId()),
+                        ticket.getTitulo(),
+                        ticket.getDescricao(),
+                        String.valueOf(ticket.getStatus()),
+                        String.valueOf(ticket.getPrioridade()),
+                        String.valueOf(ticket.getDataCriacao())
+                };
+                writer.writeNext(data);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        return new ByteArrayInputStream(outputStream.toByteArray());
     }
 }

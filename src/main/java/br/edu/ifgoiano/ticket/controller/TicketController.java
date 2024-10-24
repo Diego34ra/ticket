@@ -16,10 +16,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -58,8 +63,10 @@ public class TicketController {
             @RequestParam(required = false) String titulo,
             @RequestParam(required = false) StatusTicket status,
             @RequestParam(required = false) Prioridade prioridade,
-            @RequestParam(required = false) String responsavel){
-        var ticketList = ticketService.buscarTodosFilter(titulo, status, prioridade, responsavel);
+            @RequestParam(required = false) String responsavel,
+            @RequestParam(required = false) String dataInicio,
+            @RequestParam(required = false) String dataFim){
+        var ticketList = ticketService.buscarTodosFilter(titulo, status, prioridade, responsavel, dataInicio,dataFim);
         return ResponseEntity.status(HttpStatus.OK).body(ticketList);
     }
 
@@ -94,5 +101,27 @@ public class TicketController {
     public ResponseEntity<?> deletarPorId(@PathVariable Long id){
         ticketService.deletePorId(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("report/csv")
+    @Operation(summary = "Gerar Relatório de tickets")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Relatório gerado com sucesso."),
+            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+    })
+    public ResponseEntity<InputStreamResource> generateCsvReportByDate(
+            @RequestParam String dataInicio,
+            @RequestParam String dataFim)  {
+
+        ByteArrayInputStream byteArrayInputStream = ticketService.generateCsvReportByDate(dataInicio,dataFim);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=ticket_report_" + dataInicio + "_to_" + dataFim + ".csv");
+
+        // Retorna o arquivo como um InputStreamResource
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.parseMediaType("text/csv"))
+                .body(new InputStreamResource(byteArrayInputStream));
     }
 }
