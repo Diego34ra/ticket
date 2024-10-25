@@ -13,6 +13,8 @@ import br.edu.ifgoiano.ticket.service.DepartamentoService;
 import br.edu.ifgoiano.ticket.service.RegraPrioridadeService;
 import br.edu.ifgoiano.ticket.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,6 +39,7 @@ public class RegraPrioridadeServiceImpl implements RegraPrioridadeService {
     private ObjectUtils objectUtils;
 
     @Override
+    @CacheEvict(value = "regraPrioridadeCache", allEntries = true)
     public RegraPrioridadeOutputDTO criar(RegraPrioridadeInputDTO regraPrioridadeInputDTO) {
         RegraPrioridade regraPrioridade = mapper.mapTo(regraPrioridadeInputDTO, RegraPrioridade.class);
         Categoria categoria = categoriaService.buscaPorId(regraPrioridade.getCategoria().getId());
@@ -47,6 +50,7 @@ public class RegraPrioridadeServiceImpl implements RegraPrioridadeService {
     }
 
     @Override
+    @Cacheable(value = "regraPrioridadeCache")
     public List<RegraPrioridadeOutputDTO> buscarTodos() {
         return mapper.toList(regraPrioridadeRepository.findAll(), RegraPrioridadeOutputDTO.class);
     }
@@ -58,6 +62,7 @@ public class RegraPrioridadeServiceImpl implements RegraPrioridadeService {
     }
 
     @Override
+    @CacheEvict(value = "regraPrioridadeCache", allEntries = true)
     public RegraPrioridadeOutputDTO atualizar(Long id, RegraPrioridadeInputDTO regraPrioridadeInputDTO) {
         RegraPrioridade regraPrioridade = regraPrioridadeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrada regra de prioridade com esse id."));
@@ -66,6 +71,7 @@ public class RegraPrioridadeServiceImpl implements RegraPrioridadeService {
     }
 
     @Override
+    @CacheEvict(value = "regraPrioridadeCache", allEntries = true)
     public void deletarPorId(Long id) {
         regraPrioridadeRepository.deleteById(id);
     }

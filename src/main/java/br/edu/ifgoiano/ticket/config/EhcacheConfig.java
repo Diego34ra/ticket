@@ -22,6 +22,9 @@ public class EhcacheConfig {
 
         return CacheManagerBuilder.newCacheManagerBuilder()
                 .withCache("categoriaCache", cacheConfig)
+                .withCache("departamentoCache", cacheConfig)
+                .withCache("regraPrioridadeCache", cacheConfig)
+                .withCache("ticketCache", cacheConfig)
                 .build(true);
     }
 }

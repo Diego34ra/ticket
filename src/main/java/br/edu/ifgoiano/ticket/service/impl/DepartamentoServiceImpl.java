@@ -12,6 +12,8 @@ import br.edu.ifgoiano.ticket.service.UsuarioService;
 import br.edu.ifgoiano.ticket.utils.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,16 +34,18 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     private ObjectUtils objectUtils;
 
     @Override
+    @CacheEvict(value = "departamentoCache", allEntries = true)
     public DepartamentoOutputDTO criar(DepartamentoInputDTO departamentoInputDTO) {
         Departamento departamento = mapper.mapTo(departamentoInputDTO, Departamento.class);
         Usuario usuario = mapper.mapTo(usuarioService.buscaPorId(departamento.getGerente().getId()),Usuario.class);
-        if(!usuarioService.verificarSeUsuarioEhGerente(usuario.getId()))
+        if(usuarioService.verificarSeUsuarioEhGerente(usuario.getId()))
             throw new ResourceNotFoundException("Usuário enviado não é um gerente.");
         departamento.setGerente(usuario);
         return mapper.mapTo(departamentoRepository.save(departamento), DepartamentoOutputDTO.class);
     }
 
     @Override
+    @Cacheable(value = "departamentoCache")
     public List<DepartamentoOutputDTO> buscarTodos() {
         return mapper.toList(departamentoRepository.findAll(), DepartamentoOutputDTO.class);
     }
@@ -53,11 +57,12 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     }
 
     @Override
+    @CacheEvict(value = "departamentoCache", allEntries = true)
     public DepartamentoOutputDTO atualizar(Long id, DepartamentoInputDTO departamentoUpdate) {
         Departamento departamento = departamentoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum departamento com esse id."));
         Usuario usuario = mapper.mapTo(usuarioService.buscaPorId(departamentoUpdate.getGerente().getId()),Usuario.class);
-        if(!usuarioService.verificarSeUsuarioEhGerente(usuario.getId()))
+        if(usuarioService.verificarSeUsuarioEhGerente(usuario.getId()))
             throw new ResourceNotFoundException("Usuário enviado não é um gerente.");
         BeanUtils.copyProperties(departamentoUpdate,departamento,objectUtils.getNullPropertyNames(departamentoUpdate));
         departamento.setGerente(usuario);
@@ -65,6 +70,7 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     }
 
     @Override
+    @CacheEvict(value = "departamentoCache", allEntries = true)
     public void deletePorId(Long id) {
         departamentoRepository.deleteById(id);
     }

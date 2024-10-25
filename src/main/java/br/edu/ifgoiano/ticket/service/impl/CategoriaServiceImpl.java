@@ -10,7 +10,6 @@ import br.edu.ifgoiano.ticket.utils.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +41,6 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-
     public Categoria buscaPorId(Long id) {
         return categoriaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrada nenhuma categoria com esse id."));
@@ -58,6 +56,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
+    @CacheEvict(value = "categoriaCache", allEntries = true)
     public void deletePorId(Long id) {
         categoriaRepository.deleteById(id);
     }

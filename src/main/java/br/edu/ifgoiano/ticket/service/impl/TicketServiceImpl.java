@@ -19,6 +19,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -63,6 +65,7 @@ public class TicketServiceImpl implements TicketService {
     private ObjectUtils objectUtils;
 
     @Override
+    @CacheEvict(value = "ticketCache", allEntries = true)
     public TicketOutputDTO criar(TicketInputDTO ticketInputDTO) {
         Ticket ticket = mapper.mapTo(ticketInputDTO, Ticket.class);
         Categoria categoria = categoriaService.buscaPorId(ticket.getCategoria().getId());
@@ -86,11 +89,13 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Cacheable(value = "ticketCache")
     public List<TicketSimpleOutputDTO> buscarTodos() {
         return mapper.toList(ticketRespository.findAll(),TicketSimpleOutputDTO.class);
     }
 
     @Override
+    @Cacheable(value = "ticketCache")
     public List<TicketSimpleOutputDTO> buscarTodosFilter(String titulo, StatusTicket status, Prioridade prioridade, String nomeResponsavel,String dataInicio,String dataFim) {
         Specification<Ticket> spec = TicketSpecification.filterTickets(titulo, status, prioridade, nomeResponsavel,dataInicio,dataFim);
         return mapper.toList(ticketRespository.findAll(spec),TicketSimpleOutputDTO.class);
@@ -104,6 +109,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @CacheEvict(value = "ticketCache", allEntries = true)
     public TicketOutputDTO atualizar(Long id, TicketInputUpdateDTO ticketInputUpdateDTO) {
         Ticket ticket = ticketRespository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum ticket com esse id."));
@@ -182,6 +188,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @CacheEvict(value = "ticketCache", allEntries = true)
     public void deletePorId(Long id) {
         ticketRespository.deleteById(id);
     }

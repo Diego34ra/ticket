@@ -71,6 +71,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public boolean verificarSeUsuarioEhGerente(Long id) {
-        return usuarioRepository.isUsuarioGerente(id);
+        return !usuarioRepository.isUsuarioGerente(id);
     }
 }
