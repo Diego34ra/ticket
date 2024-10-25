@@ -9,6 +9,9 @@ import br.edu.ifgoiano.ticket.service.CategoriaService;
 import br.edu.ifgoiano.ticket.utils.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,23 +29,27 @@ public class CategoriaServiceImpl implements CategoriaService {
     private ObjectUtils objectUtils;
 
     @Override
+    @CacheEvict(value = "categoriaCache", allEntries = true)
     public Categoria criar(CategoriaDTO categoriaDTO) {
         Categoria categoria = mapper.mapTo(categoriaDTO, Categoria.class);
         return categoriaRepository.save(categoria);
     }
 
     @Override
+    @Cacheable(value = "categoriaCache")
     public List<Categoria> buscarTodos() {
         return categoriaRepository.findAll();
     }
 
     @Override
+
     public Categoria buscaPorId(Long id) {
         return categoriaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrada nenhuma categoria com esse id."));
     }
 
     @Override
+    @CacheEvict(value = "categoriaCache", allEntries = true)
     public Categoria atualizar(Long id, CategoriaDTO categoriaUpdate) {
         Categoria categoria = categoriaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrada nenhuma categoria com esse id."));
