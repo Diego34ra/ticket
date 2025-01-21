@@ -31,7 +31,8 @@ public class CategoriaServiceImpl implements CategoriaService {
     @CacheEvict(value = "categoriaCache", allEntries = true)
     public Categoria criar(CategoriaDTO categoriaDTO) {
         Categoria categoria = mapper.mapTo(categoriaDTO, Categoria.class);
-        return categoriaRepository.save(categoria);
+        Categoria categoriaCriada = categoriaRepository.save(categoria);
+        return categoriaCriada;
     }
 
     @Override
