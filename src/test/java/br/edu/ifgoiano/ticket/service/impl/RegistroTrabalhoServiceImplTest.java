@@ -84,7 +84,6 @@ class RegistroTrabalhoServiceImplTest {
 
         RegistroTrabalhoOutputDTO result = service.criar(ticketId, inputDTO);
 
-        // Assert
         assertNotNull(result);
         verify(ticketService).buscarPorId(ticketId);
         verify(usuarioService).buscaPorId(1L);
@@ -119,10 +118,8 @@ class RegistroTrabalhoServiceImplTest {
         when(registroTrabalhoRepository.save(registroTrabalho)).thenReturn(registroTrabalho);
         when(mapper.mapTo(registroTrabalho, RegistroTrabalhoOutputDTO.class)).thenReturn(outputDTO);
 
-        // Act
         RegistroTrabalhoOutputDTO result = service.atualizar(registroId, inputDTO);
 
-        // Assert
         assertNotNull(result);
         verify(registroTrabalhoRepository).findById(registroId);
         verify(registroTrabalhoRepository).save(registroTrabalho);
