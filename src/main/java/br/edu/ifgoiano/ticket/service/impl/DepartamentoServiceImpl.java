@@ -3,6 +3,7 @@ package br.edu.ifgoiano.ticket.service.impl;
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
 import br.edu.ifgoiano.ticket.controller.dto.request.departamento.DepartamentoInputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.departamento.DepartamentoOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.Departamento;
 import br.edu.ifgoiano.ticket.model.Usuario;
@@ -37,9 +38,11 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     @CacheEvict(value = "departamentoCache", allEntries = true)
     public DepartamentoOutputDTO criar(DepartamentoInputDTO departamentoInputDTO) {
         Departamento departamento = mapper.mapTo(departamentoInputDTO, Departamento.class);
-        Usuario usuario = mapper.mapTo(usuarioService.buscaPorId(departamento.getGerente().getId()),Usuario.class);
-        if(usuarioService.verificarSeUsuarioEhGerente(usuario.getId()))
+        UsuarioOutputDTO usuarioOutputDTO = usuarioService.buscaPorId(departamento.getGerente().getId());
+        if(usuarioService.verificarSeUsuarioEhGerente(usuarioOutputDTO.getId()))
             throw new ResourceNotFoundException("Usuário enviado não é um gerente.");
+
+        Usuario usuario = mapper.mapTo(usuarioOutputDTO,Usuario.class);
         departamento.setGerente(usuario);
         return mapper.mapTo(departamentoRepository.save(departamento), DepartamentoOutputDTO.class);
     }
@@ -61,10 +64,11 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     public DepartamentoOutputDTO atualizar(Long id, DepartamentoInputDTO departamentoUpdate) {
         Departamento departamento = departamentoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum departamento com esse id."));
-        Usuario usuario = mapper.mapTo(usuarioService.buscaPorId(departamentoUpdate.getGerente().getId()),Usuario.class);
-        if(usuarioService.verificarSeUsuarioEhGerente(usuario.getId()))
+        UsuarioOutputDTO usuarioOutputDTO = usuarioService.buscaPorId(departamentoUpdate.getGerente().getId());
+        if(usuarioService.verificarSeUsuarioEhGerente(usuarioOutputDTO.getId()))
             throw new ResourceNotFoundException("Usuário enviado não é um gerente.");
         BeanUtils.copyProperties(departamentoUpdate,departamento,objectUtils.getNullPropertyNames(departamentoUpdate));
+        Usuario usuario = mapper.mapTo(usuarioOutputDTO,Usuario.class);
         departamento.setGerente(usuario);
         return mapper.mapTo(departamentoRepository.save(departamento), DepartamentoOutputDTO.class);
     }
