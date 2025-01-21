@@ -1,0 +1,156 @@
+package br.edu.ifgoiano.ticket.service.impl;
+
+import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
+import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
+import br.edu.ifgoiano.ticket.model.Usuario;
+import br.edu.ifgoiano.ticket.repository.UsuarioRepository;
+import br.edu.ifgoiano.ticket.service.EmailService;
+import br.edu.ifgoiano.ticket.utils.ObjectUtils;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+
+class UsuarioServiceImplTest {
+
+    @InjectMocks
+    private UsuarioServiceImpl service;
+
+    @Mock
+    private UsuarioRepository usuarioRepository;
+
+    @Mock
+    private EmailService emailService;
+
+    @Mock
+    private ObjectUtils objectUtils;
+
+    @Mock
+    private MyModelMapper mapper;
+
+    @Test
+    void criar() {
+        UsuarioInputDTO inputDTO = new UsuarioInputDTO();
+        Usuario usuario = new Usuario();
+        Usuario usuarioSalvo = new Usuario();
+        UsuarioOutputDTO outputDTO = new UsuarioOutputDTO();
+
+        when(mapper.mapTo(inputDTO, Usuario.class)).thenReturn(usuario);
+        when(usuarioRepository.save(usuario)).thenReturn(usuarioSalvo);
+        when(mapper.mapTo(usuarioSalvo, UsuarioOutputDTO.class)).thenReturn(outputDTO);
+
+        UsuarioOutputDTO result = service.criar(inputDTO);
+
+        assertNotNull(result);
+        verify(usuarioRepository).save(usuario);
+        verify(emailService).enviarUsuarioCadastradoEmail(usuarioSalvo);
+    }
+
+    @Test
+    void buscarTodos() {
+        List<Usuario> usuarios = List.of(new Usuario());
+        List<UsuarioOutputDTO> outputDTOs = List.of(new UsuarioOutputDTO());
+
+        when(usuarioRepository.findAll()).thenReturn(usuarios);
+        when(mapper.toList(usuarios, UsuarioOutputDTO.class)).thenReturn(outputDTOs);
+
+        List<UsuarioOutputDTO> result = service.buscarTodos();
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        verify(usuarioRepository).findAll();
+    }
+
+    @Test
+    void buscaPorId() {
+        Long id = 1L;
+        Usuario usuario = new Usuario();
+        UsuarioOutputDTO outputDTO = new UsuarioOutputDTO();
+
+        when(usuarioRepository.findById(id)).thenReturn(Optional.of(usuario));
+        when(mapper.mapTo(usuario, UsuarioOutputDTO.class)).thenReturn(outputDTO);
+
+        UsuarioOutputDTO result = service.buscaPorId(id);
+
+        assertNotNull(result);
+        verify(usuarioRepository).findById(id);
+    }
+
+    @Test
+    void buscaPorId_deveLancarExcecaoQuandoNaoEncontrarUsuario() {
+        Long id = 1L;
+
+        when(usuarioRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> service.buscaPorId(id));
+        verify(usuarioRepository).findById(id);
+    }
+
+    @Test
+    void atualizar() {
+        Long id = 1L;
+        UsuarioInputDTO inputDTO = new UsuarioInputDTO();
+        Usuario usuario = new Usuario();
+        UsuarioOutputDTO outputDTO = new UsuarioOutputDTO();
+
+        when(mapper.mapTo(inputDTO, Usuario.class)).thenReturn(usuario);
+        when(usuarioRepository.save(usuario)).thenReturn(usuario);
+        when(mapper.mapTo(usuario, UsuarioOutputDTO.class)).thenReturn(outputDTO);
+
+        UsuarioOutputDTO result = service.atualizar(id, inputDTO);
+
+        assertNotNull(result);
+        verify(usuarioRepository).save(usuario);
+    }
+
+    @Test
+    void deletePorId() {
+        Long id = 1L;
+
+        service.deletePorId(id);
+
+        verify(usuarioRepository).deleteById(id);
+    }
+
+    @Test
+    void verificarSeUsuarioEhGerente_deveRetornarFalseQuandoNaoEhGerente() {
+        // Arrange
+        Long id = 1L;
+
+        when(usuarioRepository.isUsuarioGerente(id)).thenReturn(false);
+
+        // Act
+        boolean result = service.verificarSeUsuarioEhGerente(id);
+
+        // Assert
+        assertTrue(result);
+        verify(usuarioRepository).isUsuarioGerente(id);
+    }
+
+    @Test
+    void verificarSeUsuarioEhGerente_deveRetornarTrueQuandoEhGerente() {
+        // Arrange
+        Long id = 1L;
+
+        when(usuarioRepository.isUsuarioGerente(id)).thenReturn(true);
+
+        // Act
+        boolean result = service.verificarSeUsuarioEhGerente(id);
+
+        // Assert
+        assertFalse(result);
+        verify(usuarioRepository).isUsuarioGerente(id);
+    }
+}
