@@ -1,16 +1,31 @@
 spring:
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/ticket?useSSL=false&serverTimezone=UTC
+#    username: root
+#    password:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQL8Dialect
   datasource:
-    url: jdbc:mysql://localhost:3306/ticket?useSSL=false&serverTimezone=UTC
-    username: root
-    password:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: create
-    show-sql: true
-    properties:
+    url: jdbc:h2:mem:auth_db
+    driverClassName: org.h2.Driver
+    username: sa
+    password: sa
+    platform: h2
+    h2:
+      console:
+        enabled: true
+        path: /h2-console
+    jpa:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        ddl-auto: update
+      show-sql: true
+      database-platform: org.hibernate.dialect.H2Dialect
   rabbitmq:
     addresses: amqps://llqbkxhf:e6svQMsjHTrkCjcmwdT-W0_GLueair8t@shrimp.rmq.cloudamqp.com/llqbkxhf
 file:
@@ -19,4 +34,8 @@ broker:
   queue:
     email:
       name: default.email
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:my-secret-key}
 
