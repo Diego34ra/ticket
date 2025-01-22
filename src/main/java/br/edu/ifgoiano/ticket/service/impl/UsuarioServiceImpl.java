@@ -1,6 +1,7 @@
 package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
+import br.edu.ifgoiano.ticket.controller.dto.request.MessageResponseDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioInputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
@@ -13,12 +14,18 @@ import br.edu.ifgoiano.ticket.service.UsuarioService;
 import br.edu.ifgoiano.ticket.utils.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UsuarioServiceImpl implements UsuarioService {
+public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -33,16 +40,32 @@ public class UsuarioServiceImpl implements UsuarioService {
     private MyModelMapper mapper;
 
     @Override
-    public UsuarioOutputDTO criar(UsuarioInputDTO usuarioCreate) {
+    public ResponseEntity<MessageResponseDTO> criar(UsuarioInputDTO usuarioCreate) {
         Usuario usuario = mapper.mapTo(usuarioCreate, Usuario.class);
         usuario.setContatos(mapper.toList(usuarioCreate.getContatos(), Telefone.class));
         usuario.setTipoUsuario(UsuarioRole.GERENTE);
         usuario.getContatos().forEach(telefone -> telefone.setUsuario(usuario));
 
+        if(this.usuarioRepository.findByEmail(usuarioCreate.getEmail()) != null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MessageResponseDTO
+                    .builder()
+                    .code(400)
+                    .status("Bad Request")
+                    .message("Erro ao registrar o novo usuário.")
+                    .build());
+
+        String encryptedPassword = new BCryptPasswordEncoder().encode(usuario.getSenha());
+        usuario.setSenha(encryptedPassword);
+
         var usuarioSalvo = usuarioRepository.save(usuario);
 
         emailService.enviarUsuarioCadastradoEmail(usuarioSalvo);
-        return mapper.mapTo(usuarioSalvo, UsuarioOutputDTO.class);
+        return ResponseEntity.status(HttpStatus.CREATED).body(MessageResponseDTO
+                .builder()
+                .code(201)
+                .status("Created")
+                .message("Usuário criado com sucesso.")
+                .build());
     }
 
     @Override
@@ -72,5 +95,10 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public boolean verificarSeUsuarioEhGerente(Long id) {
         return !usuarioRepository.isUsuarioGerente(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return usuarioRepository.findByEmail(username);
     }
 }
