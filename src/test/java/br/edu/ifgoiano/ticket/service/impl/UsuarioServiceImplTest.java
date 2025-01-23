@@ -1,6 +1,7 @@
 package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
+import br.edu.ifgoiano.ticket.controller.dto.request.MessageResponseDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioInputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
@@ -13,6 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,20 +45,22 @@ class UsuarioServiceImplTest {
 
     @Test
     void criar() {
-        UsuarioInputDTO inputDTO = new UsuarioInputDTO();
         Usuario usuario = new Usuario();
-        Usuario usuarioSalvo = new Usuario();
-        UsuarioOutputDTO outputDTO = new UsuarioOutputDTO();
+        usuario.setSenha("teste");
 
-        when(mapper.mapTo(inputDTO, Usuario.class)).thenReturn(usuario);
-        when(usuarioRepository.save(usuario)).thenReturn(usuarioSalvo);
-        when(mapper.mapTo(usuarioSalvo, UsuarioOutputDTO.class)).thenReturn(outputDTO);
+        UsuarioInputDTO usuarioInput = new UsuarioInputDTO();
 
-        UsuarioOutputDTO result = service.criar(inputDTO);
+        Usuario usuarioEsperado = new Usuario();
 
-        assertNotNull(result);
+        when(mapper.mapTo(usuarioInput, Usuario.class)).thenReturn(usuario);
+        when(usuarioRepository.findByEmail(usuarioInput.getEmail())).thenReturn(null);
+        when(usuarioRepository.save(usuario)).thenReturn(usuarioEsperado);
+
+        ResponseEntity<MessageResponseDTO> response = service.criar(usuarioInput);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
         verify(usuarioRepository).save(usuario);
-        verify(emailService).enviarUsuarioCadastradoEmail(usuarioSalvo);
+        verify(emailService).enviarUsuarioCadastradoEmail(usuarioEsperado);
     }
 
     @Test
