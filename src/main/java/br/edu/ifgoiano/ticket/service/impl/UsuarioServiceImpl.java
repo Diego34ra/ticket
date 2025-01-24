@@ -51,7 +51,7 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
                     .builder()
                     .code(400)
                     .status("Bad Request")
-                    .message("Erro ao registrar o novo usuário.")
+                    .message("Usuário já cadastrado.")
                     .build());
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(usuario.getSenha());

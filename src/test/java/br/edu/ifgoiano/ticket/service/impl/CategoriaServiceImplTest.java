@@ -37,7 +37,7 @@ class CategoriaServiceImplTest {
     private ObjectUtils objectUtils;
 
     @Test
-    void criar() {
+    void criar_deveCriarCategoriaComSucesso() {
         CategoriaDTO categoriaDTO = new CategoriaDTO();
         Categoria categoria = new Categoria();
         Categoria categoriaCriada = new Categoria();
@@ -51,7 +51,7 @@ class CategoriaServiceImplTest {
     }
 
     @Test
-    void buscarTodos() {
+    void buscar_deveBuscarUmaListaDeCategoria() {
         when(categoriaRepository.findAll()).thenReturn(Collections.emptyList());
 
         List<Categoria> resultados = categoriaService.buscarTodos();
@@ -62,7 +62,7 @@ class CategoriaServiceImplTest {
     }
 
     @Test
-    void atualizar() {
+    void atualizar_deveAtualizarCategoriaComSucesso() {
         Long id = 1L;
         Categoria categoriaExistente = new Categoria();
         categoriaExistente.setId(id);
@@ -91,7 +91,7 @@ class CategoriaServiceImplTest {
     }
 
     @Test
-    void deveLancarExcecaoQuandoCategoriaNaoEncontrada() {
+    void atualizar_deveLancarExcecaoQuandoCategoriaNaoEncontrada() {
         Long id = 1L;
         CategoriaDTO categoriaUpdate = new CategoriaDTO();
         categoriaUpdate.setNome("Teste");
@@ -110,7 +110,7 @@ class CategoriaServiceImplTest {
     }
 
     @Test
-    void deletePorId() {
+    void delete_deveDeletarCategoriaComSucesso() {
         Long id = 1L;
 
         categoriaService.deletePorId(id);
