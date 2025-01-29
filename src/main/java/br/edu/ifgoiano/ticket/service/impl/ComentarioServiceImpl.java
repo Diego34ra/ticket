@@ -2,9 +2,9 @@ package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
 import br.edu.ifgoiano.ticket.controller.dto.request.AnexoOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioInputUpdateDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestUpdateDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.comentario.ComentarioOutputDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.*;
 import br.edu.ifgoiano.ticket.model.Ticket;
@@ -49,7 +49,7 @@ public class ComentarioServiceImpl implements ComentarioService {
     private ObjectUtils objectUtils;
 
     @Override
-    public ComentarioOutputDTO criar(Long ticketId, Long usuarioId, ComentarioInputDTO comentarioInputDTO) {
+    public ComentarioOutputDTO criar(Long ticketId, Long usuarioId, ComentarioRequestDTO comentarioInputDTO) {
         Ticket ticket = mapper.mapTo(ticketService.buscarPorId(ticketId),Ticket.class);
         Usuario autor = mapper.mapTo(usuarioService.buscaPorId(usuarioId), Usuario.class);
 
@@ -81,7 +81,7 @@ public class ComentarioServiceImpl implements ComentarioService {
     }
 
     @Override
-    public ComentarioOutputDTO atualizar(Long comentarioId, ComentarioInputUpdateDTO comentarioInputUpdateDTO) {
+    public ComentarioOutputDTO atualizar(Long comentarioId, ComentarioRequestUpdateDTO comentarioInputUpdateDTO) {
         Comentario comentario = comentarioRepository.findById(comentarioId)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrada nenhum comentario com esse id."));
         BeanUtils.copyProperties(comentarioInputUpdateDTO,comentario,objectUtils.getNullPropertyNames(comentarioInputUpdateDTO));

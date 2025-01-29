@@ -1,11 +1,9 @@
 package br.edu.ifgoiano.ticket.controller;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioInputUpdateDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestUpdateDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.comentario.ComentarioOutputDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ErrorDetails;
-import br.edu.ifgoiano.ticket.model.Categoria;
-import br.edu.ifgoiano.ticket.model.Comentario;
 import br.edu.ifgoiano.ticket.service.ComentarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -37,7 +35,7 @@ public class ComentarioController {
     })
     public ResponseEntity<ComentarioOutputDTO> criar(@RequestParam Long ticketId,
                                                      @RequestParam Long usuarioId,
-                                                     @ModelAttribute ComentarioInputDTO conteudo) {
+                                                     @ModelAttribute ComentarioRequestDTO conteudo) {
         var comentarioCriado = comentarioService.criar(ticketId,usuarioId,conteudo);
         return ResponseEntity.status(HttpStatus.CREATED).body(comentarioCriado);
     }
@@ -66,7 +64,7 @@ public class ComentarioController {
             @ApiResponse(responseCode = "200", description = "Comentário atualizado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ComentarioOutputDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<ComentarioOutputDTO> atualizar(@RequestBody Long id,ComentarioInputUpdateDTO comentarioInputUpdateDTO){
+    public ResponseEntity<ComentarioOutputDTO> atualizar(@RequestBody Long id, ComentarioRequestUpdateDTO comentarioInputUpdateDTO){
         var comentarioAtualizado = comentarioService.atualizar(id,comentarioInputUpdateDTO);
         return ResponseEntity.status(HttpStatus.OK).body(comentarioAtualizado);
     }

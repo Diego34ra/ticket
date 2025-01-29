@@ -1,6 +1,6 @@
 package br.edu.ifgoiano.ticket.controller.dto.request.regraPrioridade;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.departamento.DepartamentoOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.departamento.DepartamentoOutputDTO;
 import br.edu.ifgoiano.ticket.model.Categoria;
 import br.edu.ifgoiano.ticket.model.enums.Prioridade;
 import lombok.AllArgsConstructor;

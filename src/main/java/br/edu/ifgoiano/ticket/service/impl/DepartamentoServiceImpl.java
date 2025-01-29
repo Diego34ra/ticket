@@ -2,7 +2,7 @@ package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
 import br.edu.ifgoiano.ticket.controller.dto.request.departamento.DepartamentoInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.departamento.DepartamentoOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.departamento.DepartamentoOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.Departamento;

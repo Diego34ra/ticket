@@ -1,7 +1,7 @@
 package br.edu.ifgoiano.ticket.service;
 
 import br.edu.ifgoiano.ticket.controller.dto.request.departamento.DepartamentoInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.departamento.DepartamentoOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.departamento.DepartamentoOutputDTO;
 
 import java.util.List;
 

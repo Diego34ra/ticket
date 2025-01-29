@@ -1,10 +1,10 @@
 package br.edu.ifgoiano.ticket.controller.dto.request.ticket;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.departamento.DepartamentoSimpleOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.departamento.DepartamentoSimpleOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoSimpleOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.TicketHistoricoOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioTicketOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.comentario.ComentarioTicketOutputDTO;
 import br.edu.ifgoiano.ticket.model.*;
 import br.edu.ifgoiano.ticket.model.enums.Prioridade;
 import br.edu.ifgoiano.ticket.model.enums.StatusTicket;

@@ -2,16 +2,15 @@ package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
 import br.edu.ifgoiano.ticket.controller.dto.request.AnexoOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioInputUpdateDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestUpdateDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.comentario.ComentarioOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
 import br.edu.ifgoiano.ticket.model.Anexo;
 import br.edu.ifgoiano.ticket.model.Comentario;
 import br.edu.ifgoiano.ticket.model.Ticket;
 import br.edu.ifgoiano.ticket.model.Usuario;
-import br.edu.ifgoiano.ticket.repository.AnexoRepository;
 import br.edu.ifgoiano.ticket.repository.ComentarioRepository;
 import br.edu.ifgoiano.ticket.repository.TicketRespository;
 import br.edu.ifgoiano.ticket.service.TicketService;
@@ -77,7 +76,7 @@ class ComentarioServiceImplTest {
         UsuarioOutputDTO usuarioOutputDTO = new UsuarioOutputDTO();
         usuarioOutputDTO.setId(usuarioId);
 
-        ComentarioInputDTO comentarioInputDTO = new ComentarioInputDTO();
+        ComentarioRequestDTO comentarioInputDTO = new ComentarioRequestDTO();
         comentarioInputDTO.setConteudo("Texto do comentário");
         comentarioInputDTO.setAnexos(new MultipartFile[]{});
 
@@ -153,7 +152,7 @@ class ComentarioServiceImplTest {
         comentarioExistente.setId(comentarioId);
         comentarioExistente.setConteudo("Texto antigo");
 
-        ComentarioInputUpdateDTO updateDTO = new ComentarioInputUpdateDTO();
+        ComentarioRequestUpdateDTO updateDTO = new ComentarioRequestUpdateDTO();
         updateDTO.setConteudo("Texto atualizado");
 
         Comentario comentarioAtualizado = new Comentario();

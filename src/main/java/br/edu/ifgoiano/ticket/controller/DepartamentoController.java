@@ -1,8 +1,7 @@
 package br.edu.ifgoiano.ticket.controller;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.departamento.DepartamentoInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.departamento.DepartamentoOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.departamento.DepartamentoOutputDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ErrorDetails;
 import br.edu.ifgoiano.ticket.service.DepartamentoService;
 import io.swagger.v3.oas.annotations.Operation;
