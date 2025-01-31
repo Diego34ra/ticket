@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UsuarioInputDTO {
+public class UsuarioRequestDTO {
     @NotNull(message = "Nome é obrigatório.")
     private String nome;
 

@@ -2,8 +2,8 @@ package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
 import br.edu.ifgoiano.ticket.controller.dto.request.MessageResponseDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioRequestDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioResponseDTO;
 import br.edu.ifgoiano.ticket.controller.exception.CustomAccessDeniedException;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.Telefone;
@@ -44,7 +44,7 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
     private MyModelMapper mapper;
 
     @Override
-    public ResponseEntity<MessageResponseDTO> criar(UsuarioInputDTO usuarioCreate) {
+    public ResponseEntity<MessageResponseDTO> criar(UsuarioRequestDTO usuarioCreate) {
         Usuario usuario = mapper.mapTo(usuarioCreate, Usuario.class);
         usuario.setContatos(mapper.toList(usuarioCreate.getContatos(), Telefone.class));
         usuario.setTipoUsuario(UsuarioRole.CLIENTE);
@@ -79,12 +79,12 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
     }
 
     @Override
-    public List<UsuarioOutputDTO> buscarTodos() {
-        return mapper.toList(usuarioRepository.findAll(),UsuarioOutputDTO.class);
+    public List<UsuarioResponseDTO> buscarTodos() {
+        return mapper.toList(usuarioRepository.findAll(), UsuarioResponseDTO.class);
     }
 
     @Override
-    public UsuarioOutputDTO buscaPorId(Long uuid) {
+    public UsuarioResponseDTO buscaPorId(Long uuid) {
         Long uuidAuth = Long.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
         boolean somenteCliente = SecurityContextHolder.getContext().getAuthentication()
@@ -97,14 +97,14 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 
         Usuario usuario = usuarioRepository.findById(uuid)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum usuário com esse id."));
-        return mapper.mapTo(usuario,UsuarioOutputDTO.class);
+        return mapper.mapTo(usuario, UsuarioResponseDTO.class);
     }
 
     @Override
-    public UsuarioOutputDTO atualizar(Long uuid, UsuarioInputDTO usuarioUpdate) {
+    public UsuarioResponseDTO atualizar(Long uuid, UsuarioRequestDTO usuarioUpdate) {
         Usuario usuario = mapper.mapTo(usuarioUpdate, Usuario.class);
         BeanUtils.copyProperties(usuarioUpdate, usuario, objectUtils.getNullPropertyNames(usuarioUpdate));
-        return mapper.mapTo(usuarioRepository.save(usuario), UsuarioOutputDTO.class);
+        return mapper.mapTo(usuarioRepository.save(usuario), UsuarioResponseDTO.class);
     }
 
     @Override

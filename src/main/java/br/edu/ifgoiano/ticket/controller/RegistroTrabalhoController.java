@@ -1,8 +1,8 @@
 package br.edu.ifgoiano.ticket.controller;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoInputUpdateDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoRequestDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoRequestUpdateDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.registroTrabalho.RegistroTrabalhoReponseDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ErrorDetails;
 import br.edu.ifgoiano.ticket.service.RegistroTrabalhoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,11 +30,11 @@ public class RegistroTrabalhoController {
     @PostMapping
     @Operation(summary = "Criar um registro")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Registro criado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = RegistroTrabalhoOutputDTO.class))}),
+            @ApiResponse(responseCode = "201", description = "Registro criado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = RegistroTrabalhoReponseDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<RegistroTrabalhoOutputDTO> criar(@RequestParam Long ticketId, @RequestBody RegistroTrabalhoInputDTO registroTrabalhoInputDTO){
-        var registroCriado = registroTrabalhoService.criar(ticketId,registroTrabalhoInputDTO);
+    public ResponseEntity<RegistroTrabalhoReponseDTO> criar(@RequestParam Long ticketId, @RequestBody RegistroTrabalhoRequestDTO registroTrabalhoRequestDTO){
+        var registroCriado = registroTrabalhoService.criar(ticketId, registroTrabalhoRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(registroCriado);
     }
 
@@ -46,12 +46,12 @@ public class RegistroTrabalhoController {
                     description = "Registros buscados com sucesso.",
                     content = @Content(
                             mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = RegistroTrabalhoOutputDTO.class))
+                            array = @ArraySchema(schema = @Schema(implementation = RegistroTrabalhoReponseDTO.class))
                     )
             ),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<List<RegistroTrabalhoOutputDTO>> buscarTodos(@RequestParam Long ticketId){
+    public ResponseEntity<List<RegistroTrabalhoReponseDTO>> buscarTodos(@RequestParam Long ticketId){
         var registroList = registroTrabalhoService.buscarTodosPorTicket(ticketId);
         return ResponseEntity.status(HttpStatus.OK).body(registroList);
     }
@@ -59,11 +59,11 @@ public class RegistroTrabalhoController {
     @PutMapping("{id}")
     @Operation(summary = "Atualizar um registro")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Registro atualizado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = RegistroTrabalhoOutputDTO.class))}),
+            @ApiResponse(responseCode = "200", description = "Registro atualizado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = RegistroTrabalhoReponseDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<RegistroTrabalhoOutputDTO> atualizar(@RequestParam Long id, @RequestBody RegistroTrabalhoInputUpdateDTO registroTrabalhoInputUpdateDTO){
-        var registroAtualizado = registroTrabalhoService.atualizar(id,registroTrabalhoInputUpdateDTO);
+    public ResponseEntity<RegistroTrabalhoReponseDTO> atualizar(@RequestParam Long id, @RequestBody RegistroTrabalhoRequestUpdateDTO registroTrabalhoRequestUpdateDTO){
+        var registroAtualizado = registroTrabalhoService.atualizar(id, registroTrabalhoRequestUpdateDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(registroAtualizado);
     }
 

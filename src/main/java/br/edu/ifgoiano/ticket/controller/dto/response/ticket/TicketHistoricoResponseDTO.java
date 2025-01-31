@@ -1,6 +1,6 @@
-package br.edu.ifgoiano.ticket.controller.dto.request;
+package br.edu.ifgoiano.ticket.controller.dto.response.ticket;
 
-import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,11 +12,11 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TicketHistoricoOutputDTO {
+public class TicketHistoricoResponseDTO {
     private Long id;
     private String campo;
     private String ultimoValor;
     private String novoValor;
     private LocalDateTime dataAlteracao;
-    private UsuarioOutputDTO agente;
+    private UsuarioResponseDTO agente;
 }

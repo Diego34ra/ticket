@@ -1,7 +1,7 @@
 package br.edu.ifgoiano.ticket.controller;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.departamento.DepartamentoInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.response.departamento.DepartamentoOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.departamento.DepartamentoRequestDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.departamento.DepartamentoResponseDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ErrorDetails;
 import br.edu.ifgoiano.ticket.service.DepartamentoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,10 +29,10 @@ public class DepartamentoController {
     @PostMapping
     @Operation(summary = "Criar um departamento")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Departamento criado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = DepartamentoOutputDTO.class))}),
+            @ApiResponse(responseCode = "201", description = "Departamento criado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = DepartamentoResponseDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<DepartamentoOutputDTO> criar(@RequestBody DepartamentoInputDTO departamentoDTO){
+    public ResponseEntity<DepartamentoResponseDTO> criar(@RequestBody DepartamentoRequestDTO departamentoDTO){
         var departamentoCriado = departamentoService.criar(departamentoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(departamentoCriado);
     }
@@ -45,12 +45,12 @@ public class DepartamentoController {
                     description = "Departamentos buscados com sucesso.",
                     content = @Content(
                             mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = DepartamentoOutputDTO.class))
+                            array = @ArraySchema(schema = @Schema(implementation = DepartamentoResponseDTO.class))
                     )
             ),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<List<DepartamentoOutputDTO>> buscarTodos(){
+    public ResponseEntity<List<DepartamentoResponseDTO>> buscarTodos(){
         var departamentoList = departamentoService.buscarTodos();
         return ResponseEntity.status(HttpStatus.OK).body(departamentoList);
     }
@@ -58,10 +58,10 @@ public class DepartamentoController {
     @GetMapping("{id}")
     @Operation(summary = "Buscar um departamento")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Departamento buscado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = DepartamentoOutputDTO.class))}),
+            @ApiResponse(responseCode = "200", description = "Departamento buscado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = DepartamentoResponseDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<DepartamentoOutputDTO> buscarPorId(@PathVariable Long id){
+    public ResponseEntity<DepartamentoResponseDTO> buscarPorId(@PathVariable Long id){
         var departamento = departamentoService.buscarPorId(id);
         return ResponseEntity.status(HttpStatus.OK).body(departamento);
     }
@@ -69,10 +69,10 @@ public class DepartamentoController {
     @PutMapping("{id}")
     @Operation(summary = "Atualizar um departamento")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Departamento atualizado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = DepartamentoOutputDTO.class))}),
+            @ApiResponse(responseCode = "200", description = "Departamento atualizado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = DepartamentoResponseDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<DepartamentoOutputDTO> atualizar(@PathVariable Long id, @RequestBody DepartamentoInputDTO departamentoDTO){
+    public ResponseEntity<DepartamentoResponseDTO> atualizar(@PathVariable Long id, @RequestBody DepartamentoRequestDTO departamentoDTO){
         var departamentoAtualizado = departamentoService.atualizar(id,departamentoDTO);
         return ResponseEntity.status(HttpStatus.OK).body(departamentoAtualizado);
     }

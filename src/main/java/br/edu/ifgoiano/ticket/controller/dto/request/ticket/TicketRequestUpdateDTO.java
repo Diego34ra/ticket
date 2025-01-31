@@ -1,8 +1,8 @@
 package br.edu.ifgoiano.ticket.controller.dto.request.ticket;
 
+import br.edu.ifgoiano.ticket.model.*;
 import br.edu.ifgoiano.ticket.model.enums.Prioridade;
 import br.edu.ifgoiano.ticket.model.enums.StatusTicket;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,18 +14,16 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class TicketSimpleOutputDTO {
-    private String id;
+public class TicketRequestUpdateDTO {
     private String titulo;
     private String descricao;
-    private StatusTicket status;
-    private Prioridade prioridade;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataModificacao;
     private LocalDateTime dataMaximaResolucao;
-//    private Categoria categoria;
-//    private DepartamentoSimpleOutputDTO departamento;
-//    private UsuarioOutputDTO cliente;
-//    private UsuarioOutputDTO responsavel;
+    private StatusTicket status;
+    private Prioridade prioridade;
+    private Categoria categoria;
+    private Departamento departamento;
+    private Usuario cliente;
+    private Usuario responsavel;
 }

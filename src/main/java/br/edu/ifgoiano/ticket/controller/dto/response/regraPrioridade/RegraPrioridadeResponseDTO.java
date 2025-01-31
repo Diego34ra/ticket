@@ -1,6 +1,6 @@
-package br.edu.ifgoiano.ticket.controller.dto.request.regraPrioridade;
+package br.edu.ifgoiano.ticket.controller.dto.response.regraPrioridade;
 
-import br.edu.ifgoiano.ticket.controller.dto.response.departamento.DepartamentoOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.departamento.DepartamentoResponseDTO;
 import br.edu.ifgoiano.ticket.model.Categoria;
 import br.edu.ifgoiano.ticket.model.enums.Prioridade;
 import lombok.AllArgsConstructor;
@@ -12,12 +12,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegraPrioridadeOutputDTO {
+public class RegraPrioridadeResponseDTO {
     private Long id;
 
     private Categoria categoria;
 
-    private DepartamentoOutputDTO departamento;
+    private DepartamentoResponseDTO departamento;
 
     private Prioridade prioridade;
 }

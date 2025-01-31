@@ -1,18 +1,18 @@
 package br.edu.ifgoiano.ticket.service;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoInputUpdateDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoRequestDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoRequestUpdateDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.registroTrabalho.RegistroTrabalhoReponseDTO;
 
 import java.util.List;
 
 public interface RegistroTrabalhoService {
 
-    RegistroTrabalhoOutputDTO criar(Long ticketId, RegistroTrabalhoInputDTO registroTrabalhoInputDTO);
+    RegistroTrabalhoReponseDTO criar(Long ticketId, RegistroTrabalhoRequestDTO registroTrabalhoRequestDTO);
 
-    List<RegistroTrabalhoOutputDTO> buscarTodosPorTicket(Long ticketId);
+    List<RegistroTrabalhoReponseDTO> buscarTodosPorTicket(Long ticketId);
 
-    RegistroTrabalhoOutputDTO atualizar(Long registroId, RegistroTrabalhoInputUpdateDTO registroTrabalhoInputUpdateDTO);
+    RegistroTrabalhoReponseDTO atualizar(Long registroId, RegistroTrabalhoRequestUpdateDTO registroTrabalhoRequestUpdateDTO);
 
     void deletarPorId(Long registroId);
 }

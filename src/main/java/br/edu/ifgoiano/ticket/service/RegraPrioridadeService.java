@@ -1,7 +1,7 @@
 package br.edu.ifgoiano.ticket.service;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.regraPrioridade.RegraPrioridadeInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.regraPrioridade.RegraPrioridadeOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.regraPrioridade.RegraPrioridadeRequestDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.regraPrioridade.RegraPrioridadeResponseDTO;
 import br.edu.ifgoiano.ticket.model.Categoria;
 import br.edu.ifgoiano.ticket.model.Departamento;
 import br.edu.ifgoiano.ticket.model.RegraPrioridade;
@@ -10,13 +10,13 @@ import java.util.List;
 
 public interface RegraPrioridadeService {
 
-    RegraPrioridadeOutputDTO criar(RegraPrioridadeInputDTO regraPrioridadeInputDTO);
+    RegraPrioridadeResponseDTO criar(RegraPrioridadeRequestDTO regraPrioridadeRequestDTO);
 
-    List<RegraPrioridadeOutputDTO> buscarTodos();
+    List<RegraPrioridadeResponseDTO> buscarTodos();
 
     RegraPrioridade buscarPorCategoriaAndDepartamento(Categoria categoria, Departamento departamento);
 
-    RegraPrioridadeOutputDTO atualizar(Long id, RegraPrioridadeInputDTO regraPrioridadeInputDTO);
+    RegraPrioridadeResponseDTO atualizar(Long id, RegraPrioridadeRequestDTO regraPrioridadeRequestDTO);
 
     void deletarPorId(Long id);
 }

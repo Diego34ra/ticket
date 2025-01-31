@@ -1,10 +1,10 @@
 package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
-import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketInputUpdateDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketSimpleOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketRequestDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketRequestUpdateDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.ticket.TicketResponseDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.ticket.TicketSimpleResponseDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.*;
 import br.edu.ifgoiano.ticket.model.enums.Prioridade;
@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -34,12 +36,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class TicketServiceImpl implements TicketService {
 
     @Autowired
-    private TicketRespository ticketRespository;
+    private TicketRespository ticketRepository;
 
     @Autowired
     private DepartamentoService departamentoService;
@@ -66,9 +69,8 @@ public class TicketServiceImpl implements TicketService {
     private ObjectUtils objectUtils;
 
     @Override
-    @CacheEvict(value = "ticketCache", allEntries = true)
-    public TicketOutputDTO criar(TicketInputDTO ticketInputDTO) {
-        Ticket ticket = mapper.mapTo(ticketInputDTO, Ticket.class);
+    public TicketResponseDTO criar(TicketRequestDTO ticketRequestDTO) {
+        Ticket ticket = mapper.mapTo(ticketRequestDTO, Ticket.class);
         Categoria categoria = categoriaService.buscaPorId(ticket.getCategoria().getId());
         Departamento departamento = mapper.mapTo(departamentoService.buscarPorId(ticket.getDepartamento().getId()),Departamento.class);
         RegraPrioridade regraPrioridade = regraPrioridadeService.buscarPorCategoriaAndDepartamento(categoria,departamento);
@@ -85,7 +87,7 @@ public class TicketServiceImpl implements TicketService {
 
         if(ticket.getResponsavel() == null || ticket.getResponsavel().getId() == null)
             responsavel = departamento.getGerente();
-         else
+        else
             responsavel = ticket.getResponsavel();
 
         ticket.setCliente(cliente);
@@ -96,49 +98,117 @@ public class TicketServiceImpl implements TicketService {
         ticket.setDepartamento(departamento);
         ticket.setPrioridade(regraPrioridade.getPrioridade());
         ticket.setDataMaximaResolucao(ticket.getDataCriacao().plusHours(regraPrioridade.getHorasResolucao()));
-        ticket = ticketRespository.save(ticket);
+        ticket = ticketRepository.save(ticket);
         emailService.enviarTicketEmail(ticket);
-        return mapper.mapTo(ticket, TicketOutputDTO.class);
+        return mapper.mapTo(ticket, TicketResponseDTO.class);
     }
 
     @Override
-    @Cacheable(value = "ticketCache")
-    public List<TicketSimpleOutputDTO> buscarTodos() {
-        return mapper.toList(ticketRespository.findAll(),TicketSimpleOutputDTO.class);
+    public List<TicketSimpleResponseDTO> buscarTodos() {
+        List<Ticket> ticketList;
+
+        Long uuidAuth = Long.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        Set<String> roles = getUserRoles(SecurityContextHolder.getContext().getAuthentication());
+
+        System.out.println("UUID = "+uuidAuth);
+
+        if (roles.contains("ROLE_CLIENTE")) {
+            System.out.println("AQUI");
+            ticketList = ticketRepository.findByClienteId(uuidAuth);
+        } else if (roles.contains("ROLE_FUNCIONARIO")) {
+            ticketList = ticketRepository.findByResponsavelId(uuidAuth);
+        } else if (roles.contains("ROLE_GERENTE")) {
+            ticketList = ticketRepository.findByDepartamentoGerenteId(uuidAuth);
+        } else
+            ticketList = ticketRepository.findAll();
+
+
+//        boolean somenteCliente = SecurityContextHolder.getContext().getAuthentication()
+//                .getAuthorities().stream()
+//                .map(GrantedAuthority::getAuthority)
+//                .allMatch(role -> role.equals("ROLE_CLIENTE"));
+//
+//        boolean somenteFuncionario = SecurityContextHolder.getContext().getAuthentication()
+//                .getAuthorities().stream()
+//                .map(GrantedAuthority::getAuthority)
+//                .allMatch(role -> role.equals("ROLE_FUNCIONARIO"));
+//
+//        boolean somenteGerente = SecurityContextHolder.getContext().getAuthentication()
+//                .getAuthorities().stream()
+//                .map(GrantedAuthority::getAuthority)
+//                .allMatch(role -> role.equals("ROLE_GERENTE"));
+//
+//        if(somenteCliente) {
+//            Long uuidAuth = Long.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+//            ticketList = ticketRepository.findByClienteId(uuidAuth);
+//        } else if (somenteFuncionario) {
+//            Long uuidAuth = Long.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+//            ticketList = ticketRepository.findByResponsavelId(uuidAuth);
+//        } else if(somenteGerente) {
+//            Long uuidAuth = Long.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+//            ticketList = ticketRepository.findByDepartamentoGerenteId(uuidAuth);
+//        } else
+//            ticketList = ticketRepository.findAll();
+
+        return mapper.toList(ticketList, TicketSimpleResponseDTO.class);
+    }
+
+    private Set<String> getUserRoles(Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
     }
 
     @Override
-    @Cacheable(value = "ticketCache")
-    public List<TicketSimpleOutputDTO> buscarTodosFilter(String titulo, StatusTicket status, Prioridade prioridade, String nomeResponsavel,String dataInicio,String dataFim) {
+    public List<TicketSimpleResponseDTO> buscarTodosFilter(String titulo, StatusTicket status, Prioridade prioridade, String nomeResponsavel, String dataInicio, String dataFim) {
+        Long uuidAuth = Long.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        Set<String> roles = getUserRoles(SecurityContextHolder.getContext().getAuthentication());
+
         Specification<Ticket> spec = TicketSpecification.filterTickets(titulo, status, prioridade, nomeResponsavel,dataInicio,dataFim);
-        return mapper.toList(ticketRespository.findAll(spec),TicketSimpleOutputDTO.class);
+
+        List<Ticket> ticketList = ticketRepository.findAll(spec);
+
+        if (roles.contains("ROLE_CLIENTE")) {
+            ticketList = ticketList.stream()
+                    .filter(ticket -> Objects.nonNull(ticket.getCliente()) && Objects.equals(ticket.getCliente().getId(), uuidAuth))
+                    .toList();
+        } else if (roles.contains("ROLE_FUNCIONARIO")) {
+            ticketList = ticketList.stream()
+                    .filter(ticket -> Objects.nonNull(ticket.getResponsavel()) && Objects.equals(ticket.getResponsavel().getId(), uuidAuth))
+                    .toList();
+        } else if (roles.contains("ROLE_GERENTE")) {
+            ticketList = ticketList.stream()
+                    .filter(ticket -> Objects.nonNull(ticket.getDepartamento()) && Objects.equals(ticket.getDepartamento().getGerente().getId(), uuidAuth))
+                    .toList();
+        }
+
+        return mapper.toList(ticketList, TicketSimpleResponseDTO.class);
     }
 
     @Override
-    public TicketOutputDTO buscarPorId(Long id) {
-        Ticket ticket = ticketRespository.findById(id)
+    public TicketResponseDTO buscarPorId(Long id) {
+        Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum ticket com esse id."));
-        return mapper.mapTo(ticket,TicketOutputDTO.class);
+        return mapper.mapTo(ticket, TicketResponseDTO.class);
     }
 
     @Override
-    @CacheEvict(value = "ticketCache", allEntries = true)
-    public TicketOutputDTO atualizar(Long id, TicketInputUpdateDTO ticketInputUpdateDTO) {
-        Ticket ticket = ticketRespository.findById(id)
+    public TicketResponseDTO atualizar(Long id, TicketRequestUpdateDTO ticketRequestUpdateDTO) {
+        Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum ticket com esse id."));
 
         Map<String, Map<String, Object>> camposAlterados = new HashMap<>();
 
-        checkAndRecordEntityChange("categoria", ticket.getCategoria(), ticketInputUpdateDTO.getCategoria(), camposAlterados);
-        checkAndRecordEntityChange("departamento", ticket.getDepartamento(), ticketInputUpdateDTO.getDepartamento(), camposAlterados);
-        checkAndRecordEntityChange("responsavel", ticket.getResponsavel(), ticketInputUpdateDTO.getResponsavel(), camposAlterados);
+        checkAndRecordEntityChange("categoria", ticket.getCategoria(), ticketRequestUpdateDTO.getCategoria(), camposAlterados);
+        checkAndRecordEntityChange("departamento", ticket.getDepartamento(), ticketRequestUpdateDTO.getDepartamento(), camposAlterados);
+        checkAndRecordEntityChange("responsavel", ticket.getResponsavel(), ticketRequestUpdateDTO.getResponsavel(), camposAlterados);
         List<String> variaveisIgnoradas = Arrays.asList("comentarios", "id", "categoria", "departamento", "responsavel", "cliente", "class", "historicos", "registroTrabalhos");
         BeanWrapper wrapper = new BeanWrapperImpl(ticket);
         for (PropertyDescriptor descriptor : wrapper.getPropertyDescriptors()) {
             String nomeVariavel = descriptor.getName();
             if (!variaveisIgnoradas.contains(nomeVariavel)) {
                 Object antigoValor = wrapper.getPropertyValue(nomeVariavel);
-                Object novoValor = new BeanWrapperImpl(ticketInputUpdateDTO).getPropertyValue(nomeVariavel);
+                Object novoValor = new BeanWrapperImpl(ticketRequestUpdateDTO).getPropertyValue(nomeVariavel);
 
                 if (novoValor != null && !novoValor.equals(antigoValor)) {
                     Map<String, Object> values = new HashMap<>();
@@ -169,14 +239,14 @@ public class TicketServiceImpl implements TicketService {
         ticket.setHistoricos(ticketHistoricoList);
         ticketHistoricoList.forEach(ticketHistorico -> ticketHistoricoService.criar(ticketHistorico));
 
-        BeanUtils.copyProperties(ticketInputUpdateDTO, ticket, objectUtils.getNullPropertyNames(ticketInputUpdateDTO));
+        BeanUtils.copyProperties(ticketRequestUpdateDTO, ticket, objectUtils.getNullPropertyNames(ticketRequestUpdateDTO));
 
-        var ticketSalvado = ticketRespository.save(ticket);
+        var ticketSalvado = ticketRepository.save(ticket);
 
         if(ticketSalvado.getStatus() == StatusTicket.FINALIZADO)
             emailService.enviarTicketFinalizadoEmail(ticketSalvado);
 
-        return mapper.mapTo(ticketSalvado, TicketOutputDTO.class);
+        return mapper.mapTo(ticketSalvado, TicketResponseDTO.class);
     }
 
     private <T> void checkAndRecordEntityChange(String fieldName, T currentEntity, T newEntity, Map<String, Map<String, Object>> alteredFields) {
@@ -202,21 +272,20 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    @CacheEvict(value = "ticketCache", allEntries = true)
     public void deletePorId(Long id) {
-        ticketRespository.deleteById(id);
+        ticketRepository.deleteById(id);
     }
 
     @Override
     public ByteArrayInputStream generateCsvReportByDate(String dataInicio, String dataFim) {
-        List<TicketSimpleOutputDTO> ticketsList = buscarTodosFilter(null,null,null,null,dataInicio,dataFim);
+        List<TicketSimpleResponseDTO> ticketsList = buscarTodosFilter(null,null,null,null,dataInicio,dataFim);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (CSVWriter writer = new CSVWriter(new OutputStreamWriter(outputStream))) {
             String[] header = { "ID", "Título", "Descrição", "Status", "Prioridade","Data de Criação" };
             writer.writeNext(header);
 
-            for (TicketSimpleOutputDTO ticket : ticketsList) {
+            for (TicketSimpleResponseDTO ticket : ticketsList) {
                 String[] data = {
                         String.valueOf(ticket.getId()),
                         ticket.getTitulo(),

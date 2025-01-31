@@ -2,8 +2,8 @@ package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
 import br.edu.ifgoiano.ticket.controller.dto.request.MessageResponseDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioRequestDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioResponseDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.Usuario;
 import br.edu.ifgoiano.ticket.repository.UsuarioRepository;
@@ -48,7 +48,7 @@ class UsuarioServiceImplTest {
         Usuario usuario = new Usuario();
         usuario.setSenha("teste");
 
-        UsuarioInputDTO usuarioInput = new UsuarioInputDTO();
+        UsuarioRequestDTO usuarioInput = new UsuarioRequestDTO();
 
         Usuario usuarioEsperado = new Usuario();
 
@@ -66,12 +66,12 @@ class UsuarioServiceImplTest {
     @Test
     void buscarTodos() {
         List<Usuario> usuarios = List.of(new Usuario());
-        List<UsuarioOutputDTO> outputDTOs = List.of(new UsuarioOutputDTO());
+        List<UsuarioResponseDTO> outputDTOs = List.of(new UsuarioResponseDTO());
 
         when(usuarioRepository.findAll()).thenReturn(usuarios);
-        when(mapper.toList(usuarios, UsuarioOutputDTO.class)).thenReturn(outputDTOs);
+        when(mapper.toList(usuarios, UsuarioResponseDTO.class)).thenReturn(outputDTOs);
 
-        List<UsuarioOutputDTO> result = service.buscarTodos();
+        List<UsuarioResponseDTO> result = service.buscarTodos();
 
         assertNotNull(result);
         assertEquals(1, result.size());
@@ -82,12 +82,12 @@ class UsuarioServiceImplTest {
     void buscaPorId() {
         Long id = 1L;
         Usuario usuario = new Usuario();
-        UsuarioOutputDTO outputDTO = new UsuarioOutputDTO();
+        UsuarioResponseDTO outputDTO = new UsuarioResponseDTO();
 
         when(usuarioRepository.findById(id)).thenReturn(Optional.of(usuario));
-        when(mapper.mapTo(usuario, UsuarioOutputDTO.class)).thenReturn(outputDTO);
+        when(mapper.mapTo(usuario, UsuarioResponseDTO.class)).thenReturn(outputDTO);
 
-        UsuarioOutputDTO result = service.buscaPorId(id);
+        UsuarioResponseDTO result = service.buscaPorId(id);
 
         assertNotNull(result);
         verify(usuarioRepository).findById(id);
@@ -106,15 +106,15 @@ class UsuarioServiceImplTest {
     @Test
     void atualizar() {
         Long id = 1L;
-        UsuarioInputDTO inputDTO = new UsuarioInputDTO();
+        UsuarioRequestDTO inputDTO = new UsuarioRequestDTO();
         Usuario usuario = new Usuario();
-        UsuarioOutputDTO outputDTO = new UsuarioOutputDTO();
+        UsuarioResponseDTO outputDTO = new UsuarioResponseDTO();
 
         when(mapper.mapTo(inputDTO, Usuario.class)).thenReturn(usuario);
         when(usuarioRepository.save(usuario)).thenReturn(usuario);
-        when(mapper.mapTo(usuario, UsuarioOutputDTO.class)).thenReturn(outputDTO);
+        when(mapper.mapTo(usuario, UsuarioResponseDTO.class)).thenReturn(outputDTO);
 
-        UsuarioOutputDTO result = service.atualizar(id, inputDTO);
+        UsuarioResponseDTO result = service.atualizar(id, inputDTO);
 
         assertNotNull(result);
         verify(usuarioRepository).save(usuario);

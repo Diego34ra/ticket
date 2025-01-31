@@ -1,8 +1,7 @@
 package br.edu.ifgoiano.ticket.controller;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.regraPrioridade.RegraPrioridadeInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.regraPrioridade.RegraPrioridadeOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.regraPrioridade.RegraPrioridadeRequestDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.regraPrioridade.RegraPrioridadeResponseDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ErrorDetails;
 import br.edu.ifgoiano.ticket.service.RegraPrioridadeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,11 +31,11 @@ public class RegraPrioridadeController {
     @PostMapping
     @Operation(summary = "Criar um regra de prioridade")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Regra criada com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = RegraPrioridadeOutputDTO.class))}),
+            @ApiResponse(responseCode = "201", description = "Regra criada com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = RegraPrioridadeResponseDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<RegraPrioridadeOutputDTO> criar(@RequestBody RegraPrioridadeInputDTO regraPrioridadeInputDTO){
-        var regraPrioridadeCriada = regraPrioridadeService.criar(regraPrioridadeInputDTO);
+    public ResponseEntity<RegraPrioridadeResponseDTO> criar(@RequestBody RegraPrioridadeRequestDTO regraPrioridadeRequestDTO){
+        var regraPrioridadeCriada = regraPrioridadeService.criar(regraPrioridadeRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(regraPrioridadeCriada);
     }
 
@@ -48,23 +47,23 @@ public class RegraPrioridadeController {
                     description = "Regras buscadas com sucesso.",
                     content = @Content(
                             mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = RegraPrioridadeOutputDTO.class))
+                            array = @ArraySchema(schema = @Schema(implementation = RegraPrioridadeResponseDTO.class))
                     )
             ),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<List<RegraPrioridadeOutputDTO>> buscarTodos(){
+    public ResponseEntity<List<RegraPrioridadeResponseDTO>> buscarTodos(){
         return ResponseEntity.status(HttpStatus.OK).body(regraPrioridadeService.buscarTodos());
     }
 
     @PutMapping("{id}")
     @Operation(summary = "Atualizar uma regra de prioridade")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Regra atualizada com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = RegraPrioridadeOutputDTO.class))}),
+            @ApiResponse(responseCode = "200", description = "Regra atualizada com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = RegraPrioridadeResponseDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<RegraPrioridadeOutputDTO> atualizar(@PathVariable Long id, @RequestBody RegraPrioridadeInputDTO regraPrioridadeInputDTO){
-        var regraPrioridadeAtualizada = regraPrioridadeService.atualizar(id,regraPrioridadeInputDTO);
+    public ResponseEntity<RegraPrioridadeResponseDTO> atualizar(@PathVariable Long id, @RequestBody RegraPrioridadeRequestDTO regraPrioridadeRequestDTO){
+        var regraPrioridadeAtualizada = regraPrioridadeService.atualizar(id, regraPrioridadeRequestDTO);
         return ResponseEntity.status(HttpStatus.OK).body(regraPrioridadeAtualizada);
     }
 

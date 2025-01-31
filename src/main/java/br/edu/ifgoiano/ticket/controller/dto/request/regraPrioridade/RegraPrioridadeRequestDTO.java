@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegraPrioridadeInputDTO {
+public class RegraPrioridadeRequestDTO {
     private Categoria categoria;
     private Departamento departamento;
     private Prioridade prioridade;

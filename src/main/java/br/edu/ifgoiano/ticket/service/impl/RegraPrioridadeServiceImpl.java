@@ -1,8 +1,8 @@
 package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
-import br.edu.ifgoiano.ticket.controller.dto.request.regraPrioridade.RegraPrioridadeInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.regraPrioridade.RegraPrioridadeOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.regraPrioridade.RegraPrioridadeRequestDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.regraPrioridade.RegraPrioridadeResponseDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.Categoria;
 import br.edu.ifgoiano.ticket.model.Departamento;
@@ -40,19 +40,19 @@ public class RegraPrioridadeServiceImpl implements RegraPrioridadeService {
 
     @Override
     @CacheEvict(value = "regraPrioridadeCache", allEntries = true)
-    public RegraPrioridadeOutputDTO criar(RegraPrioridadeInputDTO regraPrioridadeInputDTO) {
-        RegraPrioridade regraPrioridade = mapper.mapTo(regraPrioridadeInputDTO, RegraPrioridade.class);
+    public RegraPrioridadeResponseDTO criar(RegraPrioridadeRequestDTO regraPrioridadeRequestDTO) {
+        RegraPrioridade regraPrioridade = mapper.mapTo(regraPrioridadeRequestDTO, RegraPrioridade.class);
         Categoria categoria = categoriaService.buscaPorId(regraPrioridade.getCategoria().getId());
         Departamento departamento = mapper.mapTo(departamentoService.buscarPorId(regraPrioridade.getDepartamento().getId()),Departamento.class);
         regraPrioridade.setCategoria(categoria);
         regraPrioridade.setDepartamento(departamento);
-        return mapper.mapTo(regraPrioridadeRepository.save(regraPrioridade), RegraPrioridadeOutputDTO.class);
+        return mapper.mapTo(regraPrioridadeRepository.save(regraPrioridade), RegraPrioridadeResponseDTO.class);
     }
 
     @Override
     @Cacheable(value = "regraPrioridadeCache")
-    public List<RegraPrioridadeOutputDTO> buscarTodos() {
-        return mapper.toList(regraPrioridadeRepository.findAll(), RegraPrioridadeOutputDTO.class);
+    public List<RegraPrioridadeResponseDTO> buscarTodos() {
+        return mapper.toList(regraPrioridadeRepository.findAll(), RegraPrioridadeResponseDTO.class);
     }
 
     @Override
@@ -63,11 +63,11 @@ public class RegraPrioridadeServiceImpl implements RegraPrioridadeService {
 
     @Override
     @CacheEvict(value = "regraPrioridadeCache", allEntries = true)
-    public RegraPrioridadeOutputDTO atualizar(Long id, RegraPrioridadeInputDTO regraPrioridadeInputDTO) {
+    public RegraPrioridadeResponseDTO atualizar(Long id, RegraPrioridadeRequestDTO regraPrioridadeRequestDTO) {
         RegraPrioridade regraPrioridade = regraPrioridadeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrada regra de prioridade com esse id."));
-        regraPrioridade.setPrioridade(regraPrioridadeInputDTO.getPrioridade());
-        return mapper.mapTo(regraPrioridadeRepository.save(regraPrioridade),RegraPrioridadeOutputDTO.class);
+        regraPrioridade.setPrioridade(regraPrioridadeRequestDTO.getPrioridade());
+        return mapper.mapTo(regraPrioridadeRepository.save(regraPrioridade), RegraPrioridadeResponseDTO.class);
     }
 
     @Override

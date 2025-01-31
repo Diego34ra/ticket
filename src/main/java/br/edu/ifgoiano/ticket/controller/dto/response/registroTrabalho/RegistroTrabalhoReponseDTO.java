@@ -1,6 +1,7 @@
-package br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho;
+package br.edu.ifgoiano.ticket.controller.dto.response.registroTrabalho;
 
-import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioSimpleOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.ticket.TicketSimpleResponseDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioSimpleResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,11 +14,12 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegistroTrabalhoSimpleOutputDTO {
+public class RegistroTrabalhoReponseDTO {
     private Long id;
     private String descricao;
     private Duration duration;
     private LocalDateTime horarioFim;
     private LocalDateTime horarioInicio;
-    private UsuarioSimpleOutputDTO agente;
+    private TicketSimpleResponseDTO ticket;
+    private UsuarioSimpleResponseDTO agente;
 }

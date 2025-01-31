@@ -4,9 +4,9 @@ import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
 import br.edu.ifgoiano.ticket.controller.dto.request.AnexoOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestUpdateDTO;
-import br.edu.ifgoiano.ticket.controller.dto.response.comentario.ComentarioOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.comentario.ComentarioResponseDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.ticket.TicketResponseDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioResponseDTO;
 import br.edu.ifgoiano.ticket.model.Anexo;
 import br.edu.ifgoiano.ticket.model.Comentario;
 import br.edu.ifgoiano.ticket.model.Ticket;
@@ -67,14 +67,14 @@ class ComentarioServiceImplTest {
         ticket.setId(ticketId);
         ticket.setComentarios(new ArrayList<>());
 
-        TicketOutputDTO ticketOutputDTO = new TicketOutputDTO();
-        ticketOutputDTO.setId(ticketId.toString());
+        TicketResponseDTO ticketResponseDTO = new TicketResponseDTO();
+        ticketResponseDTO.setId(ticketId.toString());
 
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
 
-        UsuarioOutputDTO usuarioOutputDTO = new UsuarioOutputDTO();
-        usuarioOutputDTO.setId(usuarioId);
+        UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO();
+        usuarioResponseDTO.setId(usuarioId);
 
         ComentarioRequestDTO comentarioInputDTO = new ComentarioRequestDTO();
         comentarioInputDTO.setConteudo("Texto do comentário");
@@ -84,23 +84,23 @@ class ComentarioServiceImplTest {
         comentario.setId(1L);
         comentario.setConteudo("Texto do comentário");
 
-        ComentarioOutputDTO comentarioOutputDTO = new ComentarioOutputDTO();
-        comentarioOutputDTO.setConteudo("Texto do comentário");
+        ComentarioResponseDTO comentarioResponseDTO = new ComentarioResponseDTO();
+        comentarioResponseDTO.setConteudo("Texto do comentário");
 
         List<Anexo> anexoList = List.of(new Anexo("arquivo.pdf", "application/pdf", "10 KB", "/download/arquivo.pdf"));
         List<AnexoOutputDTO> anexoOutputDTOList = List.of(new AnexoOutputDTO(1L,"arquivo.pdf", "application/pdf", "10 KB", "/download/arquivo.pdf"));
 
-        when(ticketService.buscarPorId(ticketId)).thenReturn(ticketOutputDTO);
-        when(mapper.mapTo(ticketOutputDTO,Ticket.class)).thenReturn(ticket);
-        when(usuarioService.buscaPorId(usuarioId)).thenReturn(usuarioOutputDTO);
-        when(mapper.mapTo(usuarioOutputDTO,Usuario.class)).thenReturn(usuario);
+        when(ticketService.buscarPorId(ticketId)).thenReturn(ticketResponseDTO);
+        when(mapper.mapTo(ticketResponseDTO,Ticket.class)).thenReturn(ticket);
+        when(usuarioService.buscaPorId(usuarioId)).thenReturn(usuarioResponseDTO);
+        when(mapper.mapTo(usuarioResponseDTO,Usuario.class)).thenReturn(usuario);
         when(mapper.mapTo(comentarioInputDTO, Comentario.class)).thenReturn(comentario);
         when(comentarioRepository.save(comentario)).thenReturn(comentario);
-        when(mapper.mapTo(comentario, ComentarioOutputDTO.class)).thenReturn(comentarioOutputDTO);
+        when(mapper.mapTo(comentario, ComentarioResponseDTO.class)).thenReturn(comentarioResponseDTO);
         when(anexoService.salvarAnexos(comentario, comentarioInputDTO.getAnexos())).thenReturn(anexoList);
         when(mapper.toList(anexoList, AnexoOutputDTO.class)).thenReturn(anexoOutputDTOList);
 
-        ComentarioOutputDTO resultado = comentarioService.criar(ticketId, usuarioId, comentarioInputDTO);
+        ComentarioResponseDTO resultado = comentarioService.criar(ticketId, usuarioId, comentarioInputDTO);
 
         assertNotNull(resultado);
         assertEquals("Texto do comentário", resultado.getConteudo());
@@ -131,14 +131,14 @@ class ComentarioServiceImplTest {
         comentario.setId(1L);
         comentario.setConteudo("Texto do comentário");
 
-        ComentarioOutputDTO comentarioOutputDTO = new ComentarioOutputDTO();
-        comentarioOutputDTO.setId(1L);
-        comentarioOutputDTO.setConteudo("Texto do comentário");
+        ComentarioResponseDTO comentarioResponseDTO = new ComentarioResponseDTO();
+        comentarioResponseDTO.setId(1L);
+        comentarioResponseDTO.setConteudo("Texto do comentário");
 
         when(comentarioRepository.findByTicketId(ticketId)).thenReturn(List.of(comentario));
-        when(mapper.toList(List.of(comentario),ComentarioOutputDTO.class)).thenReturn(List.of(comentarioOutputDTO));
+        when(mapper.toList(List.of(comentario), ComentarioResponseDTO.class)).thenReturn(List.of(comentarioResponseDTO));
 
-        List<ComentarioOutputDTO> resultado = comentarioService.buscarPorTicketId(ticketId);
+        List<ComentarioResponseDTO> resultado = comentarioService.buscarPorTicketId(ticketId);
 
         assertNotNull(resultado);
         assertEquals(1, resultado.size());
@@ -159,16 +159,16 @@ class ComentarioServiceImplTest {
         comentarioExistente.setId(comentarioId);
         comentarioExistente.setConteudo("Texto atualizado");
 
-        ComentarioOutputDTO comentarioOutputDTO = new ComentarioOutputDTO();
-        comentarioOutputDTO.setId(comentarioId);
-        comentarioOutputDTO.setConteudo("Texto atualizado");
+        ComentarioResponseDTO comentarioResponseDTO = new ComentarioResponseDTO();
+        comentarioResponseDTO.setId(comentarioId);
+        comentarioResponseDTO.setConteudo("Texto atualizado");
 
         when(comentarioRepository.findById(comentarioId)).thenReturn(Optional.of(comentarioExistente));
         when(objectUtils.getNullPropertyNames(updateDTO)).thenReturn(new String[]{});
         when(comentarioRepository.save(comentarioExistente)).thenReturn(comentarioAtualizado);
-        when(mapper.mapTo(comentarioAtualizado,ComentarioOutputDTO.class)).thenReturn(comentarioOutputDTO);
+        when(mapper.mapTo(comentarioAtualizado, ComentarioResponseDTO.class)).thenReturn(comentarioResponseDTO);
 
-        ComentarioOutputDTO resultado = comentarioService.atualizar(comentarioId, updateDTO);
+        ComentarioResponseDTO resultado = comentarioService.atualizar(comentarioId, updateDTO);
 
         assertNotNull(resultado);
         assertEquals("Texto atualizado", resultado.getConteudo());

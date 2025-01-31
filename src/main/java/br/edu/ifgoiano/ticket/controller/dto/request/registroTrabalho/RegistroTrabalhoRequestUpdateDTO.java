@@ -5,14 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegistroTrabalhoInputDTO {
+public class RegistroTrabalhoRequestUpdateDTO {
     private String descricao;
-    private LocalDateTime horarioFim;
-    private LocalDateTime horarioInicio;
 }

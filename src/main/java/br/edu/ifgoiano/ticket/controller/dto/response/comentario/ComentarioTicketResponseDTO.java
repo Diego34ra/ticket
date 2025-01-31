@@ -1,6 +1,6 @@
 package br.edu.ifgoiano.ticket.controller.dto.response.comentario;
 
-import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioSimpleOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioSimpleResponseDTO;
 import br.edu.ifgoiano.ticket.model.FileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,9 +13,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ComentarioTicketOutputDTO {
+public class ComentarioTicketResponseDTO {
     private Long id;
     private String conteudo;
     private List<FileResponse> anexos;
-    private UsuarioSimpleOutputDTO autor;
+    private UsuarioSimpleResponseDTO autor;
 }

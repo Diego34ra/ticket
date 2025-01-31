@@ -12,11 +12,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsuarioOutputDTO {
-
+public class UsuarioSimpleResponseDTO {
     private Long id;
     private String nome;
     private String email;
-    private String cpf;
     private List<TelefoneDTO> contatos;
 }

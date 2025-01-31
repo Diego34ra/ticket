@@ -44,18 +44,15 @@ public class Usuario implements UserDetails {
         switch (this.tipoUsuario) {
             case ADMINISTRADOR:
                 return List.of(
-                        new SimpleGrantedAuthority("ROLE_ADMINISTRADOR"),
-                        new SimpleGrantedAuthority("ROLE_USER")
+                        new SimpleGrantedAuthority("ROLE_ADMINISTRADOR")
                 );
             case GERENTE:
                 return List.of(
-                        new SimpleGrantedAuthority("ROLE_GERENTE"),
-                        new SimpleGrantedAuthority("ROLE_CLIENTE")
+                        new SimpleGrantedAuthority("ROLE_GERENTE")
                 );
             case FUNCIONARIO:
                 return List.of(
-                        new SimpleGrantedAuthority("ROLE_FUNCIONARIO"),
-                        new SimpleGrantedAuthority("ROLE_CLIENTE")
+                        new SimpleGrantedAuthority("ROLE_FUNCIONARIO")
                 );
             case CLIENTE:
                 return List.of(new SimpleGrantedAuthority("ROLE_CLIENTE"));

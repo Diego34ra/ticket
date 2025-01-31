@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegistroTrabalhoInputUpdateDTO {
+public class RegistroTrabalhoRequestDTO {
     private String descricao;
+    private LocalDateTime horarioFim;
+    private LocalDateTime horarioInicio;
 }

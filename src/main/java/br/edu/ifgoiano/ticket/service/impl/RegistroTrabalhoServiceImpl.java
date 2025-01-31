@@ -1,9 +1,9 @@
 package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
-import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoInputUpdateDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoRequestDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoRequestUpdateDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.registroTrabalho.RegistroTrabalhoReponseDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.RegistroTrabalho;
 import br.edu.ifgoiano.ticket.model.Ticket;
@@ -38,27 +38,27 @@ public class RegistroTrabalhoServiceImpl implements RegistroTrabalhoService {
     @Autowired
     private MyModelMapper mapper;
     @Override
-    public RegistroTrabalhoOutputDTO criar(Long ticketId, RegistroTrabalhoInputDTO registroTrabalhoInputDTO) {
+    public RegistroTrabalhoReponseDTO criar(Long ticketId, RegistroTrabalhoRequestDTO registroTrabalhoRequestDTO) {
         Ticket ticket = mapper.mapTo(ticketService.buscarPorId(ticketId), Ticket.class);
         Long uuidAuth = Long.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         Usuario usuario = mapper.mapTo(usuarioService.buscaPorId(uuidAuth), Usuario.class);
-        RegistroTrabalho registroTrabalho = mapper.mapTo(registroTrabalhoInputDTO,RegistroTrabalho.class);
+        RegistroTrabalho registroTrabalho = mapper.mapTo(registroTrabalhoRequestDTO,RegistroTrabalho.class);
         registroTrabalho.setTicket(ticket);
         registroTrabalho.setAgente(usuario);
-        return mapper.mapTo(registroTrabalhoRepository.save(registroTrabalho),RegistroTrabalhoOutputDTO.class);
+        return mapper.mapTo(registroTrabalhoRepository.save(registroTrabalho), RegistroTrabalhoReponseDTO.class);
     }
 
     @Override
-    public List<RegistroTrabalhoOutputDTO> buscarTodosPorTicket(Long ticketId) {
-        return mapper.toList(registroTrabalhoRepository.findByTicketId(ticketId), RegistroTrabalhoOutputDTO.class);
+    public List<RegistroTrabalhoReponseDTO> buscarTodosPorTicket(Long ticketId) {
+        return mapper.toList(registroTrabalhoRepository.findByTicketId(ticketId), RegistroTrabalhoReponseDTO.class);
     }
 
     @Override
-    public RegistroTrabalhoOutputDTO atualizar(Long registroId, RegistroTrabalhoInputUpdateDTO registroTrabalhoInputUpdateDTO) {
+    public RegistroTrabalhoReponseDTO atualizar(Long registroId, RegistroTrabalhoRequestUpdateDTO registroTrabalhoRequestUpdateDTO) {
         RegistroTrabalho registroTrabalho = registroTrabalhoRepository.findById(registroId)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum registro com esse id."));
-        BeanUtils.copyProperties(registroTrabalhoInputUpdateDTO,registroTrabalho,objectUtils.getNullPropertyNames(registroTrabalhoInputUpdateDTO));
-        return mapper.mapTo(registroTrabalhoRepository.save(registroTrabalho),RegistroTrabalhoOutputDTO.class);
+        BeanUtils.copyProperties(registroTrabalhoRequestUpdateDTO,registroTrabalho,objectUtils.getNullPropertyNames(registroTrabalhoRequestUpdateDTO));
+        return mapper.mapTo(registroTrabalhoRepository.save(registroTrabalho), RegistroTrabalhoReponseDTO.class);
     }
 
     @Override

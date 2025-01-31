@@ -1,7 +1,7 @@
 package br.edu.ifgoiano.ticket.controller;
 
 import br.edu.ifgoiano.ticket.controller.dto.request.autenticacao.AuthenticationRequestDTO;
-import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioResponseDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.login.LoginResponseDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ErrorDetails;
 import br.edu.ifgoiano.ticket.model.Usuario;
@@ -35,7 +35,7 @@ public class AuthController {
     @PostMapping
     @Operation(summary = "Realizar login")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Usuario logado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UsuarioOutputDTO.class))}),
+            @ApiResponse(responseCode = "201", description = "Usuario logado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UsuarioResponseDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     private ResponseEntity<LoginResponseDTO> login(@RequestBody AuthenticationRequestDTO authenticationRequestDTO){

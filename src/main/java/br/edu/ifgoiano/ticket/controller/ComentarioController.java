@@ -2,7 +2,7 @@ package br.edu.ifgoiano.ticket.controller;
 
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestUpdateDTO;
-import br.edu.ifgoiano.ticket.controller.dto.response.comentario.ComentarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.comentario.ComentarioResponseDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ErrorDetails;
 import br.edu.ifgoiano.ticket.service.ComentarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,12 +30,12 @@ public class ComentarioController {
     @PostMapping(consumes = "multipart/form-data")
     @Operation(summary = "Criar um comentário")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Comentário criado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ComentarioOutputDTO.class))}),
+            @ApiResponse(responseCode = "201", description = "Comentário criado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ComentarioResponseDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<ComentarioOutputDTO> criar(@RequestParam Long ticketId,
-                                                     @RequestParam Long usuarioId,
-                                                     @ModelAttribute ComentarioRequestDTO conteudo) {
+    public ResponseEntity<ComentarioResponseDTO> criar(@RequestParam Long ticketId,
+                                                       @RequestParam Long usuarioId,
+                                                       @ModelAttribute ComentarioRequestDTO conteudo) {
         var comentarioCriado = comentarioService.criar(ticketId,usuarioId,conteudo);
         return ResponseEntity.status(HttpStatus.CREATED).body(comentarioCriado);
     }
@@ -48,12 +48,12 @@ public class ComentarioController {
                     description = "Comentários buscados com sucesso.",
                     content = @Content(
                             mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = ComentarioOutputDTO.class))
+                            array = @ArraySchema(schema = @Schema(implementation = ComentarioResponseDTO.class))
                     )
             ),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<List<ComentarioOutputDTO>> buscarPorTicketId(@RequestParam Long ticketId){
+    public ResponseEntity<List<ComentarioResponseDTO>> buscarPorTicketId(@RequestParam Long ticketId){
         var comentarioList = comentarioService.buscarPorTicketId(ticketId);
         return ResponseEntity.status(HttpStatus.OK).body(comentarioList);
     }
@@ -61,10 +61,10 @@ public class ComentarioController {
     @PutMapping("{id}")
     @Operation(summary = "Atualizar um comentário")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Comentário atualizado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ComentarioOutputDTO.class))}),
+            @ApiResponse(responseCode = "200", description = "Comentário atualizado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ComentarioResponseDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<ComentarioOutputDTO> atualizar(@RequestBody Long id, ComentarioRequestUpdateDTO comentarioInputUpdateDTO){
+    public ResponseEntity<ComentarioResponseDTO> atualizar(@RequestBody Long id, ComentarioRequestUpdateDTO comentarioInputUpdateDTO){
         var comentarioAtualizado = comentarioService.atualizar(id,comentarioInputUpdateDTO);
         return ResponseEntity.status(HttpStatus.OK).body(comentarioAtualizado);
     }

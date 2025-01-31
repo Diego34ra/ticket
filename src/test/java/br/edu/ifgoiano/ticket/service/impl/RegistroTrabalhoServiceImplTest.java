@@ -1,11 +1,11 @@
 package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
-import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoInputUpdateDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoRequestDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoRequestUpdateDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.registroTrabalho.RegistroTrabalhoReponseDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.ticket.TicketResponseDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioResponseDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.RegistroTrabalho;
 import br.edu.ifgoiano.ticket.model.Ticket;
@@ -51,38 +51,38 @@ class RegistroTrabalhoServiceImplTest {
     @Test
     void criar() {
         Long ticketId = 1L;
-        RegistroTrabalhoInputDTO inputDTO = new RegistroTrabalhoInputDTO();
+        RegistroTrabalhoRequestDTO inputDTO = new RegistroTrabalhoRequestDTO();
 
-        TicketOutputDTO ticketOutputDTO = new TicketOutputDTO();
-        ticketOutputDTO.setId("1");
-        ticketOutputDTO.setTitulo("Ticket Teste");
+        TicketResponseDTO ticketResponseDTO = new TicketResponseDTO();
+        ticketResponseDTO.setId("1");
+        ticketResponseDTO.setTitulo("Ticket Teste");
 
         Ticket ticket = new Ticket();
         ticket.setId(1L);
         ticket.setTitulo("Ticket Teste");
 
-        UsuarioOutputDTO usuarioOutputDTO = new UsuarioOutputDTO();
-        usuarioOutputDTO.setId(1L);
-        usuarioOutputDTO.setNome("Usuario Teste");
+        UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO();
+        usuarioResponseDTO.setId(1L);
+        usuarioResponseDTO.setNome("Usuario Teste");
 
         Usuario usuario = new Usuario();
         usuario.setId(1L);
         usuario.setNome("Usuario Teste");
 
         RegistroTrabalho registroTrabalho = new RegistroTrabalho();
-        RegistroTrabalhoOutputDTO outputDTO = new RegistroTrabalhoOutputDTO();
+        RegistroTrabalhoReponseDTO outputDTO = new RegistroTrabalhoReponseDTO();
 
-        when(ticketService.buscarPorId(ticketId)).thenReturn(ticketOutputDTO);
-        when(mapper.mapTo(ticketOutputDTO, Ticket.class)).thenReturn(ticket);
+        when(ticketService.buscarPorId(ticketId)).thenReturn(ticketResponseDTO);
+        when(mapper.mapTo(ticketResponseDTO, Ticket.class)).thenReturn(ticket);
 
-        when(usuarioService.buscaPorId(1L)).thenReturn(usuarioOutputDTO);
-        when(mapper.mapTo(usuarioOutputDTO, Usuario.class)).thenReturn(usuario);
+        when(usuarioService.buscaPorId(1L)).thenReturn(usuarioResponseDTO);
+        when(mapper.mapTo(usuarioResponseDTO, Usuario.class)).thenReturn(usuario);
 
         when(mapper.mapTo(inputDTO, RegistroTrabalho.class)).thenReturn(registroTrabalho);
         when(registroTrabalhoRepository.save(any(RegistroTrabalho.class))).thenReturn(registroTrabalho);
-        when(mapper.mapTo(registroTrabalho, RegistroTrabalhoOutputDTO.class)).thenReturn(outputDTO);
+        when(mapper.mapTo(registroTrabalho, RegistroTrabalhoReponseDTO.class)).thenReturn(outputDTO);
 
-        RegistroTrabalhoOutputDTO result = service.criar(ticketId, inputDTO);
+        RegistroTrabalhoReponseDTO result = service.criar(ticketId, inputDTO);
 
         assertNotNull(result);
         verify(ticketService).buscarPorId(ticketId);
@@ -94,12 +94,12 @@ class RegistroTrabalhoServiceImplTest {
     void buscarTodosPorTicket() {
         Long ticketId = 1L;
         List<RegistroTrabalho> registros = List.of(new RegistroTrabalho(),new RegistroTrabalho());
-        List<RegistroTrabalhoOutputDTO> outputDTOs = List.of(new RegistroTrabalhoOutputDTO(),new RegistroTrabalhoOutputDTO());
+        List<RegistroTrabalhoReponseDTO> outputDTOs = List.of(new RegistroTrabalhoReponseDTO(),new RegistroTrabalhoReponseDTO());
 
         when(registroTrabalhoRepository.findByTicketId(ticketId)).thenReturn(registros);
-        when(mapper.toList(registros, RegistroTrabalhoOutputDTO.class)).thenReturn(outputDTOs);
+        when(mapper.toList(registros, RegistroTrabalhoReponseDTO.class)).thenReturn(outputDTOs);
 
-        List<RegistroTrabalhoOutputDTO> result = service.buscarTodosPorTicket(ticketId);
+        List<RegistroTrabalhoReponseDTO> result = service.buscarTodosPorTicket(ticketId);
 
         assertNotNull(result);
         assertEquals(2, result.size());
@@ -109,16 +109,16 @@ class RegistroTrabalhoServiceImplTest {
     @Test
     void atualizar() {
         Long registroId = 1L;
-        RegistroTrabalhoInputUpdateDTO inputDTO = new RegistroTrabalhoInputUpdateDTO();
+        RegistroTrabalhoRequestUpdateDTO inputDTO = new RegistroTrabalhoRequestUpdateDTO();
         RegistroTrabalho registroTrabalho = new RegistroTrabalho();
-        RegistroTrabalhoOutputDTO outputDTO = new RegistroTrabalhoOutputDTO();
+        RegistroTrabalhoReponseDTO outputDTO = new RegistroTrabalhoReponseDTO();
 
         when(registroTrabalhoRepository.findById(registroId)).thenReturn(Optional.of(registroTrabalho));
         when(objectUtils.getNullPropertyNames(inputDTO)).thenReturn(new String[0]);
         when(registroTrabalhoRepository.save(registroTrabalho)).thenReturn(registroTrabalho);
-        when(mapper.mapTo(registroTrabalho, RegistroTrabalhoOutputDTO.class)).thenReturn(outputDTO);
+        when(mapper.mapTo(registroTrabalho, RegistroTrabalhoReponseDTO.class)).thenReturn(outputDTO);
 
-        RegistroTrabalhoOutputDTO result = service.atualizar(registroId, inputDTO);
+        RegistroTrabalhoReponseDTO result = service.atualizar(registroId, inputDTO);
 
         assertNotNull(result);
         verify(registroTrabalhoRepository).findById(registroId);
@@ -128,7 +128,7 @@ class RegistroTrabalhoServiceImplTest {
     @Test
     void atualizar_deveLancarExcecaoQuandoRegistroNaoForEncontrado() {
         Long registroId = 1L;
-        RegistroTrabalhoInputUpdateDTO inputDTO = new RegistroTrabalhoInputUpdateDTO();
+        RegistroTrabalhoRequestUpdateDTO inputDTO = new RegistroTrabalhoRequestUpdateDTO();
 
         when(registroTrabalhoRepository.findById(registroId)).thenReturn(Optional.empty());
 

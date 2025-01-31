@@ -4,7 +4,7 @@ import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
 import br.edu.ifgoiano.ticket.controller.dto.request.AnexoOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestUpdateDTO;
-import br.edu.ifgoiano.ticket.controller.dto.response.comentario.ComentarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.comentario.ComentarioResponseDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.*;
 import br.edu.ifgoiano.ticket.model.Ticket;
@@ -49,7 +49,7 @@ public class ComentarioServiceImpl implements ComentarioService {
     private ObjectUtils objectUtils;
 
     @Override
-    public ComentarioOutputDTO criar(Long ticketId, Long usuarioId, ComentarioRequestDTO comentarioInputDTO) {
+    public ComentarioResponseDTO criar(Long ticketId, Long usuarioId, ComentarioRequestDTO comentarioInputDTO) {
         Ticket ticket = mapper.mapTo(ticketService.buscarPorId(ticketId),Ticket.class);
         Usuario autor = mapper.mapTo(usuarioService.buscaPorId(usuarioId), Usuario.class);
 
@@ -61,13 +61,13 @@ public class ComentarioServiceImpl implements ComentarioService {
         Comentario comentario = comentarioRepository.save(comentarioCriar);
         ticketRespository.save(ticket);
 
-        ComentarioOutputDTO comentarioOutputDTO = mapper.mapTo(comentario,ComentarioOutputDTO.class);
+        ComentarioResponseDTO comentarioResponseDTO = mapper.mapTo(comentario, ComentarioResponseDTO.class);
 
         List<Anexo> anexoList = anexoService.salvarAnexos(comentario,comentarioInputDTO.getAnexos());
         if(anexoList != null && !anexoList.isEmpty())
-            comentarioOutputDTO.setAnexos(mapper.toList(anexoList, AnexoOutputDTO.class));
+            comentarioResponseDTO.setAnexos(mapper.toList(anexoList, AnexoOutputDTO.class));
 
-        return comentarioOutputDTO;
+        return comentarioResponseDTO;
     }
 
     @Override
@@ -76,16 +76,16 @@ public class ComentarioServiceImpl implements ComentarioService {
     }
 
     @Override
-    public List<ComentarioOutputDTO> buscarPorTicketId(Long ticketId) {
-        return mapper.toList(comentarioRepository.findByTicketId(ticketId), ComentarioOutputDTO.class);
+    public List<ComentarioResponseDTO> buscarPorTicketId(Long ticketId) {
+        return mapper.toList(comentarioRepository.findByTicketId(ticketId), ComentarioResponseDTO.class);
     }
 
     @Override
-    public ComentarioOutputDTO atualizar(Long comentarioId, ComentarioRequestUpdateDTO comentarioInputUpdateDTO) {
+    public ComentarioResponseDTO atualizar(Long comentarioId, ComentarioRequestUpdateDTO comentarioInputUpdateDTO) {
         Comentario comentario = comentarioRepository.findById(comentarioId)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrada nenhum comentario com esse id."));
         BeanUtils.copyProperties(comentarioInputUpdateDTO,comentario,objectUtils.getNullPropertyNames(comentarioInputUpdateDTO));
-        return mapper.mapTo(comentarioRepository.save(comentario),ComentarioOutputDTO.class);
+        return mapper.mapTo(comentarioRepository.save(comentario), ComentarioResponseDTO.class);
     }
 
     @Override

@@ -1,9 +1,9 @@
 package br.edu.ifgoiano.ticket.controller;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketInputUpdateDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketSimpleOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketRequestDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketRequestUpdateDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.ticket.TicketResponseDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.ticket.TicketSimpleResponseDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ErrorDetails;
 import br.edu.ifgoiano.ticket.model.enums.Prioridade;
 import br.edu.ifgoiano.ticket.model.enums.StatusTicket;
@@ -24,7 +24,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -38,10 +37,10 @@ public class TicketController {
     @PostMapping
     @Operation(summary = "Criar um ticket")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Ticket criado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = TicketOutputDTO.class))}),
+            @ApiResponse(responseCode = "201", description = "Ticket criado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = TicketResponseDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<TicketOutputDTO> criar(@RequestBody TicketInputDTO ticket){
+    public ResponseEntity<TicketResponseDTO> criar(@RequestBody TicketRequestDTO ticket){
         var ticketCriado = ticketService.criar(ticket);
         return ResponseEntity.status(HttpStatus.CREATED).body(ticketCriado);
     }
@@ -54,12 +53,12 @@ public class TicketController {
                     description = "Tickets buscados com sucesso.",
                     content = @Content(
                             mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = TicketSimpleOutputDTO.class))
+                            array = @ArraySchema(schema = @Schema(implementation = TicketSimpleResponseDTO.class))
                     )
             ),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<List<TicketSimpleOutputDTO>> buscarTodos(
+    public ResponseEntity<List<TicketSimpleResponseDTO>> buscarTodos(
             @RequestParam(required = false) String titulo,
             @RequestParam(required = false) StatusTicket status,
             @RequestParam(required = false) Prioridade prioridade,
@@ -73,10 +72,10 @@ public class TicketController {
     @GetMapping("{id}")
     @Operation(summary = "Buscar um ticket")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Categoria buscada com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = TicketOutputDTO.class))}),
+            @ApiResponse(responseCode = "200", description = "Categoria buscada com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = TicketResponseDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<TicketOutputDTO> buscarPorId(@PathVariable Long id){
+    public ResponseEntity<TicketResponseDTO> buscarPorId(@PathVariable Long id){
         var ticket = ticketService.buscarPorId(id);
         return ResponseEntity.status(HttpStatus.OK).body(ticket);
     }
@@ -84,11 +83,11 @@ public class TicketController {
     @PutMapping("{id}")
     @Operation(summary = "Atualizar um ticket")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Ticket atualizado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = TicketOutputDTO.class))}),
+            @ApiResponse(responseCode = "200", description = "Ticket atualizado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = TicketResponseDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<TicketOutputDTO> atualizar(@PathVariable Long id, @RequestBody TicketInputUpdateDTO ticketInputUpdateDTO){
-        var ticketAtualizado = ticketService.atualizar(id,ticketInputUpdateDTO);
+    public ResponseEntity<TicketResponseDTO> atualizar(@PathVariable Long id, @RequestBody TicketRequestUpdateDTO ticketRequestUpdateDTO){
+        var ticketAtualizado = ticketService.atualizar(id, ticketRequestUpdateDTO);
         return ResponseEntity.status(HttpStatus.OK).body(ticketAtualizado);
     }
 
