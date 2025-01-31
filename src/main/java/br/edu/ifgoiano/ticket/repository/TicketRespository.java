@@ -6,13 +6,14 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TicketRespository extends JpaRepository<Ticket,Long>, JpaSpecificationExecutor<Ticket> {
 
-    List<Ticket> findByClienteId(Long clienteId);
+    Optional<Ticket> findByClienteIdAndId(Long clienteId, Long id);
 
-    List<Ticket> findByResponsavelId(Long responsavelId);
+    Optional<Ticket> findByResponsavelIdAndId(Long responsavelId, Long id);
 
-    List<Ticket> findByDepartamentoGerenteId(Long gerenteId);
+    Optional<Ticket> findByDepartamentoGerenteIdAndId(Long gerenteId, Long id);
 }

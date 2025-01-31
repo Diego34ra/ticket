@@ -105,50 +105,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<TicketSimpleResponseDTO> buscarTodos() {
-        List<Ticket> ticketList;
-
-        Long uuidAuth = Long.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        Set<String> roles = getUserRoles(SecurityContextHolder.getContext().getAuthentication());
-
-        System.out.println("UUID = "+uuidAuth);
-
-        if (roles.contains("ROLE_CLIENTE")) {
-            System.out.println("AQUI");
-            ticketList = ticketRepository.findByClienteId(uuidAuth);
-        } else if (roles.contains("ROLE_FUNCIONARIO")) {
-            ticketList = ticketRepository.findByResponsavelId(uuidAuth);
-        } else if (roles.contains("ROLE_GERENTE")) {
-            ticketList = ticketRepository.findByDepartamentoGerenteId(uuidAuth);
-        } else
-            ticketList = ticketRepository.findAll();
-
-
-//        boolean somenteCliente = SecurityContextHolder.getContext().getAuthentication()
-//                .getAuthorities().stream()
-//                .map(GrantedAuthority::getAuthority)
-//                .allMatch(role -> role.equals("ROLE_CLIENTE"));
-//
-//        boolean somenteFuncionario = SecurityContextHolder.getContext().getAuthentication()
-//                .getAuthorities().stream()
-//                .map(GrantedAuthority::getAuthority)
-//                .allMatch(role -> role.equals("ROLE_FUNCIONARIO"));
-//
-//        boolean somenteGerente = SecurityContextHolder.getContext().getAuthentication()
-//                .getAuthorities().stream()
-//                .map(GrantedAuthority::getAuthority)
-//                .allMatch(role -> role.equals("ROLE_GERENTE"));
-//
-//        if(somenteCliente) {
-//            Long uuidAuth = Long.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-//            ticketList = ticketRepository.findByClienteId(uuidAuth);
-//        } else if (somenteFuncionario) {
-//            Long uuidAuth = Long.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-//            ticketList = ticketRepository.findByResponsavelId(uuidAuth);
-//        } else if(somenteGerente) {
-//            Long uuidAuth = Long.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-//            ticketList = ticketRepository.findByDepartamentoGerenteId(uuidAuth);
-//        } else
-//            ticketList = ticketRepository.findAll();
+        List<Ticket> ticketList = ticketRepository.findAll();
 
         return mapper.toList(ticketList, TicketSimpleResponseDTO.class);
     }
@@ -161,8 +118,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<TicketSimpleResponseDTO> buscarTodosFilter(String titulo, StatusTicket status, Prioridade prioridade, String nomeResponsavel, String dataInicio, String dataFim) {
-        Long uuidAuth = Long.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        Set<String> roles = getUserRoles(SecurityContextHolder.getContext().getAuthentication());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long uuidAuth = Long.valueOf((String) authentication.getPrincipal());
+        Set<String> roles = getUserRoles(authentication);
 
         Specification<Ticket> spec = TicketSpecification.filterTickets(titulo, status, prioridade, nomeResponsavel,dataInicio,dataFim);
 
@@ -187,8 +145,24 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public TicketResponseDTO buscarPorId(Long id) {
-        Ticket ticket = ticketRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum ticket com esse id."));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long uuidAuth = Long.valueOf((String) authentication.getPrincipal());
+        Set<String> roles = getUserRoles(authentication);
+
+        Optional<Ticket> ticketOptional;
+        if (roles.contains("ROLE_CLIENTE")) {
+            ticketOptional = ticketRepository.findByClienteIdAndId(uuidAuth,id);
+        } else if (roles.contains("ROLE_FUNCIONARIO")) {
+            ticketOptional = ticketRepository.findByResponsavelIdAndId(uuidAuth,id);
+        } else if (roles.contains("ROLE_GERENTE")) {
+            ticketOptional = ticketRepository.findByDepartamentoGerenteIdAndId(uuidAuth,id);
+        } else
+            ticketOptional = ticketRepository.findById(id);
+
+        Ticket ticket = ticketOptional.orElseThrow(() ->
+                new ResourceNotFoundException("Não foi encontrado nenhum ticket com esse id.")
+        );
+
         return mapper.mapTo(ticket, TicketResponseDTO.class);
     }
 
