@@ -168,8 +168,23 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public TicketResponseDTO atualizar(Long id, TicketRequestUpdateDTO ticketRequestUpdateDTO) {
-        Ticket ticket = ticketRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum ticket com esse id."));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long uuidAuth = Long.valueOf((String) authentication.getPrincipal());
+        Set<String> roles = getUserRoles(authentication);
+
+        Optional<Ticket> ticketOptional;
+        if (roles.contains("ROLE_CLIENTE")) {
+            ticketOptional = ticketRepository.findByClienteIdAndId(uuidAuth,id);
+        } else if (roles.contains("ROLE_FUNCIONARIO")) {
+            ticketOptional = ticketRepository.findByResponsavelIdAndId(uuidAuth,id);
+        } else if (roles.contains("ROLE_GERENTE")) {
+            ticketOptional = ticketRepository.findByDepartamentoGerenteIdAndId(uuidAuth,id);
+        } else
+            ticketOptional = ticketRepository.findById(id);
+
+        Ticket ticket = ticketOptional.orElseThrow(() ->
+                new ResourceNotFoundException("Não foi encontrado nenhum ticket com esse id.")
+        );
 
         Map<String, Map<String, Object>> camposAlterados = new HashMap<>();
 
@@ -193,7 +208,6 @@ public class TicketServiceImpl implements TicketService {
             }
         }
 
-        Long uuidAuth = Long.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         Usuario usuarioResponsavelPelaAtualizacao = mapper.mapTo(usuarioService.buscaPorId(uuidAuth), Usuario.class);
 
         List<TicketHistorico> ticketHistoricoList = new ArrayList<>();
