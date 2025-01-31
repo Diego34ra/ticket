@@ -15,6 +15,7 @@ import br.edu.ifgoiano.ticket.service.UsuarioService;
 import br.edu.ifgoiano.ticket.utils.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,13 +40,11 @@ public class RegistroTrabalhoServiceImpl implements RegistroTrabalhoService {
     @Override
     public RegistroTrabalhoOutputDTO criar(Long ticketId, RegistroTrabalhoInputDTO registroTrabalhoInputDTO) {
         Ticket ticket = mapper.mapTo(ticketService.buscarPorId(ticketId), Ticket.class);
-        Usuario usuario = mapper.mapTo(usuarioService.buscaPorId(1L), Usuario.class); // altera depois
+        Long uuidAuth = Long.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        Usuario usuario = mapper.mapTo(usuarioService.buscaPorId(uuidAuth), Usuario.class);
         RegistroTrabalho registroTrabalho = mapper.mapTo(registroTrabalhoInputDTO,RegistroTrabalho.class);
         registroTrabalho.setTicket(ticket);
         registroTrabalho.setAgente(usuario);
-
-//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        System.out.println("responsável pela requisicao = "+ user.getId() + " - "+user.getFirstName());
         return mapper.mapTo(registroTrabalhoRepository.save(registroTrabalho),RegistroTrabalhoOutputDTO.class);
     }
 

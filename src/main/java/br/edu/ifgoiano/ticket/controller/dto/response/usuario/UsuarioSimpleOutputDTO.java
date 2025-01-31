@@ -1,4 +1,4 @@
-package br.edu.ifgoiano.ticket.controller.dto.request.usuario;
+package br.edu.ifgoiano.ticket.controller.dto.response.usuario;
 
 import br.edu.ifgoiano.ticket.controller.dto.request.TelefoneDTO;
 import lombok.AllArgsConstructor;
@@ -12,15 +12,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsuarioOutputDTO {
-
+public class UsuarioSimpleOutputDTO {
     private Long id;
-
     private String nome;
-
     private String email;
-
-    private String cpf;
-
     private List<TelefoneDTO> contatos;
 }

@@ -1,6 +1,7 @@
 package br.edu.ifgoiano.ticket.controller.dto.request.departamento;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioSimpleOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioSimpleInputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioSimpleOutputDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,5 +16,5 @@ public class DepartamentoInputDTO {
     private String descricao;
     private String email;
     private String horarioFuncionamento;
-    private UsuarioSimpleOutputDTO gerente;
+    private UsuarioSimpleInputDTO gerente;
 }

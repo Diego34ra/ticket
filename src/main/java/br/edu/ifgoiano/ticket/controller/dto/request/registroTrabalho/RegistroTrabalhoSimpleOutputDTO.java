@@ -1,7 +1,6 @@
 package br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketSimpleOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioSimpleOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioSimpleOutputDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

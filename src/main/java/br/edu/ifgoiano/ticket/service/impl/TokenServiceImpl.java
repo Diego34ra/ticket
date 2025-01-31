@@ -30,7 +30,7 @@ public class TokenServiceImpl implements TokenService {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
                     .withIssuer("auth-api")
-                    .withSubject(usuario.getCpf())
+                    .withSubject(usuario.getId().toString())
                     .withClaim("roles", roles)
                     .withExpiresAt(gerarDataExpiracao())
                     .sign(algorithm);

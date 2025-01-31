@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.beans.PropertyDescriptor;
@@ -71,8 +72,22 @@ public class TicketServiceImpl implements TicketService {
         Categoria categoria = categoriaService.buscaPorId(ticket.getCategoria().getId());
         Departamento departamento = mapper.mapTo(departamentoService.buscarPorId(ticket.getDepartamento().getId()),Departamento.class);
         RegraPrioridade regraPrioridade = regraPrioridadeService.buscarPorCategoriaAndDepartamento(categoria,departamento);
-        Usuario cliente = mapper.mapTo(usuarioService.buscaPorId(ticket.getCliente().getId()),Usuario.class);
-        Usuario responsavel = mapper.mapTo(usuarioService.buscaPorId(ticket.getResponsavel().getId()),Usuario.class);
+
+        Usuario cliente;
+
+        if(ticket.getCliente() == null || ticket.getCliente().getId() == null){
+            Long uuidAuth = Long.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            cliente = mapper.mapTo(usuarioService.buscaPorId(uuidAuth),Usuario.class);
+        } else
+            cliente = mapper.mapTo(usuarioService.buscaPorId(ticket.getCliente().getId()),Usuario.class);
+
+        Usuario responsavel;
+
+        if(ticket.getResponsavel() == null || ticket.getResponsavel().getId() == null)
+            responsavel = departamento.getGerente();
+         else
+            responsavel = ticket.getResponsavel();
+
         ticket.setCliente(cliente);
         ticket.setResponsavel(responsavel);
         ticket.setDataCriacao(LocalDateTime.now());
@@ -81,8 +96,6 @@ public class TicketServiceImpl implements TicketService {
         ticket.setDepartamento(departamento);
         ticket.setPrioridade(regraPrioridade.getPrioridade());
         ticket.setDataMaximaResolucao(ticket.getDataCriacao().plusHours(regraPrioridade.getHorasResolucao()));
-//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        System.out.println("responsável pela requisicao = "+ user.getId() + " - "+user.getFirstName());
         ticket = ticketRespository.save(ticket);
         emailService.enviarTicketEmail(ticket);
         return mapper.mapTo(ticket, TicketOutputDTO.class);
@@ -116,28 +129,29 @@ public class TicketServiceImpl implements TicketService {
 
         Map<String, Map<String, Object>> camposAlterados = new HashMap<>();
 
-//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        System.out.println("responsável pela requisicao = "+ user.getId() + " - "+user.getFirstName());
-
         checkAndRecordEntityChange("categoria", ticket.getCategoria(), ticketInputUpdateDTO.getCategoria(), camposAlterados);
         checkAndRecordEntityChange("departamento", ticket.getDepartamento(), ticketInputUpdateDTO.getDepartamento(), camposAlterados);
         checkAndRecordEntityChange("responsavel", ticket.getResponsavel(), ticketInputUpdateDTO.getResponsavel(), camposAlterados);
-        List<String> ignoredProperties = Arrays.asList("comentarios", "id", "categoria", "departamento", "responsavel", "cliente", "class", "historicos", "registroTrabalhos");
+        List<String> variaveisIgnoradas = Arrays.asList("comentarios", "id", "categoria", "departamento", "responsavel", "cliente", "class", "historicos", "registroTrabalhos");
         BeanWrapper wrapper = new BeanWrapperImpl(ticket);
         for (PropertyDescriptor descriptor : wrapper.getPropertyDescriptors()) {
-            String propertyName = descriptor.getName();
-            if (!ignoredProperties.contains(propertyName)) {
-                Object antigoValor = wrapper.getPropertyValue(propertyName);
-                Object novoValor = new BeanWrapperImpl(ticketInputUpdateDTO).getPropertyValue(propertyName);
+            String nomeVariavel = descriptor.getName();
+            if (!variaveisIgnoradas.contains(nomeVariavel)) {
+                Object antigoValor = wrapper.getPropertyValue(nomeVariavel);
+                Object novoValor = new BeanWrapperImpl(ticketInputUpdateDTO).getPropertyValue(nomeVariavel);
 
                 if (novoValor != null && !novoValor.equals(antigoValor)) {
                     Map<String, Object> values = new HashMap<>();
                     values.put("antigoValor", antigoValor);
                     values.put("novoValor", novoValor);
-                    camposAlterados.put(propertyName, values);
+                    camposAlterados.put(nomeVariavel, values);
                 }
             }
         }
+
+        Long uuidAuth = Long.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        Usuario usuarioResponsavelPelaAtualizacao = mapper.mapTo(usuarioService.buscaPorId(uuidAuth), Usuario.class);
+
         List<TicketHistorico> ticketHistoricoList = new ArrayList<>();
         camposAlterados.forEach((campo, valores) -> {
                     Object antigoValor = valores.get("antigoValor");
@@ -148,7 +162,7 @@ public class TicketServiceImpl implements TicketService {
                     ticketHistorico.setNovoValor(novoValor.toString());
                     ticketHistorico.setDataAlteracao(LocalDateTime.now());
                     ticketHistorico.setTicket(ticket);
-                    ticketHistorico.setAgente(ticket.getResponsavel()); // alterar depois para a forma correta
+                    ticketHistorico.setAgente(usuarioResponsavelPelaAtualizacao);
                     ticketHistoricoList.add(ticketHistorico);
                 }
         );
@@ -199,11 +213,9 @@ public class TicketServiceImpl implements TicketService {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (CSVWriter writer = new CSVWriter(new OutputStreamWriter(outputStream))) {
-            // Cabeçalho do CSV
             String[] header = { "ID", "Título", "Descrição", "Status", "Prioridade","Data de Criação" };
             writer.writeNext(header);
 
-            // Escrevendo os dados dos tickets no CSV
             for (TicketSimpleOutputDTO ticket : ticketsList) {
                 String[] data = {
                         String.valueOf(ticket.getId()),

@@ -1,6 +1,6 @@
 package br.edu.ifgoiano.ticket.controller.dto.response.comentario;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioSimpleOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioSimpleOutputDTO;
 import br.edu.ifgoiano.ticket.model.FileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -2,7 +2,7 @@ package br.edu.ifgoiano.ticket.controller.dto.response.comentario;
 
 import br.edu.ifgoiano.ticket.controller.dto.request.AnexoOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketSimpleOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioSimpleOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioSimpleOutputDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

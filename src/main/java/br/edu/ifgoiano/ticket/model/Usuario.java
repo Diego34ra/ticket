@@ -44,21 +44,21 @@ public class Usuario implements UserDetails {
         switch (this.tipoUsuario) {
             case ADMINISTRADOR:
                 return List.of(
-                        new SimpleGrantedAuthority("ROLE_ADMIN"),
+                        new SimpleGrantedAuthority("ROLE_ADMINISTRADOR"),
                         new SimpleGrantedAuthority("ROLE_USER")
                 );
             case GERENTE:
                 return List.of(
-                        new SimpleGrantedAuthority("ROLE_MANAGER"),
-                        new SimpleGrantedAuthority("ROLE_USER")
+                        new SimpleGrantedAuthority("ROLE_GERENTE"),
+                        new SimpleGrantedAuthority("ROLE_CLIENTE")
                 );
             case FUNCIONARIO:
                 return List.of(
-                        new SimpleGrantedAuthority("ROLE_EMPLOYEE"),
-                        new SimpleGrantedAuthority("ROLE_USER")
+                        new SimpleGrantedAuthority("ROLE_FUNCIONARIO"),
+                        new SimpleGrantedAuthority("ROLE_CLIENTE")
                 );
             case CLIENTE:
-                return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+                return List.of(new SimpleGrantedAuthority("ROLE_CLIENTE"));
             default:
                 throw new IllegalArgumentException("Tipo de usuário não reconhecido: " + this.tipoUsuario);
         }

@@ -1,9 +1,7 @@
 package br.edu.ifgoiano.ticket.controller;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.MessageResponseDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.autenticacao.AuthenticationRequestDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.login.LoginResponseDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ErrorDetails;
 import br.edu.ifgoiano.ticket.model.Usuario;

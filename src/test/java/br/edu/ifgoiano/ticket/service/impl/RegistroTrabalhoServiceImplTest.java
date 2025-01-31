@@ -5,7 +5,7 @@ import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTr
 import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoInputUpdateDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioOutputDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.RegistroTrabalho;
 import br.edu.ifgoiano.ticket.model.Ticket;

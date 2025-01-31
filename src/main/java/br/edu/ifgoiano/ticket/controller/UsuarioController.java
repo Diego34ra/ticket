@@ -1,10 +1,8 @@
 package br.edu.ifgoiano.ticket.controller;
 
 import br.edu.ifgoiano.ticket.controller.dto.request.MessageResponseDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketSimpleOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioOutputDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ErrorDetails;
 import br.edu.ifgoiano.ticket.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +34,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "201", description = "Usuario criado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UsuarioOutputDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    private ResponseEntity<MessageResponseDTO> criar(@RequestBody UsuarioInputDTO usuario){
+    private ResponseEntity<MessageResponseDTO> criar(@RequestBody @Valid UsuarioInputDTO usuario){
         return usuarioService.criar(usuario);
     }
 

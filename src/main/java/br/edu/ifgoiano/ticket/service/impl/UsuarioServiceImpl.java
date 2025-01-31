@@ -3,7 +3,8 @@ package br.edu.ifgoiano.ticket.service.impl;
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
 import br.edu.ifgoiano.ticket.controller.dto.request.MessageResponseDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioInputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.exception.CustomAccessDeniedException;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.Telefone;
 import br.edu.ifgoiano.ticket.model.Usuario;
@@ -16,6 +17,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,6 +26,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
@@ -43,16 +47,22 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
     public ResponseEntity<MessageResponseDTO> criar(UsuarioInputDTO usuarioCreate) {
         Usuario usuario = mapper.mapTo(usuarioCreate, Usuario.class);
         usuario.setContatos(mapper.toList(usuarioCreate.getContatos(), Telefone.class));
-        usuario.setTipoUsuario(UsuarioRole.GERENTE);
+        usuario.setTipoUsuario(UsuarioRole.CLIENTE);
         usuario.getContatos().forEach(telefone -> telefone.setUsuario(usuario));
 
-        if(this.usuarioRepository.findByEmail(usuarioCreate.getEmail()) != null)
+        boolean emailExists = usuarioRepository.existsByEmail(usuarioCreate.getEmail().toLowerCase());
+        boolean cpfExists = usuarioRepository.existsByCpf(usuarioCreate.getCpf().trim());
+
+        if(emailExists || cpfExists) {
+            String errorMessage = "Usuário já cadastrado. Campo duplicado: ";
+            errorMessage += emailExists ? "Email" : "CPF";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MessageResponseDTO
                     .builder()
                     .code(400)
                     .status("Bad Request")
-                    .message("Usuário já cadastrado.")
+                    .message(errorMessage)
                     .build());
+        }
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(usuario.getSenha());
         usuario.setSenha(encryptedPassword);
@@ -75,6 +85,16 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 
     @Override
     public UsuarioOutputDTO buscaPorId(Long uuid) {
+        Long uuidAuth = Long.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+
+        boolean somenteCliente = SecurityContextHolder.getContext().getAuthentication()
+                .getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .allMatch(role -> role.equals("ROLE_CLIENTE"));
+
+        if(somenteCliente && !Objects.equals(uuidAuth, uuid))
+            throw new CustomAccessDeniedException("Acesso negado.Você não tem permissão para acessar este recurso.");
+
         Usuario usuario = usuarioRepository.findById(uuid)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum usuário com esse id."));
         return mapper.mapTo(usuario,UsuarioOutputDTO.class);

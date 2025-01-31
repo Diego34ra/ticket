@@ -6,7 +6,7 @@ import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioReques
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestUpdateDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.comentario.ComentarioOutputDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketOutputDTO;
-import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioOutputDTO;
 import br.edu.ifgoiano.ticket.model.Anexo;
 import br.edu.ifgoiano.ticket.model.Comentario;
 import br.edu.ifgoiano.ticket.model.Ticket;

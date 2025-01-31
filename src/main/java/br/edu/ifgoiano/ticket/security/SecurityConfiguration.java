@@ -49,7 +49,17 @@ public class SecurityConfiguration {
                                 .requestMatchers(SWAGGER_WHITELIST).permitAll()
                                 .requestMatchers(HttpMethod.POST,"/api/v1/usuarios").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/api/v1/auth/login").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/v1/usuarios").hasAnyRole("GERENTE","ADMINISTRADOR")
                                 .requestMatchers(HttpMethod.POST,"/api/v1/categorias").hasAnyRole("GERENTE","ADMINISTRADOR")
+                                .requestMatchers(HttpMethod.PUT,"/api/v1/categorias/{id}").hasAnyRole("GERENTE","ADMINISTRADOR")
+                                .requestMatchers(HttpMethod.DELETE,"/api/v1/categorias/{id}").hasAnyRole("GERENTE","ADMINISTRADOR")
+                                .requestMatchers(HttpMethod.POST,"/api/v1/departamentos").hasAnyRole("GERENTE","ADMINISTRADOR")
+                                .requestMatchers(HttpMethod.PUT,"/api/v1/departamentos/{id}").hasAnyRole("GERENTE","ADMINISTRADOR")
+                                .requestMatchers(HttpMethod.DELETE,"/api/v1/departamentos/{id}").hasAnyRole("GERENTE","ADMINISTRADOR")
+                                .requestMatchers(HttpMethod.POST,"/api/v1/regraPrioridades").hasAnyRole("GERENTE","ADMINISTRADOR")
+                                .requestMatchers(HttpMethod.PUT,"/api/v1/regraPrioridades/{id}").hasAnyRole("GERENTE","ADMINISTRADOR")
+                                .requestMatchers(HttpMethod.DELETE,"/api/v1/regraPrioridades/{id}").hasAnyRole("GERENTE","ADMINISTRADOR")
+
 //                                .requestMatchers(HttpMethod.DELETE, "/api/v1/produtos").hasRole("ADMIN")
                                 .anyRequest().authenticated()
 
