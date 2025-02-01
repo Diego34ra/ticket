@@ -17,6 +17,8 @@ import br.edu.ifgoiano.ticket.service.UsuarioService;
 import br.edu.ifgoiano.ticket.utils.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -52,12 +54,10 @@ public class ComentarioServiceImpl implements ComentarioService {
     public ComentarioResponseDTO criar(Long ticketId, Long usuarioId, ComentarioRequestDTO comentarioInputDTO) {
         Ticket ticket = mapper.mapTo(ticketService.buscarPorId(ticketId),Ticket.class);
         Usuario autor = mapper.mapTo(usuarioService.buscaPorId(usuarioId), Usuario.class);
-
         Comentario comentarioCriar = mapper.mapTo(comentarioInputDTO,Comentario.class);
         ticket.getComentarios().add(comentarioCriar);
         comentarioCriar.setAutor(autor);
         comentarioCriar.setTicket(ticket);
-
         Comentario comentario = comentarioRepository.save(comentarioCriar);
         ticketRespository.save(ticket);
 
@@ -82,7 +82,10 @@ public class ComentarioServiceImpl implements ComentarioService {
 
     @Override
     public ComentarioResponseDTO atualizar(Long comentarioId, ComentarioRequestUpdateDTO comentarioInputUpdateDTO) {
-        Comentario comentario = comentarioRepository.findById(comentarioId)
+        System.out.println("TESTE");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long uuidAuth = Long.valueOf((String) authentication.getPrincipal());
+        Comentario comentario = comentarioRepository.findByAutorIdAndId(uuidAuth,comentarioId)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrada nenhum comentario com esse id."));
         BeanUtils.copyProperties(comentarioInputUpdateDTO,comentario,objectUtils.getNullPropertyNames(comentarioInputUpdateDTO));
         return mapper.mapTo(comentarioRepository.save(comentario), ComentarioResponseDTO.class);
@@ -90,7 +93,10 @@ public class ComentarioServiceImpl implements ComentarioService {
 
     @Override
     public void deletarPorId(Long comentarioId) {
-        Optional<Comentario> comentarioOptional = buscarPorId(comentarioId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long uuidAuth = Long.valueOf((String) authentication.getPrincipal());
+
+        Optional<Comentario> comentarioOptional = comentarioRepository.findByAutorIdAndId(uuidAuth,comentarioId);
         if(comentarioOptional.isPresent()) {
             anexoService.deletarAnexos(comentarioOptional.get());
             comentarioRepository.deleteById(comentarioId);

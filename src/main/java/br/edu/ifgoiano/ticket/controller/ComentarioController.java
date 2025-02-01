@@ -64,7 +64,7 @@ public class ComentarioController {
             @ApiResponse(responseCode = "200", description = "Comentário atualizado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ComentarioResponseDTO.class))}),
             @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<ComentarioResponseDTO> atualizar(@RequestBody Long id, ComentarioRequestUpdateDTO comentarioInputUpdateDTO){
+    public ResponseEntity<ComentarioResponseDTO> atualizar(@PathVariable Long id, @RequestBody ComentarioRequestUpdateDTO comentarioInputUpdateDTO){
         var comentarioAtualizado = comentarioService.atualizar(id,comentarioInputUpdateDTO);
         return ResponseEntity.status(HttpStatus.OK).body(comentarioAtualizado);
     }
