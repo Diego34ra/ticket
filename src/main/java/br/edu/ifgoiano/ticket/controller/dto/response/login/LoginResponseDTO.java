@@ -10,5 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginResponseDTO {
-    private String token;
+    private String access_token;
+    private String token_type = "Bearer";
+    private String refresh_token;
+    private int expires_in;
 }

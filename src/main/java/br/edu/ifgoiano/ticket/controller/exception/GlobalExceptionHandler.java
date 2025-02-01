@@ -28,6 +28,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(errorResponse);
     }
 
+    @ExceptionHandler(ResourceForbiddenException.class)
+    public ResponseEntity<?> ForbiddenException(ResourceForbiddenException ex, WebRequest request){
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        ErrorDetails errorResponse = new ErrorDetails(new Date(), status.value(), ex.getMessage(),getRequestPath());
+        return ResponseEntity.status(status).body(errorResponse);
+    }
+
     @ExceptionHandler(ResourceBadRequestException.class)
     public ResponseEntity<ErrorDetails> badRequestException(ResourceBadRequestException ex, WebRequest webRequest){
         HttpStatus status = HttpStatus.BAD_REQUEST;

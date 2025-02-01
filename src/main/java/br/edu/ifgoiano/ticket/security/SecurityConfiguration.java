@@ -49,6 +49,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(SWAGGER_WHITELIST).permitAll()
                                 .requestMatchers(HttpMethod.POST,"/api/v1/usuarios").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/api/v1/auth/login").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/api/v1/auth/refresh").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/api/v1/usuarios").hasAnyRole("GERENTE","ADMINISTRADOR")
                                 .requestMatchers(HttpMethod.POST,"/api/v1/categorias").hasAnyRole("GERENTE","ADMINISTRADOR")
                                 .requestMatchers(HttpMethod.PUT,"/api/v1/categorias/{id}").hasAnyRole("GERENTE","ADMINISTRADOR")

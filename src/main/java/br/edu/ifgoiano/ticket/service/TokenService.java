@@ -1,12 +1,14 @@
 package br.edu.ifgoiano.ticket.service;
 
+import br.edu.ifgoiano.ticket.controller.dto.request.autenticacao.RefreshTokenRequestDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.login.LoginResponseDTO;
 import br.edu.ifgoiano.ticket.model.Usuario;
 
 public interface TokenService {
 
-    String gerarToken(Usuario usuario);
+    LoginResponseDTO realizarLogin(Usuario usuario);
 
-    String validateToken(String token);
+    LoginResponseDTO realizarRefreshToken(RefreshTokenRequestDTO refreshTokenRequestDTO);
 
     String getUsernameFromToken(String token);
 
