@@ -30,7 +30,8 @@ public class CategoriaController {
     @Operation(summary = "Criar uma categoria")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Categoria criada com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Categoria.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<Categoria> criar(@RequestBody CategoriaDTO categoriaDTO){
         var categoriaCriada = categoriaService.criar(categoriaDTO);
@@ -48,7 +49,8 @@ public class CategoriaController {
                             array = @ArraySchema(schema = @Schema(implementation = Categoria.class))
                     )
             ),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<List<Categoria>> buscarTodos(){
         var categoriaList = categoriaService.buscarTodos();
@@ -59,7 +61,8 @@ public class CategoriaController {
     @Operation(summary = "Buscar uma categoria")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Categoria buscada com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Categoria.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<Categoria> buscarPorId(@PathVariable Long id){
         var categoria = categoriaService.buscaPorId(id);
@@ -70,7 +73,8 @@ public class CategoriaController {
     @Operation(summary = "Atualizar uma categoria")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Categoria atualizada com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Categoria.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<Categoria> atualizar(@PathVariable Long id, @RequestBody CategoriaDTO categoriaDTO){
         var categoriaAtualizada = categoriaService.atualizar(id,categoriaDTO);
@@ -81,7 +85,8 @@ public class CategoriaController {
     @Operation(summary = "Deletar uma categoria")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Categoria deletada com sucesso."),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso. ",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<?> deletarPorId(@PathVariable Long id){
         categoriaService.deletePorId(id);
