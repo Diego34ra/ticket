@@ -1,6 +1,5 @@
 package br.edu.ifgoiano.ticket.controller.dto.request.usuario;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.TelefoneDTO;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

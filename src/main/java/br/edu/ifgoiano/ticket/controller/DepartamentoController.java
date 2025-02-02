@@ -30,7 +30,8 @@ public class DepartamentoController {
     @Operation(summary = "Criar um departamento")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Departamento criado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = DepartamentoResponseDTO.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<DepartamentoResponseDTO> criar(@RequestBody DepartamentoRequestDTO departamentoDTO){
         var departamentoCriado = departamentoService.criar(departamentoDTO);
@@ -48,7 +49,8 @@ public class DepartamentoController {
                             array = @ArraySchema(schema = @Schema(implementation = DepartamentoResponseDTO.class))
                     )
             ),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<List<DepartamentoResponseDTO>> buscarTodos(){
         var departamentoList = departamentoService.buscarTodos();
@@ -59,7 +61,8 @@ public class DepartamentoController {
     @Operation(summary = "Buscar um departamento")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Departamento buscado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = DepartamentoResponseDTO.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<DepartamentoResponseDTO> buscarPorId(@PathVariable Long id){
         var departamento = departamentoService.buscarPorId(id);
@@ -70,7 +73,8 @@ public class DepartamentoController {
     @Operation(summary = "Atualizar um departamento")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Departamento atualizado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = DepartamentoResponseDTO.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<DepartamentoResponseDTO> atualizar(@PathVariable Long id, @RequestBody DepartamentoRequestDTO departamentoDTO){
         var departamentoAtualizado = departamentoService.atualizar(id,departamentoDTO);
@@ -81,7 +85,8 @@ public class DepartamentoController {
     @Operation(summary = "Deletar um departamento")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Departamento deletado com sucesso."),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<?> deletarPorId(@PathVariable Long id){
         departamentoService.deletePorId(id);

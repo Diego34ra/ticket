@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.CategoriaDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.categoria.CategoriaDTO;
 import br.edu.ifgoiano.ticket.model.Categoria;
 import br.edu.ifgoiano.ticket.service.CategoriaService;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,4 +1,4 @@
-package br.edu.ifgoiano.ticket.controller.dto.request;
+package br.edu.ifgoiano.ticket.controller.dto.request.email;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmailDTO {
+public class EmailRequestDTO {
     private String emailTo;
     private String assunto;
     private String texto;

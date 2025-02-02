@@ -32,7 +32,8 @@ public class RegraPrioridadeController {
     @Operation(summary = "Criar um regra de prioridade")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Regra criada com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = RegraPrioridadeResponseDTO.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<RegraPrioridadeResponseDTO> criar(@RequestBody RegraPrioridadeRequestDTO regraPrioridadeRequestDTO){
         var regraPrioridadeCriada = regraPrioridadeService.criar(regraPrioridadeRequestDTO);
@@ -50,7 +51,8 @@ public class RegraPrioridadeController {
                             array = @ArraySchema(schema = @Schema(implementation = RegraPrioridadeResponseDTO.class))
                     )
             ),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<List<RegraPrioridadeResponseDTO>> buscarTodos(){
         return ResponseEntity.status(HttpStatus.OK).body(regraPrioridadeService.buscarTodos());
@@ -60,7 +62,8 @@ public class RegraPrioridadeController {
     @Operation(summary = "Atualizar uma regra de prioridade")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Regra atualizada com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = RegraPrioridadeResponseDTO.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<RegraPrioridadeResponseDTO> atualizar(@PathVariable Long id, @RequestBody RegraPrioridadeRequestDTO regraPrioridadeRequestDTO){
         var regraPrioridadeAtualizada = regraPrioridadeService.atualizar(id, regraPrioridadeRequestDTO);
@@ -71,7 +74,8 @@ public class RegraPrioridadeController {
     @Operation(summary = "Deletar uma regra de prioridade")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Regra deletada com sucesso."),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<?> deletarPorId(@PathVariable Long id){
         regraPrioridadeService.deletarPorId(id);

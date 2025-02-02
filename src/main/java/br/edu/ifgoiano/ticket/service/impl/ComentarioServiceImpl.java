@@ -1,7 +1,7 @@
 package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
-import br.edu.ifgoiano.ticket.controller.dto.request.AnexoOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.comentario.AnexoResponseDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestUpdateDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.comentario.ComentarioResponseDTO;
@@ -65,7 +65,7 @@ public class ComentarioServiceImpl implements ComentarioService {
 
         List<Anexo> anexoList = anexoService.salvarAnexos(comentario,comentarioInputDTO.getAnexos());
         if(anexoList != null && !anexoList.isEmpty())
-            comentarioResponseDTO.setAnexos(mapper.toList(anexoList, AnexoOutputDTO.class));
+            comentarioResponseDTO.setAnexos(mapper.toList(anexoList, AnexoResponseDTO.class));
 
         return comentarioResponseDTO;
     }

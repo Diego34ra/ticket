@@ -31,7 +31,8 @@ public class ComentarioController {
     @Operation(summary = "Criar um comentário")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Comentário criado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ComentarioResponseDTO.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<ComentarioResponseDTO> criar(@RequestParam Long ticketId,
                                                        @RequestParam Long usuarioId,
@@ -51,7 +52,8 @@ public class ComentarioController {
                             array = @ArraySchema(schema = @Schema(implementation = ComentarioResponseDTO.class))
                     )
             ),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<List<ComentarioResponseDTO>> buscarPorTicketId(@RequestParam Long ticketId){
         var comentarioList = comentarioService.buscarPorTicketId(ticketId);
@@ -62,7 +64,8 @@ public class ComentarioController {
     @Operation(summary = "Atualizar um comentário")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Comentário atualizado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ComentarioResponseDTO.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<ComentarioResponseDTO> atualizar(@PathVariable Long id, @RequestBody ComentarioRequestUpdateDTO comentarioInputUpdateDTO){
         var comentarioAtualizado = comentarioService.atualizar(id,comentarioInputUpdateDTO);
@@ -73,7 +76,8 @@ public class ComentarioController {
     @Operation(summary = "Deletar um comentário")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Comentário deletado com sucesso."),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<?> deletarPorId(@PathVariable Long id){
         comentarioService.deletarPorId(id);
@@ -84,7 +88,8 @@ public class ComentarioController {
     @Operation(summary = "Deletar um anexo de um comentário")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Anexo deletado com sucesso."),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<?> deletarAnexoPorNome(@PathVariable Long id,@RequestParam String filename){
         comentarioService.deletarAnexoPorNome(id,filename);

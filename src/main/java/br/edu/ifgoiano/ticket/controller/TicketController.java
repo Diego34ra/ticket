@@ -38,7 +38,8 @@ public class TicketController {
     @Operation(summary = "Criar um ticket")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Ticket criado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = TicketResponseDTO.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<TicketResponseDTO> criar(@RequestBody TicketRequestDTO ticket){
         var ticketCriado = ticketService.criar(ticket);
@@ -56,7 +57,8 @@ public class TicketController {
                             array = @ArraySchema(schema = @Schema(implementation = TicketSimpleResponseDTO.class))
                     )
             ),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<List<TicketSimpleResponseDTO>> buscarTodos(
             @RequestParam(required = false) String titulo,
@@ -73,7 +75,8 @@ public class TicketController {
     @Operation(summary = "Buscar um ticket")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Categoria buscada com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = TicketResponseDTO.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<TicketResponseDTO> buscarPorId(@PathVariable Long id){
         var ticket = ticketService.buscarPorId(id);
@@ -84,7 +87,8 @@ public class TicketController {
     @Operation(summary = "Atualizar um ticket")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Ticket atualizado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = TicketResponseDTO.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<TicketResponseDTO> atualizar(@PathVariable Long id, @RequestBody TicketRequestUpdateDTO ticketRequestUpdateDTO){
         var ticketAtualizado = ticketService.atualizar(id, ticketRequestUpdateDTO);
@@ -95,7 +99,8 @@ public class TicketController {
     @Operation(summary = "Deletar um ticket")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Ticket deletado com sucesso."),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<?> deletarPorId(@PathVariable Long id){
         ticketService.deletePorId(id);
@@ -106,7 +111,8 @@ public class TicketController {
     @Operation(summary = "Gerar Relatório de tickets")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Relatório gerado com sucesso."),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<InputStreamResource> generateCsvReportByDate(
             @RequestParam String dataInicio,

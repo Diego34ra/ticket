@@ -1,4 +1,4 @@
-package br.edu.ifgoiano.ticket.controller.dto.request;
+package br.edu.ifgoiano.ticket.controller.dto.request.comentario;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnexoOutputDTO {
+public class AnexoResponseDTO {
     private Long id;
     private String nomeArquivo;
     private String tipoArquivo;

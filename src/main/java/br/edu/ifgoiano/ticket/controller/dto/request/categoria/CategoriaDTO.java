@@ -1,4 +1,4 @@
-package br.edu.ifgoiano.ticket.controller.dto.request;
+package br.edu.ifgoiano.ticket.controller.dto.request.categoria;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TelefoneDTO {
-    private String ddi;
-    private String ddd;
-    private String numero;
+public class CategoriaDTO {
+    private String nome;
+    private String descricao;
 }

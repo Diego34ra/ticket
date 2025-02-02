@@ -1,6 +1,6 @@
 package br.edu.ifgoiano.ticket.controller;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.CategoriaDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.categoria.CategoriaDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ErrorDetails;
 import br.edu.ifgoiano.ticket.model.Categoria;
 import br.edu.ifgoiano.ticket.service.CategoriaService;

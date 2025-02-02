@@ -1,4 +1,4 @@
-package br.edu.ifgoiano.ticket.controller.dto.request;
+package br.edu.ifgoiano.ticket.controller.dto.response.message;
 
 import lombok.*;
 

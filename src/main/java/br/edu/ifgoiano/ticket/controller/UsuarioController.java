@@ -1,6 +1,6 @@
 package br.edu.ifgoiano.ticket.controller;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.MessageResponseDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.message.MessageResponseDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioRequestDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioResponseDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ErrorDetails;
@@ -32,7 +32,8 @@ public class UsuarioController {
     @Operation(summary = "Criar um Usuario")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Usuario criado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UsuarioResponseDTO.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     private ResponseEntity<MessageResponseDTO> criar(@RequestBody @Valid UsuarioRequestDTO usuario){
         return usuarioService.criar(usuario);
@@ -49,7 +50,8 @@ public class UsuarioController {
                             array = @ArraySchema(schema = @Schema(implementation = UsuarioResponseDTO.class))
                     )
             ),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     private ResponseEntity<List<UsuarioResponseDTO>> buscarTodos(){
         var usuarioList = usuarioService.buscarTodos();
@@ -60,7 +62,8 @@ public class UsuarioController {
     @Operation(summary = "Buscar um Usuario")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Usuario buscado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UsuarioResponseDTO.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     private ResponseEntity<UsuarioResponseDTO> buscarPorId(@PathVariable Long id){
         var usuario = usuarioService.buscaPorId(id);
@@ -71,7 +74,8 @@ public class UsuarioController {
     @Operation(summary = "Atualizar um Usuario")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Usuario atualizado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UsuarioResponseDTO.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     private ResponseEntity<UsuarioResponseDTO> atualizar(@PathVariable Long id, @RequestBody UsuarioRequestDTO usuarioRequestDTO){
         var usuario = usuarioService.atualizar(id, usuarioRequestDTO);
@@ -82,7 +86,8 @@ public class UsuarioController {
     @Operation(summary = "Deletar um Usuario")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Usuario atualizado com sucesso."),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     private ResponseEntity<?> deletarPorId(@PathVariable Long id){
         usuarioService.deletePorId(id);

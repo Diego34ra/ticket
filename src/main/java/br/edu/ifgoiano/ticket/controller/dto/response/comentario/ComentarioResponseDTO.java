@@ -1,6 +1,6 @@
 package br.edu.ifgoiano.ticket.controller.dto.response.comentario;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.AnexoOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.comentario.AnexoResponseDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.ticket.TicketSimpleResponseDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioSimpleResponseDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -19,7 +19,7 @@ import java.util.List;
 public class ComentarioResponseDTO {
     private Long id;
     private String conteudo;
-    private List<AnexoOutputDTO> anexos;
+    private List<AnexoResponseDTO> anexos;
     private UsuarioSimpleResponseDTO autor;
     private TicketSimpleResponseDTO ticket;
 }

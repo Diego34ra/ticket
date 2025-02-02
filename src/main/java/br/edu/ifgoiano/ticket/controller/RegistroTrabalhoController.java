@@ -31,7 +31,8 @@ public class RegistroTrabalhoController {
     @Operation(summary = "Criar um registro")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Registro criado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = RegistroTrabalhoReponseDTO.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<RegistroTrabalhoReponseDTO> criar(@RequestParam Long ticketId, @RequestBody RegistroTrabalhoRequestDTO registroTrabalhoRequestDTO){
         var registroCriado = registroTrabalhoService.criar(ticketId, registroTrabalhoRequestDTO);
@@ -49,7 +50,8 @@ public class RegistroTrabalhoController {
                             array = @ArraySchema(schema = @Schema(implementation = RegistroTrabalhoReponseDTO.class))
                     )
             ),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<List<RegistroTrabalhoReponseDTO>> buscarTodos(@RequestParam Long ticketId){
         var registroList = registroTrabalhoService.buscarTodosPorTicket(ticketId);
@@ -60,7 +62,8 @@ public class RegistroTrabalhoController {
     @Operation(summary = "Atualizar um registro")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Registro atualizado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = RegistroTrabalhoReponseDTO.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<RegistroTrabalhoReponseDTO> atualizar(@RequestParam Long id, @RequestBody RegistroTrabalhoRequestUpdateDTO registroTrabalhoRequestUpdateDTO){
         var registroAtualizado = registroTrabalhoService.atualizar(id, registroTrabalhoRequestUpdateDTO);
@@ -71,7 +74,8 @@ public class RegistroTrabalhoController {
     @Operation(summary = "Deletar um registro")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Registro deletado com sucesso."),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<?> deletarPorId(@RequestParam Long id){
         registroTrabalhoService.deletarPorId(id);

@@ -1,6 +1,6 @@
 package br.edu.ifgoiano.ticket.service.impl;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.EmailDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.email.EmailRequestDTO;
 import br.edu.ifgoiano.ticket.model.Ticket;
 import br.edu.ifgoiano.ticket.model.Usuario;
 import br.edu.ifgoiano.ticket.producer.TicketProducer;
@@ -24,8 +24,8 @@ public class EmailServiceImpl implements EmailService {
                         + "- Descrição: " + ticket.getDescricao() + "\n\n"
                         + "Nossa equipe entrará em contato com você em breve para fornecer mais informações.\n\n"
                         + "Atenciosamente,\n[Nome da Empresa]";
-        EmailDTO emailDTO = new EmailDTO("diegoribeiro13ra@hotmail.com",assunto,texto);
-        ticketProducer.publishMessageEmail(emailDTO);
+        EmailRequestDTO emailRequestDTO = new EmailRequestDTO("diegoribeiro13ra@hotmail.com",assunto,texto);
+        ticketProducer.publishMessageEmail(emailRequestDTO);
     }
 
     @Override
@@ -44,8 +44,8 @@ public class EmailServiceImpl implements EmailService {
                 "\n" +
                 "Atenciosamente,\n" +
                 "[Nome da Empresa]";
-        EmailDTO emailDTO = new EmailDTO("diegoribeiro13ra@hotmail.com",assunto,texto);
-        ticketProducer.publishMessageEmail(emailDTO);
+        EmailRequestDTO emailRequestDTO = new EmailRequestDTO("diegoribeiro13ra@hotmail.com",assunto,texto);
+        ticketProducer.publishMessageEmail(emailRequestDTO);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class EmailServiceImpl implements EmailService {
                 "\n" +
                 "Atenciosamente,\n" +
                 "[Nome da Empresa]";
-        EmailDTO emailDTO = new EmailDTO("diegoribeiro13ra@hotmail.com",assunto,texto);
-        ticketProducer.publishMessageEmail(emailDTO);
+        EmailRequestDTO emailRequestDTO = new EmailRequestDTO("diegoribeiro13ra@hotmail.com",assunto,texto);
+        ticketProducer.publishMessageEmail(emailRequestDTO);
     }
 }

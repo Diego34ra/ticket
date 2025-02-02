@@ -38,7 +38,8 @@ public class AuthController {
     @Operation(summary = "Realizar login")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Usuario logado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponseDTO.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     private ResponseEntity<LoginResponseDTO> login(@RequestBody AuthenticationRequestDTO authenticationRequestDTO){
         var userNamePassword = new UsernamePasswordAuthenticationToken(authenticationRequestDTO.getLogin(), authenticationRequestDTO.getPassword());
@@ -52,7 +53,8 @@ public class AuthController {
     @Operation(summary = "Realizar Refresh Token")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Usuario logado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponseDTO.class))}),
-            @ApiResponse(responseCode = "401", description = "Acesso negado.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO) {
         var loginResponseDTO = tokenService.realizarRefreshToken(refreshTokenRequestDTO);

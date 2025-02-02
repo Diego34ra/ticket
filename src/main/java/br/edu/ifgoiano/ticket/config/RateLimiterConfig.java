@@ -1,6 +1,6 @@
 package br.edu.ifgoiano.ticket.config;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.MessageResponseDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.message.MessageResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;

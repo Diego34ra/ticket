@@ -31,24 +31,24 @@ public class OpenApiConfig {
 //        License mitLicense = new License().name("MIT License").url("https://choosealicense.com/licenses/mit/");
 
         Info info = new Info()
-                .title("Api Projeto Hotel")
+                .title("Api Projeto Sistema de atendimento")
                 .version("1.0")
                 .contact(contact)
-                .description("Esta API apresenta os endpoints de um projeto de reservas de quartos de um Hotel.").termsOfService("");
+                .description("Esta API apresenta os endpoints de um projeto de gerenciar atendimentos").termsOfService("");
 //                .license(mitLicense);
 
         return new OpenAPI()
                 .info(info)
-//                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
-//                .components(new Components()
-//                        .addSecuritySchemes(securitySchemeName,
-//                                new SecurityScheme()
-//                                        .name(securitySchemeName)
-//                                        .type(SecurityScheme.Type.HTTP)
-//                                        .scheme("bearer")
-//                                        .bearerFormat("JWT")
-//                        )
-//                )
+                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+                .components(new Components()
+                        .addSecuritySchemes(securitySchemeName,
+                                new SecurityScheme()
+                                        .name(securitySchemeName)
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")
+                        )
+                )
                 .servers(List.of(devServer));
     }
 

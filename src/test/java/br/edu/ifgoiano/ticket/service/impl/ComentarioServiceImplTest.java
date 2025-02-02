@@ -1,7 +1,7 @@
 package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
-import br.edu.ifgoiano.ticket.controller.dto.request.AnexoOutputDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.comentario.AnexoResponseDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestUpdateDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.comentario.ComentarioResponseDTO;
@@ -88,7 +88,7 @@ class ComentarioServiceImplTest {
         comentarioResponseDTO.setConteudo("Texto do comentário");
 
         List<Anexo> anexoList = List.of(new Anexo("arquivo.pdf", "application/pdf", "10 KB", "/download/arquivo.pdf"));
-        List<AnexoOutputDTO> anexoOutputDTOList = List.of(new AnexoOutputDTO(1L,"arquivo.pdf", "application/pdf", "10 KB", "/download/arquivo.pdf"));
+        List<AnexoResponseDTO> anexoResponseDTOList = List.of(new AnexoResponseDTO(1L,"arquivo.pdf", "application/pdf", "10 KB", "/download/arquivo.pdf"));
 
         when(ticketService.buscarPorId(ticketId)).thenReturn(ticketResponseDTO);
         when(mapper.mapTo(ticketResponseDTO,Ticket.class)).thenReturn(ticket);
@@ -98,7 +98,7 @@ class ComentarioServiceImplTest {
         when(comentarioRepository.save(comentario)).thenReturn(comentario);
         when(mapper.mapTo(comentario, ComentarioResponseDTO.class)).thenReturn(comentarioResponseDTO);
         when(anexoService.salvarAnexos(comentario, comentarioInputDTO.getAnexos())).thenReturn(anexoList);
-        when(mapper.toList(anexoList, AnexoOutputDTO.class)).thenReturn(anexoOutputDTOList);
+        when(mapper.toList(anexoList, AnexoResponseDTO.class)).thenReturn(anexoResponseDTOList);
 
         ComentarioResponseDTO resultado = comentarioService.criar(ticketId, usuarioId, comentarioInputDTO);
 

@@ -1,6 +1,6 @@
 package br.edu.ifgoiano.ticket.service;
 
-import br.edu.ifgoiano.ticket.controller.dto.request.MessageResponseDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.message.MessageResponseDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioRequestDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioResponseDTO;
 import org.springframework.http.ResponseEntity;
