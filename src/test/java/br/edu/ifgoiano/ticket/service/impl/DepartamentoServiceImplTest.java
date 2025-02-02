@@ -2,6 +2,7 @@ package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
 import br.edu.ifgoiano.ticket.controller.dto.request.departamento.DepartamentoRequestDTO;
+import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioSimpleRequestDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.departamento.DepartamentoResponseDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioResponseDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioSimpleResponseDTO;
@@ -64,11 +65,11 @@ class DepartamentoServiceImplTest {
         departamentoRequestDTO = new DepartamentoRequestDTO();
         departamentoRequestDTO.setNome("Financeiro");
 
-        UsuarioSimpleResponseDTO usuarioSimpleResponseDTO = new UsuarioSimpleResponseDTO();
-        usuarioSimpleResponseDTO.setId(1L);
-        usuarioSimpleResponseDTO.setNome("João");
+        UsuarioSimpleRequestDTO usuarioSimpleRequestDTO = new UsuarioSimpleRequestDTO();
+        usuarioSimpleRequestDTO.setId(1L);
+        usuarioSimpleRequestDTO.setNome("João");
 
-        departamentoRequestDTO.setGerente(usuarioSimpleResponseDTO);
+        departamentoRequestDTO.setGerente(usuarioSimpleRequestDTO);
 
         departamento = new Departamento();
         departamento.setNome("Financeiro");
@@ -77,13 +78,13 @@ class DepartamentoServiceImplTest {
 
     @Test
     void criar() {
-        UsuarioSimpleResponseDTO usuarioSimpleResponseDTO = new UsuarioSimpleResponseDTO();
-        usuarioSimpleResponseDTO.setId(1L);
-        usuarioSimpleResponseDTO.setNome("João");
+        UsuarioSimpleRequestDTO usuarioSimpleRequestDTO = new UsuarioSimpleRequestDTO();
+        usuarioSimpleRequestDTO.setId(1L);
+        usuarioSimpleRequestDTO.setNome("João");
 
         DepartamentoRequestDTO departamentoRequestDTO = new DepartamentoRequestDTO();
         departamentoRequestDTO.setNome("Financeiro");
-        departamentoRequestDTO.setGerente(usuarioSimpleResponseDTO);
+        departamentoRequestDTO.setGerente(usuarioSimpleRequestDTO);
 
         Usuario usuario = new Usuario();
         usuario.setId(1L);
@@ -92,6 +93,10 @@ class DepartamentoServiceImplTest {
         UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO();
         usuarioResponseDTO.setId(1L);
         usuarioResponseDTO.setNome("João");
+
+        UsuarioSimpleResponseDTO usuarioSimpleResponseDTO = new UsuarioSimpleResponseDTO();
+        usuarioSimpleResponseDTO.setId(1L);
+        usuarioSimpleResponseDTO.setNome("João");
 
         Departamento departamento = new Departamento();
         departamento.setNome("Financeiro");
@@ -209,7 +214,7 @@ class DepartamentoServiceImplTest {
         departamentoExistente.setId(1L);
         departamentoExistente.setNome("Vendas");
 
-        UsuarioSimpleResponseDTO usuarioUpdate = new UsuarioSimpleResponseDTO();
+        UsuarioSimpleRequestDTO usuarioUpdate = new UsuarioSimpleRequestDTO();
         usuarioUpdate.setId(1L);
         usuarioUpdate.setNome("João");
 

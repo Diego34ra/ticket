@@ -49,11 +49,12 @@ class UsuarioServiceImplTest {
         usuario.setSenha("teste");
 
         UsuarioRequestDTO usuarioInput = new UsuarioRequestDTO();
+        usuarioInput.setEmail("teste@mail.com");
+        usuarioInput.setCpf("321.321.321-32");
 
         Usuario usuarioEsperado = new Usuario();
 
         when(mapper.mapTo(usuarioInput, Usuario.class)).thenReturn(usuario);
-        when(usuarioRepository.findByEmail(usuarioInput.getEmail())).thenReturn(null);
         when(usuarioRepository.save(usuario)).thenReturn(usuarioEsperado);
 
         ResponseEntity<MessageResponseDTO> response = service.criar(usuarioInput);

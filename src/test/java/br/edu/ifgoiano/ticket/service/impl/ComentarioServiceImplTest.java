@@ -16,11 +16,15 @@ import br.edu.ifgoiano.ticket.repository.TicketRespository;
 import br.edu.ifgoiano.ticket.service.TicketService;
 import br.edu.ifgoiano.ticket.service.UsuarioService;
 import br.edu.ifgoiano.ticket.utils.ObjectUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -28,8 +32,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ComentarioServiceImplTest {
@@ -57,6 +60,12 @@ class ComentarioServiceImplTest {
 
     @Mock
     private ObjectUtils objectUtils;
+
+    @Mock
+    private Authentication authentication;
+
+    @Mock
+    private SecurityContext securityContext;
 
     @Test
     void criar() {
@@ -147,6 +156,10 @@ class ComentarioServiceImplTest {
 
     @Test
     void atualizar() {
+        SecurityContextHolder.setContext(securityContext);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        String userId = "1";
+        when(authentication.getPrincipal()).thenReturn(userId);
         Long comentarioId = 1L;
         Comentario comentarioExistente = new Comentario();
         comentarioExistente.setId(comentarioId);
@@ -163,7 +176,7 @@ class ComentarioServiceImplTest {
         comentarioResponseDTO.setId(comentarioId);
         comentarioResponseDTO.setConteudo("Texto atualizado");
 
-        when(comentarioRepository.findById(comentarioId)).thenReturn(Optional.of(comentarioExistente));
+        when(comentarioRepository.findByAutorIdAndId(comentarioId,Long.parseLong(userId))).thenReturn(Optional.of(comentarioExistente));
         when(objectUtils.getNullPropertyNames(updateDTO)).thenReturn(new String[]{});
         when(comentarioRepository.save(comentarioExistente)).thenReturn(comentarioAtualizado);
         when(mapper.mapTo(comentarioAtualizado, ComentarioResponseDTO.class)).thenReturn(comentarioResponseDTO);
@@ -177,11 +190,16 @@ class ComentarioServiceImplTest {
 
     @Test
     void deletarPorId() {
+        SecurityContextHolder.setContext(securityContext);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        String userId = "1";
+        when(authentication.getPrincipal()).thenReturn(userId);
         Long comentarioId = 1L;
         Comentario comentario = new Comentario();
         comentario.setId(comentarioId);
 
-        when(comentarioRepository.findById(comentarioId)).thenReturn(Optional.of(comentario));
+        when(comentarioRepository.findByAutorIdAndId(comentarioId,Long.parseLong(userId))).thenReturn(Optional.of(comentario));
+        doNothing().when(anexoService).deletarAnexos(comentario);
 
         comentarioService.deletarPorId(comentarioId);
 

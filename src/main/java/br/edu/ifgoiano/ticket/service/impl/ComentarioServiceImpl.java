@@ -82,7 +82,6 @@ public class ComentarioServiceImpl implements ComentarioService {
 
     @Override
     public ComentarioResponseDTO atualizar(Long comentarioId, ComentarioRequestUpdateDTO comentarioInputUpdateDTO) {
-        System.out.println("TESTE");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long uuidAuth = Long.valueOf((String) authentication.getPrincipal());
         Comentario comentario = comentarioRepository.findByAutorIdAndId(uuidAuth,comentarioId)
