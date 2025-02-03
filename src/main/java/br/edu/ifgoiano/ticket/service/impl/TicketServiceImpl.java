@@ -224,7 +224,7 @@ public class TicketServiceImpl implements TicketService {
                     ticketHistoricoList.add(ticketHistorico);
                 }
         );
-        ticket.setHistoricos(ticketHistoricoList);
+        ticket.getHistoricos().addAll(ticketHistoricoList);
         ticketHistoricoList.forEach(ticketHistorico -> ticketHistoricoService.criar(ticketHistorico));
 
         BeanUtils.copyProperties(ticketRequestUpdateDTO, ticket, objectUtils.getNullPropertyNames(ticketRequestUpdateDTO));
