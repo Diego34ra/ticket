@@ -261,7 +261,22 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void deletePorId(Long id) {
-        ticketRepository.deleteById(id);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long uuidAuth = Long.valueOf((String) authentication.getPrincipal());
+        Set<String> roles = getUserRoles(authentication);
+
+        Optional<Ticket> ticketOptional;
+        if (roles.contains("ROLE_CLIENTE")) {
+            ticketOptional = ticketRepository.findByClienteIdAndId(uuidAuth,id);
+        } else if (roles.contains("ROLE_FUNCIONARIO")) {
+            ticketOptional = ticketRepository.findByResponsavelIdAndId(uuidAuth,id);
+        } else if (roles.contains("ROLE_GERENTE")) {
+            ticketOptional = ticketRepository.findByDepartamentoGerenteIdAndId(uuidAuth,id);
+        } else
+            ticketOptional = ticketRepository.findById(id);
+
+        if(ticketOptional.isPresent())
+            ticketRepository.deleteById(id);
     }
 
     @Override
