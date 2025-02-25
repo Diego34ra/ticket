@@ -4,10 +4,13 @@ import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
 import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoRequestDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.registroTrabalho.RegistroTrabalhoRequestUpdateDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.registroTrabalho.RegistroTrabalhoReponseDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.ticket.TicketResponseDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.ticket.TicketSimpleResponseDTO;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.RegistroTrabalho;
 import br.edu.ifgoiano.ticket.model.Ticket;
 import br.edu.ifgoiano.ticket.model.Usuario;
+import br.edu.ifgoiano.ticket.model.enums.StatusTicket;
 import br.edu.ifgoiano.ticket.repository.RegistroTrabalhoRepository;
 import br.edu.ifgoiano.ticket.service.RegistroTrabalhoService;
 import br.edu.ifgoiano.ticket.service.TicketService;
@@ -42,10 +45,19 @@ public class RegistroTrabalhoServiceImpl implements RegistroTrabalhoService {
         Ticket ticket = mapper.mapTo(ticketService.buscarPorId(ticketId), Ticket.class);
         Long uuidAuth = Long.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         Usuario usuario = mapper.mapTo(usuarioService.buscaPorId(uuidAuth), Usuario.class);
+
         RegistroTrabalho registroTrabalho = mapper.mapTo(registroTrabalhoRequestDTO,RegistroTrabalho.class);
         registroTrabalho.setTicket(ticket);
         registroTrabalho.setAgente(usuario);
-        return mapper.mapTo(registroTrabalhoRepository.save(registroTrabalho), RegistroTrabalhoReponseDTO.class);
+
+        var registro = mapper.mapTo(registroTrabalhoRepository.save(registroTrabalho), RegistroTrabalhoReponseDTO.class);
+
+        if(ticket.getStatus() == StatusTicket.ABERTO && registro.getId() != null)
+            ticket = ticketService.atualizaTicketEmAndamento(usuario,ticket);
+
+        registro.setTicket(mapper.mapTo(ticket, TicketSimpleResponseDTO.class));
+
+        return registro;
     }
 
     @Override

@@ -132,30 +132,24 @@ class UsuarioServiceImplTest {
 
     @Test
     void verificarSeUsuarioEhGerente_deveRetornarFalseQuandoNaoEhGerente() {
-        // Arrange
         Long id = 1L;
 
         when(usuarioRepository.isUsuarioGerente(id)).thenReturn(false);
 
-        // Act
         boolean result = service.verificarSeUsuarioEhGerente(id);
 
-        // Assert
         assertTrue(result);
         verify(usuarioRepository).isUsuarioGerente(id);
     }
 
     @Test
     void verificarSeUsuarioEhGerente_deveRetornarTrueQuandoEhGerente() {
-        // Arrange
         Long id = 1L;
 
         when(usuarioRepository.isUsuarioGerente(id)).thenReturn(true);
 
-        // Act
         boolean result = service.verificarSeUsuarioEhGerente(id);
 
-        // Assert
         assertFalse(result);
         verify(usuarioRepository).isUsuarioGerente(id);
     }

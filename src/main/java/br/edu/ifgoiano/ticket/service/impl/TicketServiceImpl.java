@@ -237,6 +237,29 @@ public class TicketServiceImpl implements TicketService {
         return mapper.mapTo(ticketSalvado, TicketResponseDTO.class);
     }
 
+    @Override
+    public Ticket atualizaTicketEmAndamento(Usuario usuario, Ticket ticket){
+        String valorAntigo = ticket.getStatus().toString();
+        ticket.setStatus(StatusTicket.EM_ANDAMENTO);
+
+        List<TicketHistorico> ticketHistoricoList = new ArrayList<>();
+        TicketHistorico ticketHistorico = new TicketHistorico();
+        ticketHistorico.setCampo("status");
+        ticketHistorico.setUltimoValor(valorAntigo);
+        ticketHistorico.setNovoValor(ticket.getStatus().toString());
+        ticketHistorico.setDataAlteracao(LocalDateTime.now());
+        ticketHistorico.setTicket(ticket);
+        ticketHistorico.setAgente(usuario);
+        ticketHistoricoList.add(ticketHistorico);
+
+        ticket.getHistoricos().addAll(ticketHistoricoList);
+        ticketHistoricoList.forEach(ticketHistoricoCriar -> ticketHistoricoService.criar(ticketHistoricoCriar));
+
+        // Enviar email para o cliente
+
+        return ticketRepository.save(ticket);
+    }
+
     private <T> void checkAndRecordEntityChange(String fieldName, T currentEntity, T newEntity, Map<String, Map<String, Object>> alteredFields) {
         Long currentId = getEntityId(currentEntity);
         Long newId = getEntityId(newEntity);

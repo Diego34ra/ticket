@@ -16,5 +16,5 @@ public class UsuarioSimpleResponseDTO {
     private Long id;
     private String nome;
     private String email;
-    private List<TelefoneDTO> contatos;
+//    private List<TelefoneDTO> contatos;
 }

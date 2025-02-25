@@ -4,6 +4,8 @@ import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketRequestDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.ticket.TicketRequestUpdateDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.ticket.TicketResponseDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.ticket.TicketSimpleResponseDTO;
+import br.edu.ifgoiano.ticket.model.Ticket;
+import br.edu.ifgoiano.ticket.model.Usuario;
 import br.edu.ifgoiano.ticket.model.enums.Prioridade;
 import br.edu.ifgoiano.ticket.model.enums.StatusTicket;
 
@@ -20,6 +22,8 @@ public interface TicketService {
     TicketResponseDTO buscarPorId(Long id);
 
     TicketResponseDTO atualizar(Long id, TicketRequestUpdateDTO ticketRequestUpdateDTO);
+
+    Ticket atualizaTicketEmAndamento(Usuario usuario, Ticket ticket);
 
     void deletePorId(Long id);
 

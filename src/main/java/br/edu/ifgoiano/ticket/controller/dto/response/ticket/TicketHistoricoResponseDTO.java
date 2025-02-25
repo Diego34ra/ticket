@@ -1,6 +1,7 @@
 package br.edu.ifgoiano.ticket.controller.dto.response.ticket;
 
 import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioResponseDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioSimpleResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,5 +19,5 @@ public class TicketHistoricoResponseDTO {
     private String ultimoValor;
     private String novoValor;
     private LocalDateTime dataAlteracao;
-    private UsuarioResponseDTO agente;
+    private UsuarioSimpleResponseDTO agente;
 }
