@@ -255,7 +255,7 @@ public class TicketServiceImpl implements TicketService {
         ticket.getHistoricos().addAll(ticketHistoricoList);
         ticketHistoricoList.forEach(ticketHistoricoCriar -> ticketHistoricoService.criar(ticketHistoricoCriar));
 
-        // Enviar email para o cliente
+        emailService.enviarTicketEmAndamentoEmail(ticket);
 
         return ticketRepository.save(ticket);
     }

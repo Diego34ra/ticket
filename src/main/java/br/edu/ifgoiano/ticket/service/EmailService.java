@@ -6,6 +6,8 @@ import br.edu.ifgoiano.ticket.model.Usuario;
 public interface EmailService {
     void enviarTicketEmail(Ticket ticket);
 
+    void enviarTicketEmAndamentoEmail(Ticket ticket);
+
     void enviarTicketFinalizadoEmail(Ticket ticket);
 
     void enviarUsuarioCadastradoEmail(Usuario usuario);
