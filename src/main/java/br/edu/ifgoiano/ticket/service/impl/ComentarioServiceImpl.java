@@ -104,6 +104,6 @@ public class ComentarioServiceImpl implements ComentarioService {
 
     @Override
     public void deletarAnexoPorNome(Long comentarioId, String fileName) {
-//        deletarAnexo(comentarioId,fileName);
+        anexoService.deletarAnexo(comentarioId,fileName);
     }
 }
