@@ -20,9 +20,9 @@ public class RegistroTrabalho {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String descricao;
-    private Duration duration;
-    private LocalDateTime horarioFim;
+    private Duration duracao;
     private LocalDateTime horarioInicio;
+    private LocalDateTime horarioFim;
 
     @ManyToOne
     private Ticket ticket;
@@ -34,7 +34,7 @@ public class RegistroTrabalho {
     @PreUpdate
     private void calculateDuration() {
         if (horarioFim != null && horarioInicio != null) {
-            duration = Duration.between(horarioInicio, horarioFim);
+            duracao = Duration.between(horarioInicio, horarioFim);
         }
     }
 }
