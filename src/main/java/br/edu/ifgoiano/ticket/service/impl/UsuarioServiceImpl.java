@@ -1,6 +1,7 @@
 package br.edu.ifgoiano.ticket.service.impl;
 
 import br.edu.ifgoiano.ticket.controller.dto.mapper.MyModelMapper;
+import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioPatchDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.message.MessageResponseDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioRequestDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioResponseDTO;
@@ -104,6 +105,14 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
     public UsuarioResponseDTO atualizar(Long uuid, UsuarioRequestDTO usuarioUpdate) {
         Usuario usuario = mapper.mapTo(usuarioUpdate, Usuario.class);
         BeanUtils.copyProperties(usuarioUpdate, usuario, objectUtils.getNullPropertyNames(usuarioUpdate));
+        return mapper.mapTo(usuarioRepository.save(usuario), UsuarioResponseDTO.class);
+    }
+
+    @Override
+    public UsuarioResponseDTO atualizarPapel(Long uuid, UsuarioPatchDTO usuarioPatchDTO) {
+        Usuario usuario = usuarioRepository.findById(uuid).orElseThrow(() -> new ResourceNotFoundException("Usuário nao encontrado."));
+
+        usuario.setTipoUsuario(usuarioPatchDTO.getTipoUsuario());
         return mapper.mapTo(usuarioRepository.save(usuario), UsuarioResponseDTO.class);
     }
 

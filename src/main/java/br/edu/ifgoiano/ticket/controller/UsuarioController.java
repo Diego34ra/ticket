@@ -1,5 +1,6 @@
 package br.edu.ifgoiano.ticket.controller;
 
+import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioPatchDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.message.MessageResponseDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.usuario.UsuarioRequestDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.usuario.UsuarioResponseDTO;
@@ -79,6 +80,18 @@ public class UsuarioController {
     })
     private ResponseEntity<UsuarioResponseDTO> atualizar(@PathVariable Long id, @RequestBody UsuarioRequestDTO usuarioRequestDTO){
         var usuario = usuarioService.atualizar(id, usuarioRequestDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(usuario);
+    }
+
+    @PatchMapping("{id}")
+    @Operation(summary = "Atualizar o papel de um Usuario")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Usuario atualizado com sucesso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UsuarioResponseDTO.class))}),
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+    })
+    private ResponseEntity<UsuarioResponseDTO> atualizarPapel(@PathVariable Long id, @RequestBody UsuarioPatchDTO usuarioPatchDTO){
+        var usuario = usuarioService.atualizarPapel(id, usuarioPatchDTO);
         return ResponseEntity.status(HttpStatus.OK).body(usuario);
     }
 
