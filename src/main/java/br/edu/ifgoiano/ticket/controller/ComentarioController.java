@@ -35,9 +35,8 @@ public class ComentarioController {
             @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
     public ResponseEntity<ComentarioResponseDTO> criar(@RequestParam Long ticketId,
-                                                       @RequestParam Long usuarioId,
                                                        @ModelAttribute ComentarioRequestDTO conteudo) {
-        var comentarioCriado = comentarioService.criar(ticketId,usuarioId,conteudo);
+        var comentarioCriado = comentarioService.criar(ticketId,conteudo);
         return ResponseEntity.status(HttpStatus.CREATED).body(comentarioCriado);
     }
 

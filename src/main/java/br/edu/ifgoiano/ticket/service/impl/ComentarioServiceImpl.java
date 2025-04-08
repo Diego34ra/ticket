@@ -51,9 +51,11 @@ public class ComentarioServiceImpl implements ComentarioService {
     private ObjectUtils objectUtils;
 
     @Override
-    public ComentarioResponseDTO criar(Long ticketId, Long usuarioId, ComentarioRequestDTO comentarioInputDTO) {
+    public ComentarioResponseDTO criar(Long ticketId, ComentarioRequestDTO comentarioInputDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long uuidAuth = Long.valueOf((String) authentication.getPrincipal());
         Ticket ticket = mapper.mapTo(ticketService.buscarPorId(ticketId),Ticket.class);
-        Usuario autor = mapper.mapTo(usuarioService.buscaPorId(usuarioId), Usuario.class);
+        Usuario autor = mapper.mapTo(usuarioService.buscaPorId(uuidAuth), Usuario.class);
         Comentario comentarioCriar = mapper.mapTo(comentarioInputDTO,Comentario.class);
         ticket.getComentarios().add(comentarioCriar);
         comentarioCriar.setAutor(autor);

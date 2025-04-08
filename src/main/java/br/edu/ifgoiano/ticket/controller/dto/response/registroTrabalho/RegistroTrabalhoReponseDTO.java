@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class RegistroTrabalhoReponseDTO {
     private Long id;
     private String descricao;
-    private Duration duration;
+    private Duration duracao;
     private LocalDateTime horarioFim;
     private LocalDateTime horarioInicio;
     private TicketSimpleResponseDTO ticket;

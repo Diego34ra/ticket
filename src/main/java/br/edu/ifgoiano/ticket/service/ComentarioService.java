@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface ComentarioService {
 
-    ComentarioResponseDTO criar(Long ticketId, Long usuarioId, ComentarioRequestDTO comentarioInputDTO);
+    ComentarioResponseDTO criar(Long ticketId, ComentarioRequestDTO comentarioInputDTO);
 
     Optional<Comentario> buscarPorId(Long id);
 

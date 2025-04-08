@@ -1,3 +1,5 @@
+use ticket;
+
 CREATE TABLE `tb_usuario` (
   `usuario_id` bigint NOT NULL AUTO_INCREMENT,
   `cpf` varchar(255) DEFAULT NULL,
@@ -6,7 +8,8 @@ CREATE TABLE `tb_usuario` (
   `senha` varchar(255) DEFAULT NULL,
   `tipo_usuario` enum('ADMINISTRADOR','CLIENTE','FUNCIONARIO','GERENTE') DEFAULT NULL,
   PRIMARY KEY (`usuario_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+
 
 CREATE TABLE `tb_telefone` (
   `telefone_id` bigint NOT NULL AUTO_INCREMENT,
@@ -17,14 +20,14 @@ CREATE TABLE `tb_telefone` (
   PRIMARY KEY (`telefone_id`),
   KEY `FKlf26qdq78s365njl6nfj1ncn2` (`usuario_id`),
   CONSTRAINT `FKlf26qdq78s365njl6nfj1ncn2` FOREIGN KEY (`usuario_id`) REFERENCES `tb_usuario` (`usuario_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `tb_categoria` (
   `categoria_id` bigint NOT NULL AUTO_INCREMENT,
   `descricao` varchar(255) DEFAULT NULL,
   `nome` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`categoria_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `tb_departamento` (
   `departamento_id` bigint NOT NULL AUTO_INCREMENT,
@@ -36,7 +39,7 @@ CREATE TABLE `tb_departamento` (
   PRIMARY KEY (`departamento_id`),
   UNIQUE KEY `UKok18ntuwdnvc6pwakd3nqls0f` (`gerente_usuario_id`),
   CONSTRAINT `FKtddn9bdksl809yuqabe10b613` FOREIGN KEY (`gerente_usuario_id`) REFERENCES `tb_usuario` (`usuario_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `tb_regra_prioridade` (
   `id` bigint NOT NULL AUTO_INCREMENT,
@@ -48,7 +51,7 @@ CREATE TABLE `tb_regra_prioridade` (
   KEY `FKaq1ok0h8gto7pffwb4yutk8m4` (`departamento_departamento_id`),
   CONSTRAINT `FKaq1ok0h8gto7pffwb4yutk8m4` FOREIGN KEY (`departamento_departamento_id`) REFERENCES `tb_departamento` (`departamento_id`),
   CONSTRAINT `FKe5pyijvct3x2ih2ybjp1xurxq` FOREIGN KEY (`categoria_categoria_id`) REFERENCES `tb_categoria` (`categoria_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `tb_ticket` (
   `ticket_id` bigint NOT NULL AUTO_INCREMENT,
@@ -72,7 +75,7 @@ CREATE TABLE `tb_ticket` (
   CONSTRAINT `FKkleejqesdnmcgfa23dj9knny2` FOREIGN KEY (`categoria_categoria_id`) REFERENCES `tb_categoria` (`categoria_id`),
   CONSTRAINT `FKnano81m2qxa6grktnm2rrxvw0` FOREIGN KEY (`cliente_usuario_id`) REFERENCES `tb_usuario` (`usuario_id`),
   CONSTRAINT `FKri0w6shaglbu5ttd26y1194mn` FOREIGN KEY (`responsavel_usuario_id`) REFERENCES `tb_usuario` (`usuario_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `tb_comentario` (
   `comentario_id` bigint NOT NULL AUTO_INCREMENT,
@@ -84,7 +87,7 @@ CREATE TABLE `tb_comentario` (
   KEY `FK9cytagr4fwkyp9bfuxtrvned0` (`ticket_id`),
   CONSTRAINT `FK9cytagr4fwkyp9bfuxtrvned0` FOREIGN KEY (`ticket_id`) REFERENCES `tb_ticket` (`ticket_id`),
   CONSTRAINT `FKnl2o22vuqqngt7aehu4mwkhtp` FOREIGN KEY (`autor_usuario_id`) REFERENCES `tb_usuario` (`usuario_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `tb_anexo` (
   `anexo_id` bigint NOT NULL AUTO_INCREMENT,
@@ -96,7 +99,7 @@ CREATE TABLE `tb_anexo` (
   PRIMARY KEY (`anexo_id`),
   KEY `FK6aumbuv4ra5pi11ud926jeg0b` (`comentario_comentario_id`),
   CONSTRAINT `FK6aumbuv4ra5pi11ud926jeg0b` FOREIGN KEY (`comentario_comentario_id`) REFERENCES `tb_comentario` (`comentario_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `tb_ticket_historico` (
   `ticket_historico_id` bigint NOT NULL AUTO_INCREMENT,
@@ -111,12 +114,12 @@ CREATE TABLE `tb_ticket_historico` (
   KEY `FKbw5hc2syfuk6xs60u74wp81bc` (`ticket_ticket_id`),
   CONSTRAINT `FKbw5hc2syfuk6xs60u74wp81bc` FOREIGN KEY (`ticket_ticket_id`) REFERENCES `tb_ticket` (`ticket_id`),
   CONSTRAINT `FKiaq4j8md22pwhfbivmrcpp4hp` FOREIGN KEY (`agente_usuario_id`) REFERENCES `tb_usuario` (`usuario_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `tb_registro_trabalho` (
   `registro_trabalho_id` bigint NOT NULL AUTO_INCREMENT,
   `descricao` varchar(255) DEFAULT NULL,
-  `duration` decimal(21,0) DEFAULT NULL,
+  `duracao` decimal(21,0) DEFAULT NULL,
   `horario_fim` datetime(6) DEFAULT NULL,
   `horario_inicio` datetime(6) DEFAULT NULL,
   `agente_usuario_id` bigint DEFAULT NULL,
@@ -126,4 +129,4 @@ CREATE TABLE `tb_registro_trabalho` (
   KEY `FKsx8pcvwnxfmp3ors05bpeuruj` (`ticket_ticket_id`),
   CONSTRAINT `FKs47hjqjpcme4uigjbg17w3d7` FOREIGN KEY (`agente_usuario_id`) REFERENCES `tb_usuario` (`usuario_id`),
   CONSTRAINT `FKsx8pcvwnxfmp3ors05bpeuruj` FOREIGN KEY (`ticket_ticket_id`) REFERENCES `tb_ticket` (`ticket_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
