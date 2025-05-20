@@ -49,7 +49,7 @@ public class AnexoServiceImpl implements AnexoService {
             String contentType = Files.probeContentType(filePath);
             long sizeInBytes = Files.size(filePath);
             String size = formatSize(sizeInBytes);
-            String downloadUri = "/api/v1/comments/" + comentario.getId() + "/download-anexo/"+originalFilename;
+            String downloadUri = "/api/v1/comentarios/" + comentario.getId() + "/download-anexo/"+originalFilename;
 
             return new Anexo(originalFilename,contentType,size,downloadUri);
         } catch (IOException e) {

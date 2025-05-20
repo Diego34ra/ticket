@@ -3,6 +3,7 @@ package br.edu.ifgoiano.ticket.service;
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestUpdateDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.comentario.ComentarioResponseDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.comentario.FileResponseDownload;
 import br.edu.ifgoiano.ticket.model.Comentario;
 
 import java.util.List;
@@ -13,6 +14,8 @@ public interface ComentarioService {
     ComentarioResponseDTO criar(Long ticketId, ComentarioRequestDTO comentarioInputDTO);
 
     Optional<Comentario> buscarPorId(Long id);
+
+    FileResponseDownload downloadAnexo(Long roomId, String filename);
 
     List<ComentarioResponseDTO> buscarPorTicketId(Long ticketId);
 

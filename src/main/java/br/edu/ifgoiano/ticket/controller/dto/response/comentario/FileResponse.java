@@ -1,17 +1,14 @@
-package br.edu.ifgoiano.ticket.model;
-
+package br.edu.ifgoiano.ticket.controller.dto.response.comentario;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class FileResponse {
-    private String nomeArquivo;
-    private String tipoArquivo;
-    private String tamanho;
+    private String fileName;
+    private String contentType;
+    private String size;
     private String downloadUrl;
 }

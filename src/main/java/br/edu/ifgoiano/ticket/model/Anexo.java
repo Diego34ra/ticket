@@ -1,16 +1,14 @@
 package br.edu.ifgoiano.ticket.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "tb_anexo")
+@ToString(exclude = {"comentario"})
 public class Anexo {
 
     @Id

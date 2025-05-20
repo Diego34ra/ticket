@@ -1,10 +1,7 @@
 package br.edu.ifgoiano.ticket.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -13,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "tb_comentario")
+@ToString(exclude = {"ticket", "autor"})
 public class Comentario {
     @Id
     @Column(name = "comentario_id")
@@ -26,5 +24,4 @@ public class Comentario {
     @ManyToOne
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
-
 }

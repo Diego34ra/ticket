@@ -5,6 +5,7 @@ import br.edu.ifgoiano.ticket.controller.dto.request.comentario.AnexoResponseDTO
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestDTO;
 import br.edu.ifgoiano.ticket.controller.dto.request.comentario.ComentarioRequestUpdateDTO;
 import br.edu.ifgoiano.ticket.controller.dto.response.comentario.ComentarioResponseDTO;
+import br.edu.ifgoiano.ticket.controller.dto.response.comentario.FileResponseDownload;
 import br.edu.ifgoiano.ticket.controller.exception.ResourceNotFoundException;
 import br.edu.ifgoiano.ticket.model.*;
 import br.edu.ifgoiano.ticket.model.Ticket;
@@ -17,10 +18,16 @@ import br.edu.ifgoiano.ticket.service.UsuarioService;
 import br.edu.ifgoiano.ticket.utils.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Service
@@ -50,6 +57,15 @@ public class ComentarioServiceImpl implements ComentarioService {
     @Autowired
     private ObjectUtils objectUtils;
 
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+
+    public String getAbsolutePath() {
+        String userDir = System.getProperty("user.dir");
+        Path srcPath = Paths.get(userDir);
+        return srcPath.toAbsolutePath().toString();
+    }
+
     @Override
     public ComentarioResponseDTO criar(Long ticketId, ComentarioRequestDTO comentarioInputDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -69,12 +85,35 @@ public class ComentarioServiceImpl implements ComentarioService {
         if(anexoList != null && !anexoList.isEmpty())
             comentarioResponseDTO.setAnexos(mapper.toList(anexoList, AnexoResponseDTO.class));
 
+
         return comentarioResponseDTO;
     }
 
     @Override
     public Optional<Comentario> buscarPorId(Long id) {
         return comentarioRepository.findById(id);
+    }
+
+    @Override
+    public FileResponseDownload downloadAnexo(Long roomId, String filename) {
+        System.out.println("TESTE1");
+        try {
+            Path file = Paths.get(getAbsolutePath()+uploadDir).resolve(roomId.toString()).resolve(filename);
+            Resource resource = new UrlResource(file.toUri());
+
+            if (resource.exists() || resource.isReadable()) {
+                String contentType = Files.probeContentType(file);
+                if (contentType == null) {
+                    contentType = "application/octet-stream";
+                }
+
+                return new FileResponseDownload(resource,contentType);
+            } else {
+                throw new RuntimeException("File not found or not readable: " + filename);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error while downloading file: " + e.getMessage());
+        }
     }
 
     @Override

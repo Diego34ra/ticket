@@ -163,6 +163,8 @@ public class TicketServiceImpl implements TicketService {
                 new ResourceNotFoundException("Não foi encontrado nenhum ticket com esse id.")
         );
 
+        System.out.println(ticket);
+
         return mapper.mapTo(ticket, TicketResponseDTO.class);
     }
 
@@ -188,9 +190,12 @@ public class TicketServiceImpl implements TicketService {
 
         Map<String, Map<String, Object>> camposAlterados = new HashMap<>();
 
-        checkAndRecordEntityChange("categoria", ticket.getCategoria(), ticketRequestUpdateDTO.getCategoria(), camposAlterados);
-        checkAndRecordEntityChange("departamento", ticket.getDepartamento(), ticketRequestUpdateDTO.getDepartamento(), camposAlterados);
-        checkAndRecordEntityChange("responsavel", ticket.getResponsavel(), ticketRequestUpdateDTO.getResponsavel(), camposAlterados);
+        if (!roles.contains("ROLE_CLIENTE")) {
+            checkAndRecordEntityChange("categoria", ticket.getCategoria(), ticketRequestUpdateDTO.getCategoria(), camposAlterados);
+            checkAndRecordEntityChange("departamento", ticket.getDepartamento(), ticketRequestUpdateDTO.getDepartamento(), camposAlterados);
+            checkAndRecordEntityChange("responsavel", ticket.getResponsavel(), ticketRequestUpdateDTO.getResponsavel(), camposAlterados);
+        }
+
         List<String> variaveisIgnoradas = Arrays.asList("comentarios", "id", "categoria", "departamento", "responsavel", "cliente", "class", "historicos", "registroTrabalhos");
         BeanWrapper wrapper = new BeanWrapperImpl(ticket);
         for (PropertyDescriptor descriptor : wrapper.getPropertyDescriptors()) {
@@ -198,7 +203,6 @@ public class TicketServiceImpl implements TicketService {
             if (!variaveisIgnoradas.contains(nomeVariavel)) {
                 Object antigoValor = wrapper.getPropertyValue(nomeVariavel);
                 Object novoValor = new BeanWrapperImpl(ticketRequestUpdateDTO).getPropertyValue(nomeVariavel);
-
                 if (novoValor != null && !novoValor.equals(antigoValor)) {
                     Map<String, Object> values = new HashMap<>();
                     values.put("antigoValor", antigoValor);

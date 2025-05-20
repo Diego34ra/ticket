@@ -20,7 +20,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("api/v1/regraPrioridades")
+@RequestMapping("api/v1/z")
 @Tag(name = "Regra Prioridade")
 public class RegraPrioridadeController {
 

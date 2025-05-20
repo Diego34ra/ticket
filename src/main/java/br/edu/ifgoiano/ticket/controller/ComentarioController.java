@@ -13,7 +13,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,6 +62,25 @@ public class ComentarioController {
         return ResponseEntity.status(HttpStatus.OK).body(comentarioList);
     }
 
+    @GetMapping("{id}/download-anexo/{filename:.+}")
+    @Operation(summary = "Baixar imagem de um comentário")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Imagem buscada com sucesso"
+            ),
+            @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
+            @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
+    })
+    public ResponseEntity<Resource> downloadAnexo(@PathVariable Long id,
+                                                       @PathVariable String filename){
+        var responseResource = comentarioService.downloadAnexo(id,filename);
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(responseResource.getContentType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + responseResource.getResource().getFilename() + "\"")
+                .body(responseResource.getResource());
+    }
+
     @PutMapping("{id}")
     @Operation(summary = "Atualizar um comentário")
     @ApiResponses({
@@ -90,7 +112,7 @@ public class ComentarioController {
             @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    public ResponseEntity<?> deletarAnexoPorNome(@PathVariable Long id,@RequestParam String filename){
+    public ResponseEntity<Void> deletarAnexoPorNome(@PathVariable Long id,@RequestParam String filename){
         comentarioService.deletarAnexoPorNome(id,filename);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
