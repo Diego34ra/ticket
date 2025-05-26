@@ -68,48 +68,4 @@ public class RateLimiterConfig  implements Filter {
     public void destroy() {
     }
 
-
-//    private final Bucket bucket;
-//
-//    public RateLimiterConfig() {
-//        Bandwidth limit = Bandwidth.classic(100, Refill.greedy(5, Duration.ofMinutes(1)));
-//        this.bucket = Bucket.builder()
-//                .addLimit(limit)
-//                .build();
-//    }
-//
-//    @Override
-//    public void init(FilterConfig filterConfig) throws ServletException {
-//    }
-//
-//    @Override
-//    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-//            throws IOException, ServletException {
-//
-//        HttpServletResponse httpResponse = (HttpServletResponse) response;
-//
-//        if (bucket.tryConsume(1)) {
-//            chain.doFilter(request, response);
-//        } else {
-//            int retryAfterSeconds = 60;
-//            httpResponse.setStatus(429);
-//            httpResponse.setContentType("application/json");
-//            httpResponse.setHeader("Retry-After", String.valueOf(retryAfterSeconds));
-//
-//            MessageResponseDTO messageResponse = new MessageResponseDTO(
-//                    "Too Many Requests",
-//                    429,
-//                    "Muitas solicitações. Limite de taxa excedido."
-//            );
-//
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            String jsonResponse = objectMapper.writeValueAsString(messageResponse);
-//
-//            httpResponse.getWriter().write(jsonResponse);
-//        }
-//    }
-//
-//    @Override
-//    public void destroy() {
-//    }
 }

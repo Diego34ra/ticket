@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +37,7 @@ public class RegraPrioridadeController {
             @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
+    @CacheEvict(value = "regraPrioridadeCache", allEntries = true)
     public ResponseEntity<RegraPrioridadeResponseDTO> criar(@RequestBody RegraPrioridadeRequestDTO regraPrioridadeRequestDTO){
         var regraPrioridadeCriada = regraPrioridadeService.criar(regraPrioridadeRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(regraPrioridadeCriada);
@@ -54,6 +57,7 @@ public class RegraPrioridadeController {
             @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
+    @Cacheable(value = "regraPrioridadeCache")
     public ResponseEntity<List<RegraPrioridadeResponseDTO>> buscarTodos(){
         return ResponseEntity.status(HttpStatus.OK).body(regraPrioridadeService.buscarTodos());
     }
@@ -65,6 +69,7 @@ public class RegraPrioridadeController {
             @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
+    @CacheEvict(value = "regraPrioridadeCache", allEntries = true)
     public ResponseEntity<RegraPrioridadeResponseDTO> atualizar(@PathVariable Long id, @RequestBody RegraPrioridadeRequestDTO regraPrioridadeRequestDTO){
         var regraPrioridadeAtualizada = regraPrioridadeService.atualizar(id, regraPrioridadeRequestDTO);
         return ResponseEntity.status(HttpStatus.OK).body(regraPrioridadeAtualizada);
@@ -77,6 +82,7 @@ public class RegraPrioridadeController {
             @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
+    @CacheEvict(value = "regraPrioridadeCache", allEntries = true)
     public ResponseEntity<?> deletarPorId(@PathVariable Long id){
         regraPrioridadeService.deletarPorId(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
