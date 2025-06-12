@@ -27,3 +27,8 @@ api:
   security:
     token:
       secret: ${JWT_SECRET:my-secret-key}
+springdoc:
+  swagger-ui:
+    tags-sorter: alpha
+    operations-sorter: alpha
+
