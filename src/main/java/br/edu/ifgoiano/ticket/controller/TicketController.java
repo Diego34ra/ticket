@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -31,6 +32,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/tickets")
 @Tag(name = "Ticket")
+@Slf4j
 public class TicketController {
 
     @Autowired
@@ -71,7 +73,7 @@ public class TicketController {
             @RequestParam(required = false) String responsavel,
             @RequestParam(required = false) String dataInicio,
             @RequestParam(required = false) String dataFim){
-        System.out.println("Buscando Tickets");
+        log.info("Buscando tickets");
         var ticketList = ticketService.buscarTodosFilter(titulo, status, prioridade, responsavel, dataInicio,dataFim);
         return ResponseEntity.status(HttpStatus.OK).body(ticketList);
     }

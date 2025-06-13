@@ -25,7 +25,7 @@ public class RateLimiterConfig  implements Filter {
     private Bucket getBucket(String ip) {
         return buckets.computeIfAbsent(ip, k ->
                 Bucket.builder()
-                        .addLimit(Bandwidth.classic(100, Refill.greedy(5, Duration.ofMinutes(1))))
+                        .addLimit(Bandwidth.classic(10, Refill.greedy(5, Duration.ofMinutes(1))))
                         .build()
         );
     }

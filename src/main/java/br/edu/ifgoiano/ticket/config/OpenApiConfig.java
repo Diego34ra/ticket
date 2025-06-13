@@ -28,14 +28,11 @@ public class OpenApiConfig {
         contact.setName("Diego Ribeiro Araújo");
         contact.setUrl("mailto:diegoribeiro13ra@hotmail.com");
 
-//        License mitLicense = new License().name("MIT License").url("https://choosealicense.com/licenses/mit/");
-
         Info info = new Info()
                 .title("Api Projeto Sistema de atendimento")
                 .version("1.0")
                 .contact(contact)
                 .description("Esta API apresenta os endpoints de um projeto de gerenciar atendimentos").termsOfService("");
-//                .license(mitLicense);
 
         return new OpenAPI()
                 .info(info)
