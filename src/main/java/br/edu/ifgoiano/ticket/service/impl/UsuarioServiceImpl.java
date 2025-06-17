@@ -55,8 +55,7 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
         boolean cpfExists = usuarioRepository.existsByCpf(usuarioCreate.getCpf().trim());
 
         if(emailExists || cpfExists) {
-            String errorMessage = "Usuário já cadastrado. Campo duplicado: ";
-            errorMessage += emailExists ? "Email" : "CPF";
+            String errorMessage = "Usuário já cadastrado.";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MessageResponseDTO
                     .builder()
                     .code(400)
@@ -70,7 +69,7 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 
         var usuarioSalvo = usuarioRepository.save(usuario);
 
-        emailService.enviarUsuarioCadastradoEmail(usuarioSalvo);
+//        emailService.enviarUsuarioCadastradoEmail(usuarioSalvo);
         return ResponseEntity.status(HttpStatus.CREATED).body(MessageResponseDTO
                 .builder()
                 .code(201)

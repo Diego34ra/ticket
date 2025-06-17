@@ -17,8 +17,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -45,7 +43,6 @@ public class TicketController {
             @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    @CacheEvict(value = "ticketCache", allEntries = true)
     public ResponseEntity<TicketResponseDTO> criar(@RequestBody TicketRequestDTO ticket){
         var ticketCriado = ticketService.criar(ticket);
         return ResponseEntity.status(HttpStatus.CREATED).body(ticketCriado);
@@ -65,7 +62,6 @@ public class TicketController {
             @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    @Cacheable(value = "ticketCache")
     public ResponseEntity<List<TicketSimpleResponseDTO>> buscarTodos(
             @RequestParam(required = false) String titulo,
             @RequestParam(required = false) StatusTicket status,
@@ -73,7 +69,6 @@ public class TicketController {
             @RequestParam(required = false) String responsavel,
             @RequestParam(required = false) String dataInicio,
             @RequestParam(required = false) String dataFim){
-        log.info("Buscando tickets");
         var ticketList = ticketService.buscarTodosFilter(titulo, status, prioridade, responsavel, dataInicio,dataFim);
         return ResponseEntity.status(HttpStatus.OK).body(ticketList);
     }
@@ -97,7 +92,6 @@ public class TicketController {
             @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    @CacheEvict(value = "ticketCache", allEntries = true)
     public ResponseEntity<TicketResponseDTO> atualizar(@PathVariable Long id, @RequestBody TicketRequestUpdateDTO ticketRequestUpdateDTO){
         var ticketAtualizado = ticketService.atualizar(id, ticketRequestUpdateDTO);
         return ResponseEntity.status(HttpStatus.OK).body(ticketAtualizado);
@@ -110,7 +104,6 @@ public class TicketController {
             @ApiResponse(responseCode = "401", description = "O token de autorização está ausente ou é inválido.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))}),
             @ApiResponse(responseCode = "403", description = "Acesso negado.Você não tem permissão para acessar este recurso.",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDetails.class))})
     })
-    @CacheEvict(value = "ticketCache", allEntries = true)
     public ResponseEntity<?> deletarPorId(@PathVariable Long id){
         ticketService.deletePorId(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

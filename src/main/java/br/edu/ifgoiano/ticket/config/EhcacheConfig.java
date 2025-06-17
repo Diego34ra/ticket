@@ -24,7 +24,6 @@ public class EhcacheConfig {
                 .withCache("categoriaCache", cacheConfig)
                 .withCache("departamentoCache", cacheConfig)
                 .withCache("regraPrioridadeCache", cacheConfig)
-                .withCache("ticketCache", cacheConfig)
                 .build(true);
     }
 }

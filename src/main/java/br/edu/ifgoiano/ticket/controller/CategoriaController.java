@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/categorias")
 @Tag(name = "Categoria")
+@Slf4j
 public class CategoriaController {
 
     @Autowired
@@ -57,6 +59,7 @@ public class CategoriaController {
     })
     @Cacheable(value = "categoriaCache")
     public ResponseEntity<List<Categoria>> buscarTodos(){
+        log.info("Buscando categorias");
         var categoriaList = categoriaService.buscarTodos();
         return ResponseEntity.status(HttpStatus.OK).body(categoriaList);
     }

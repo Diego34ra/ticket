@@ -99,7 +99,7 @@ public class TicketServiceImpl implements TicketService {
         ticket.setPrioridade(regraPrioridade.getPrioridade());
         ticket.setDataMaximaResolucao(ticket.getDataCriacao().plusHours(regraPrioridade.getHorasResolucao()));
         ticket = ticketRepository.save(ticket);
-        emailService.enviarTicketEmail(ticket);
+//        emailService.enviarTicketEmail(ticket);
         return mapper.mapTo(ticket, TicketResponseDTO.class);
     }
 
@@ -235,8 +235,8 @@ public class TicketServiceImpl implements TicketService {
 
         var ticketSalvado = ticketRepository.save(ticket);
 
-        if(ticketSalvado.getStatus() == StatusTicket.FINALIZADO)
-            emailService.enviarTicketFinalizadoEmail(ticketSalvado);
+//        if(ticketSalvado.getStatus() == StatusTicket.FINALIZADO)
+//            emailService.enviarTicketFinalizadoEmail(ticketSalvado);
 
         return mapper.mapTo(ticketSalvado, TicketResponseDTO.class);
     }
@@ -259,7 +259,7 @@ public class TicketServiceImpl implements TicketService {
         ticket.getHistoricos().addAll(ticketHistoricoList);
         ticketHistoricoList.forEach(ticketHistoricoCriar -> ticketHistoricoService.criar(ticketHistoricoCriar));
 
-        emailService.enviarTicketEmAndamentoEmail(ticket);
+//        emailService.enviarTicketEmAndamentoEmail(ticket);
 
         return ticketRepository.save(ticket);
     }
