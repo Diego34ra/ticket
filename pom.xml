@@ -78,7 +78,7 @@
 		<dependency>
 			<groupId>org.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
-			<version>3.10.8</version> <!-- Substitua por uma versão estável mais recente -->
+			<version>3.10.8</version>
 		</dependency>
 
 		<dependency>
