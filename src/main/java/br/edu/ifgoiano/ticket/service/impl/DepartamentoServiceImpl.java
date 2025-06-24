@@ -35,7 +35,6 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     private ObjectUtils objectUtils;
 
     @Override
-    @CacheEvict(value = "departamentoCache", allEntries = true)
     public DepartamentoResponseDTO criar(DepartamentoRequestDTO departamentoRequestDTO) {
         Departamento departamento = mapper.mapTo(departamentoRequestDTO, Departamento.class);
         UsuarioResponseDTO usuarioResponseDTO = usuarioService.buscaPorId(departamento.getGerente().getId());
@@ -48,7 +47,6 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     }
 
     @Override
-    @Cacheable(value = "departamentoCache")
     public List<DepartamentoResponseDTO> buscarTodos() {
         return mapper.toList(departamentoRepository.findAll(), DepartamentoResponseDTO.class);
     }
@@ -56,11 +54,10 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     @Override
     public DepartamentoResponseDTO buscarPorId(Long id) {
         return mapper.mapTo(departamentoRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum departamento com esse id.")), DepartamentoResponseDTO.class);
+                .orElseThrow(() -> new ResourceNotFoundException("Nã ofoi encontrado nenhum departamento com esse id.")), DepartamentoResponseDTO.class);
     }
 
     @Override
-    @CacheEvict(value = "departamentoCache", allEntries = true)
     public DepartamentoResponseDTO atualizar(Long id, DepartamentoRequestDTO departamentoUpdate) {
         Departamento departamento = departamentoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum departamento com esse id."));
@@ -74,7 +71,6 @@ public class DepartamentoServiceImpl implements DepartamentoService {
     }
 
     @Override
-    @CacheEvict(value = "departamentoCache", allEntries = true)
     public void deletePorId(Long id) {
         departamentoRepository.deleteById(id);
     }

@@ -19,8 +19,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -163,8 +161,6 @@ public class TicketServiceImpl implements TicketService {
                 new ResourceNotFoundException("Não foi encontrado nenhum ticket com esse id.")
         );
 
-        System.out.println(ticket);
-
         return mapper.mapTo(ticket, TicketResponseDTO.class);
     }
 
@@ -191,9 +187,9 @@ public class TicketServiceImpl implements TicketService {
         Map<String, Map<String, Object>> camposAlterados = new HashMap<>();
 
         if (!roles.contains("ROLE_CLIENTE")) {
-            checkAndRecordEntityChange("categoria", ticket.getCategoria(), ticketRequestUpdateDTO.getCategoria(), camposAlterados);
-            checkAndRecordEntityChange("departamento", ticket.getDepartamento(), ticketRequestUpdateDTO.getDepartamento(), camposAlterados);
-            checkAndRecordEntityChange("responsavel", ticket.getResponsavel(), ticketRequestUpdateDTO.getResponsavel(), camposAlterados);
+            verificarERegistrarAlteracaoEntidade("categoria", ticket.getCategoria(), ticketRequestUpdateDTO.getCategoria(), camposAlterados);
+            verificarERegistrarAlteracaoEntidade("departamento", ticket.getDepartamento(), ticketRequestUpdateDTO.getDepartamento(), camposAlterados);
+            verificarERegistrarAlteracaoEntidade("responsavel", ticket.getResponsavel(), ticketRequestUpdateDTO.getResponsavel(), camposAlterados);
         }
 
         List<String> variaveisIgnoradas = Arrays.asList("comentarios", "id", "categoria", "departamento", "responsavel", "cliente", "class", "historicos", "registroTrabalhos");
@@ -264,15 +260,15 @@ public class TicketServiceImpl implements TicketService {
         return ticketRepository.save(ticket);
     }
 
-    private <T> void checkAndRecordEntityChange(String fieldName, T currentEntity, T newEntity, Map<String, Map<String, Object>> alteredFields) {
-        Long currentId = getEntityId(currentEntity);
-        Long newId = getEntityId(newEntity);
+    private <T> void verificarERegistrarAlteracaoEntidade(String campo, T objeto, T objetoNovo, Map<String, Map<String, Object>> camposAlterados) {
+        Long objetoId = getEntityId(objeto);
+        Long objetoNovoId = getEntityId(objetoNovo);
 
-        if (!Objects.equals(currentId, newId)) {
+        if (!Objects.equals(objetoId, objetoNovoId)) {
             Map<String, Object> values = new HashMap<>();
-            values.put("antigoValor", currentId);
-            values.put("novoValor", newId);
-            alteredFields.put(fieldName, values);
+            values.put("antigoValor", objetoId);
+            values.put("novoValor", objetoNovoId);
+            camposAlterados.put(campo, values);
         }
     }
 

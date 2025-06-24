@@ -102,7 +102,7 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 
     @Override
     public UsuarioResponseDTO atualizar(Long uuid, UsuarioRequestDTO usuarioUpdate) {
-        Usuario usuario = mapper.mapTo(usuarioUpdate, Usuario.class);
+        Usuario usuario = mapper.mapTo(buscaPorId(uuid),Usuario.class);
         BeanUtils.copyProperties(usuarioUpdate, usuario, objectUtils.getNullPropertyNames(usuarioUpdate));
         return mapper.mapTo(usuarioRepository.save(usuario), UsuarioResponseDTO.class);
     }

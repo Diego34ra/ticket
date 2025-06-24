@@ -24,8 +24,8 @@ public class OpenApiConfig {
         devServer.setDescription("URL do servidor no ambiente de desenvolvimento");
 
         Contact contact = new Contact();
-        contact.setEmail("diegoribeiro13ra@hotmail.com");
-        contact.setName("Diego Ribeiro Araújo");
+        contact.setEmail("diegoribeiro13ra@hotmail.com, feliperibeiroaraujo3@gmail.com");
+        contact.setName("Diego Ribeiro Araújo, Felipe Ribeiro Araújo");
         contact.setUrl("mailto:diegoribeiro13ra@hotmail.com");
 
         Info info = new Info()

@@ -95,10 +95,9 @@ public class ComentarioServiceImpl implements ComentarioService {
     }
 
     @Override
-    public FileResponseDownload downloadAnexo(Long roomId, String filename) {
-        System.out.println("TESTE1");
+    public FileResponseDownload downloadAnexo(Long comentarioId, String filename) {
         try {
-            Path file = Paths.get(getAbsolutePath()+uploadDir).resolve(roomId.toString()).resolve(filename);
+            Path file = Paths.get(getAbsolutePath()+uploadDir).resolve(comentarioId.toString()).resolve(filename);
             Resource resource = new UrlResource(file.toUri());
 
             if (resource.exists() || resource.isReadable()) {

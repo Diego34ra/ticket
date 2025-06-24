@@ -39,7 +39,6 @@ public class RegraPrioridadeServiceImpl implements RegraPrioridadeService {
     private ObjectUtils objectUtils;
 
     @Override
-    @CacheEvict(value = "regraPrioridadeCache", allEntries = true)
     public RegraPrioridadeResponseDTO criar(RegraPrioridadeRequestDTO regraPrioridadeRequestDTO) {
         RegraPrioridade regraPrioridade = mapper.mapTo(regraPrioridadeRequestDTO, RegraPrioridade.class);
         Categoria categoria = categoriaService.buscaPorId(regraPrioridade.getCategoria().getId());
@@ -50,7 +49,6 @@ public class RegraPrioridadeServiceImpl implements RegraPrioridadeService {
     }
 
     @Override
-    @Cacheable(value = "regraPrioridadeCache")
     public List<RegraPrioridadeResponseDTO> buscarTodos() {
         return mapper.toList(regraPrioridadeRepository.findAll(), RegraPrioridadeResponseDTO.class);
     }
@@ -62,7 +60,6 @@ public class RegraPrioridadeServiceImpl implements RegraPrioridadeService {
     }
 
     @Override
-    @CacheEvict(value = "regraPrioridadeCache", allEntries = true)
     public RegraPrioridadeResponseDTO atualizar(Long id, RegraPrioridadeRequestDTO regraPrioridadeRequestDTO) {
         RegraPrioridade regraPrioridade = regraPrioridadeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrada regra de prioridade com esse id."));
@@ -71,7 +68,6 @@ public class RegraPrioridadeServiceImpl implements RegraPrioridadeService {
     }
 
     @Override
-    @CacheEvict(value = "regraPrioridadeCache", allEntries = true)
     public void deletarPorId(Long id) {
         regraPrioridadeRepository.deleteById(id);
     }
