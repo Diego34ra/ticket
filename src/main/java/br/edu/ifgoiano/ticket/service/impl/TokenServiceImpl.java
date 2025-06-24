@@ -30,6 +30,9 @@ public class TokenServiceImpl implements TokenService {
     @Autowired
     private UsuarioService usuarioService;
 
+    private final Integer TEMPO_EXPIRACAO_TOKEN = 2;
+    private final Integer TEMPO_EXPIRACAO_REFRESHTOKEN = 3;
+
     @Override
     public LoginResponseDTO realizarLogin(Usuario usuario) {
         String accessToken = gerarToken(usuario);
@@ -37,7 +40,7 @@ public class TokenServiceImpl implements TokenService {
         LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
         loginResponseDTO.setAccess_token(accessToken);
         loginResponseDTO.setRefresh_token(refreshToken);
-        loginResponseDTO.setExpires_in(151200);
+        loginResponseDTO.setExpires_in(TEMPO_EXPIRACAO_TOKEN * 24 * 60 * 60);
         return loginResponseDTO;
     }
 
@@ -145,10 +148,10 @@ public class TokenServiceImpl implements TokenService {
     }
 
     private Instant gerarDataExpiracaoToken(){
-        return LocalDateTime.now().plusDays(2).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusDays(TEMPO_EXPIRACAO_TOKEN).toInstant(ZoneOffset.of("-03:00"));
     }
 
     private Instant gerarDataExpiracaoRefreshToken(){
-        return LocalDateTime.now().plusDays(3).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusDays(TEMPO_EXPIRACAO_REFRESHTOKEN).toInstant(ZoneOffset.of("-03:00"));
     }
 }
